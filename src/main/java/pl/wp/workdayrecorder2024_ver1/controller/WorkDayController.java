@@ -100,9 +100,7 @@ public class WorkDayController {
             route.setArrivalToTheBase(arrivalToTheBase);
             route.setEndOfRoute(endOfRoute);
 
-
-
-
+            
             List<Stop> stops = new ArrayList<>();
             for (int j = 0; j < numberOfStops; j++) {
                 Stop stop = new Stop();
