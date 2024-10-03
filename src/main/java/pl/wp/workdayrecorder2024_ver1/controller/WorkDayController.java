@@ -49,8 +49,8 @@ public class WorkDayController {
                                 @RequestParam("pause") String pause,
                                 @RequestParam("endOfWork") LocalDateTime endOfWork,
                                 @RequestParam("totalDistance") String totalDistance,
-                                @RequestParam("accident") boolean accident,
-                                @RequestParam("faults") boolean faults,
+                                @RequestParam(name="accident", required = false, defaultValue = "false") boolean accident,
+                                @RequestParam(name="faults", required = false, defaultValue = "false") boolean faults,
                                 @RequestParam("notes") String notes,
 
                                 @RequestParam("numberOfRoutes") Integer numberOfRoutes,
@@ -85,9 +85,11 @@ public class WorkDayController {
         workDay.setFaults(faults);
         workDay.setNotes(notes);
 
-
         // Utwórz listę obiektów Route
         List<Route> routes = new ArrayList<>();
+       // workDay.setRoutes(routes);
+
+
         for (int i = 0; i < numberOfRoutes; i++) {
             Route route = new Route();
             route.setTruckNumber(truckNumber);
