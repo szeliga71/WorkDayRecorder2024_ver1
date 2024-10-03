@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Main Panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('/images/pfenning.jpg'); /* Wstaw tutaj URL obrazu */
+            background-size: cover; /* Dopasowanie obrazu do ekranu */
+            background-position: center; /* Wyśrodkowanie obrazu */
+            background-repeat: no-repeat; /* Zapobiega powtarzaniu obrazu */
+            height: 100vh; /* Ustawia wysokość na 100% okna przeglądarki */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: black; /* Zmiana koloru tekstu */
+        }
+
+        .btn-custom-1 {
+            background-color: #ff5733; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+
+        .email-highlight {
+            color: orange; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
+        }
+
+        .content-box {
+            background-color: white;
+            padding: 20px;
+            border: 2px solid black;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+    </style>
+    <script>
+        function goToEmployees() {
+            window.location.href = "employees";
+        }
+    </script>
+</head>
+<body>
+<div class="content-box text-center">
+    <h1 class="text-center mt-4">ADMIN Main Panel</h1>
+    <p>Logged user : <span class="email-highlight" sec:authentication="name"></span></p>
+    <button onclick="goToEmployees()" class="btn btn-custom-1 btn-lg m-2">Employees List</button>
+
+</div>
+</body>
+</html>
+

@@ -2,10 +2,10 @@ package pl.wp.workdayrecorder2024_ver1.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.wp.workdayrecorder2024_ver1.model.User;
+import pl.wp.workdayrecorder2024_ver1.model.Employee;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
-    User findByPersonalId(String personalId);
+    Employee findByPersonalId(String personalId);
 }

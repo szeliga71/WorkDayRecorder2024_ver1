@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee User Home Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('/images/pfenning.jpg'); /* Wstaw tutaj URL obrazu */
+            background-size: cover; /* Dopasowanie obrazu do ekranu */
+            background-position: center; /* Wyśrodkowanie obrazu */
+            background-repeat: no-repeat; /* Zapobiega powtarzaniu obrazu */
+            height: 100vh; /* Ustawia wysokość na 100% okna przeglądarki */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: black; /* Zmiana koloru tekstu */
+        }
+
+        /* Styl dla nieprzezroczystego pola */
+        .content-box {
+            background-color: white;
+            padding: 20px;
+            border: 2px solid black;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .email-highlight {
+            color: orange; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
+        }
+
+        /* Niestandardowe kolory przycisków */
+        .btn-custom-1 {
+            background-color: #ff5733; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+
+        .btn-custom-2 {
+            background-color: #33c1ff; /* Inny niestandardowy kolor przycisku */
+            border: 2px solid black; /* Czarna obwódka */
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+
+        .btn-custom-3 {
+            background-color: #5bff33; /* Inny niestandardowy kolor przycisku */
+            border: 2px solid black; /* Czarna obwódka */
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-4 {
+            background-color: #CC66CC; /* Inny niestandardowy kolor przycisku */
+            border: 2px solid black; /* Czarna obwódka */
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+    </style>
+
+    <script>
+        function enterWorkDay() {
+            window.location.href = "workDay";
+        }
+
+        function showWorkPlan() {
+            window.location.href = "workPlan";
+        }
+
+        function checkWorkHistory() {
+            window.location.href = "workHistory";
+        }
+
+        function createWashListe() {
+            window.location.href = "waschListe";
+        }
+
+    </script>
+</head>
+<body>
+<div class="content-box text-center">
+    <h1 class="text-center mt-4">Employee User Home Page</h1>
+    <p>Logged user : <span class="email-highlight" sec:authentication="name"></span></p>
+    <br>
+
+    <button onclick="enterWorkDay()" class="btn btn-custom-1 btn-lg m-2">Tagesbericht</button>
+    <button onclick="showWorkPlan()" class="btn btn-custom-2 btn-lg m-2">ArbeitsPlan</button>
+    <button onclick="checkWorkHistory()" class="btn btn-custom-3 btn-lg m-2">Arbeits History</button>
+    <button onclick="createWashListe()" class="btn btn-custom-4 btn-lg m-2">Wasch Liste</button>
+</div>
+</body>
+</html>

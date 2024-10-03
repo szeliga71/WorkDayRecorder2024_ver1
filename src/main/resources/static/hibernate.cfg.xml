@@ -6,14 +6,21 @@
     <session-factory>
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
-        <!--<property name="hibernate.connection.url">jdbc:tc:postgresql://localhost:5432/postgres</property>-->
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/WorkDayRecorder</property>
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">postgresql</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 
         <property name="show_sql">true</property>
-        <mapping class="pl.wp.dbasegameofthrone.model.Book"/>
+
+        <mapping class="pl.wp.workdayrecorder2024_ver1.model.Employee"/>
+        <mapping class="pl.wp.workdayrecorder2024_ver1.model.Markt"/>
+        <mapping class="pl.wp.workdayrecorder2024_ver1.model.Role"/>
+        <mapping class="pl.wp.workdayrecorder2024_ver1.model.Route"/>
+        <mapping class="pl.wp.workdayrecorder2024_ver1.model.Stop"/>
+        <mapping class="pl.wp.workdayrecorder2024_ver1.model.Trailer"/>
+        <mapping class="pl.wp.workdayrecorder2024_ver1.model.Truck"/>
+        <mapping class="pl.wp.workdayrecorder2024_ver1.model.WorkDay"/>
 
     </session-factory>
 </hibernate-configuration>

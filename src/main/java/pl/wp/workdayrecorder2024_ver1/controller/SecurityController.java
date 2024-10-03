@@ -1,22 +1,24 @@
-package pl.wp.dbasegameofthrone.controller;
+package pl.wp.workdayrecorder2024_ver1.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import pl.wp.dbasegameofthrone.model.UserApp;
-import pl.wp.dbasegameofthrone.service.UserService;
+import pl.wp.workdayrecorder2024_ver1.model.Employee;
+import pl.wp.workdayrecorder2024_ver1.service.EmployeeService;
+
+import static pl.wp.workdayrecorder2024_ver1.model.Role.ADMIN;
+import static pl.wp.workdayrecorder2024_ver1.model.Role.USER;
 
 
 @Controller
 public class SecurityController {
 
     @Autowired
-    UserService userService;
+    EmployeeService employeeService;
 
     @GetMapping("/login")
     public String getLoginPage() {
@@ -25,28 +27,27 @@ public class SecurityController {
 
     @GetMapping("/register")
     public String getRegistrationPage(Model model) {
-        model.addAttribute("UserApp", new UserApp());
+        model.addAttribute("Employee", new Employee());
         return "security/register";
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("UserApp") UserApp user, BindingResult result) {
-        if (userService.loadUserByUsername(user.getEmail()) != null) { //user.getEmail()) != null) {
-            result.rejectValue("confirmedPassword", "error.customUser", "Email is already in use");
+    public String registerUser(@ModelAttribute("Employee") Employee employee, BindingResult result) {
+        if (employeeService.loadUserByUsername(employee.getPersonalId()) != null) { //user.getEmail()) != null) {
+            result.rejectValue("confirmedPassword", "error.employee", "Email is already in use");
             return "security/register";
         }
-        if (user.getPassword() == null || user.getConfirmedPassword() == null ||
-                !user.getPassword().equals(user.getConfirmedPassword())) {
-            result.rejectValue("confirmedPassword", "error.customUser", "Passwords do not match");
+        if (employee.getPassword() == null || employee.getConfirmedPassword() == null ||
+                !employee.getPassword().equals(employee.getConfirmedPassword())) {
+            result.rejectValue("confirmedPassword", "error.employee", "Passwords do not match");
             return "security/register";
         }
         if (result.hasErrors()) {
             return "security/register";
         }
-        user.setRole("USER");
-        System.out.println(user.getEmail());
-        System.out.println(user.getRole());
-        userService.saveUser(user);
+        employee.setRole(USER);
+
+        employeeService.saveEmployee(employee);
         return "security/login";
     }
 }
