@@ -7,14 +7,14 @@ import jakarta.persistence.Transient;
 import java.util.Objects;
 
 @Entity
-public class User {
+public class Employee {
 
     @Id
     private String personalId;
     private String firstName;
     private String lastName;
     private String password;
-    private String role;
+    private Role role;
     private String mobilNumber;
     @Transient
     private String confirmedPassword;
@@ -51,11 +51,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -78,9 +78,9 @@ public class User {
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User user)) return false;
+        if (!(o instanceof Employee employee)) return false;
 
-        return Objects.equals(getPersonalId(), user.getPersonalId()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getPassword(), user.getPassword()) && getRole() == user.getRole() && Objects.equals(getMobilNumber(), user.getMobilNumber()) && Objects.equals(getConfirmedPassword(), user.getConfirmedPassword());
+        return Objects.equals(getPersonalId(), employee.getPersonalId()) && Objects.equals(getFirstName(), employee.getFirstName()) && Objects.equals(getLastName(), employee.getLastName()) && Objects.equals(getPassword(), employee.getPassword()) && getRole() == employee.getRole() && Objects.equals(getMobilNumber(), employee.getMobilNumber()) && Objects.equals(getConfirmedPassword(), employee.getConfirmedPassword());
     }
 
     @Override

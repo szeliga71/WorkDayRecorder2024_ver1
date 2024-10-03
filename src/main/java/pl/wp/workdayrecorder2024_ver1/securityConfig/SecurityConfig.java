@@ -1,6 +1,10 @@
-package pl.wp.gameofthroneapplication.config;
+package pl.wp.workdayrecorder2024_ver1.securityConfig;
 
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,56 +12,77 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;;
-import pl.wp.gameofthroneapplication.service.CustomUserSecurityService;
-;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import pl.wp.workdayrecorder2024_ver1.service.EmployeeService;
+
+import java.io.IOException;
+import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
 
-private final CustomUserSecurityService customUserSecurityService;
-private final BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
+    @Autowired
+    private final EmployeeService employeeService;
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public SecurityConfig(CustomUserSecurityService customUserSecurityService) {
-        this.customUserSecurityService = customUserSecurityService;
+    public SecurityConfig(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         security.
-                authorizeHttpRequests((request)->request
+                authorizeHttpRequests((request) -> request
                         .requestMatchers("/","/register").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest()
                         .authenticated())
-                .formLogin((form)->form
+                .formLogin((form) -> form
                         .loginPage("/login")
-                        .usernameParameter("email")
-                        .defaultSuccessUrl("/books" )
+                        .usernameParameter("personalId")
+                        .successHandler(customAuthenticationSuccessHandler())
                         .failureUrl("/login?error=true")
                         .permitAll())
-                .logout(logout ->logout
-
+                .logout(logout -> logout
                         .logoutSuccessUrl("/logoutPage")
                         .permitAll());
         return security.build();
     }
 
     @Bean
-    public DaoAuthenticationProvider authProvider(){
-        DaoAuthenticationProvider dao=new DaoAuthenticationProvider();
-        dao.setUserDetailsService(customUserSecurityService);
-        dao.setPasswordEncoder(encoder);
-        return dao;
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(employeeService);
+        authProvider.setPasswordEncoder(encoder);
+        return authProvider;
     }
+
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity)throws Exception{
-        AuthenticationManagerBuilder authenticationManagerBuilder=httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
+    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.authenticationProvider(authProvider());
         return authenticationManagerBuilder.build();
     }
-
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new SimpleUrlAuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                                Authentication authentication) throws IOException, ServletException {
+                Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+                if (roles.contains("ROLE_ADMIN")) {
+                    getRedirectStrategy().sendRedirect(request, response, "/admin/adminPanel");
+                } else {
+                    getRedirectStrategy().sendRedirect(request, response, "/home");
+                }
+            }
+        };
+    }
 }
