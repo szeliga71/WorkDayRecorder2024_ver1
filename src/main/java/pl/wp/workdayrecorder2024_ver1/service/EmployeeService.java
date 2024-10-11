@@ -18,12 +18,13 @@ public class EmployeeService implements UserDetailsService {
     EmployeeRepository employeeRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public Employee findEmployeeByPersonalId(String personalId) {
+   /* public Employee findEmployeeByPersonalId(String personalId) {
         return employeeRepository.findByPersonalId(personalId);
-    }
+    }*/
 
-    public UserDetails loadUserByUsername(String personalId) throws UsernameNotFoundException {
-        Employee employee = findEmployeeByPersonalId(personalId);
+   /* public UserDetails loadUserByUsername(String personalId) throws UsernameNotFoundException {
+        Employee employee = employeeRepository.findByPersonalId(personalId)
+                .orElseThrow(() -> new UsernameNotFoundException("Employee not found: " + personalId));
         if (employee == null) {
             return null;
         }
@@ -31,7 +32,19 @@ public class EmployeeService implements UserDetailsService {
                 .password(employee.getPassword())
                 .roles(String.valueOf(employee.getRole()))
                 .build();
+    }*/
+    @Override
+    public UserDetails loadUserByUsername(String personalId) throws UsernameNotFoundException {
+        return employeeRepository.findByPersonalId(personalId)
+                .orElseThrow(() -> new UsernameNotFoundException("Employee not found: " + personalId));
     }
+    public Employee findEmployeeByPersonalId(String personalId) throws UsernameNotFoundException {
+        if(employeeRepository.findByPersonalId(personalId).isPresent()){
+        return employeeRepository.findByPersonalId(personalId).get();
+    }
+        return null;}
+                //.orElseThrow(() -> new UsernameNotFoundException("Employee not found: " + personalId));
+   // }
 
     public void saveEmployee(Employee employee) {
         try {
@@ -49,4 +62,5 @@ public class EmployeeService implements UserDetailsService {
     public List<Employee> getAllEmployees(){
         return employeeRepository.findAll();
     }
+
 }

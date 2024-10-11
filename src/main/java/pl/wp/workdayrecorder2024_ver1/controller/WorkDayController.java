@@ -2,23 +2,23 @@ package pl.wp.workdayrecorder2024_ver1.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.wp.workdayrecorder2024_ver1.model.Route;
-import pl.wp.workdayrecorder2024_ver1.model.Stop;
-import pl.wp.workdayrecorder2024_ver1.model.Truck;
+import pl.wp.workdayrecorder2024_ver1.model.Employee;
 import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
 import pl.wp.workdayrecorder2024_ver1.service.MarktService;
 import pl.wp.workdayrecorder2024_ver1.service.TrailerService;
 import pl.wp.workdayrecorder2024_ver1.service.TruckService;
 import pl.wp.workdayrecorder2024_ver1.service.WorkDayService;
-
+import java.time.temporal.WeekFields;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 
 @Controller
@@ -34,17 +34,22 @@ public class WorkDayController {
     MarktService marktService;
 
     @GetMapping("/workDay")
-    public String workDay(Model model) {
-        model.addAttribute("trucks", truckService.getAllTrucks());
-        model.addAttribute("trailers", trailerService.getAllTrailers());
-        model.addAttribute("markets", marktService.getAllMarkets());
+    public String workDay(@AuthenticationPrincipal Employee employee,Model model) {
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        model.addAttribute("personalId", employee.getPersonalId());
         return "workDay";
     }
 
+
     @PostMapping("/workDay")
-    public String addNewWorkDay(@RequestParam("personalId") String personalId,
-                                @RequestParam("date") LocalDateTime date,
-                                @RequestParam("dayOfWeek") Integer dayOfWeek,
+    public String addNewWorkDay(@AuthenticationPrincipal Employee employee,
+            //@RequestParam("personalId") String personalId,
+                               // @RequestParam("date") LocalDateTime date,
+                                @RequestParam("dayOfWeekName") String dayOfWeek,
+                                //@RequestParam("dayOfWeek") Integer dayOfWeek,
                                 @RequestParam("startOfWork") LocalDateTime startOfWork,
                                 @RequestParam("pause") String pause,
                                 @RequestParam("endOfWork") LocalDateTime endOfWork,
@@ -53,30 +58,37 @@ public class WorkDayController {
                                 @RequestParam(name="faults", required = false, defaultValue = "false") boolean faults,
                                 @RequestParam("notes") String notes,
 
-                                @RequestParam("numberOfRoutes") Integer numberOfRoutes,
+                            Model model){
 
-                                @RequestParam("truckNumber") String truckNumber,
-                                @RequestParam("trailerNumber") String trailerNumber,
-                                @RequestParam("idRoute") String idRoute,
-                                @RequestParam("startOfRoute") LocalDateTime startOfRoute,
-                                @RequestParam("departureFromTheBase") LocalDateTime departureFromTheBase,
-                                @RequestParam("arrivalToTheBase") LocalDateTime arrivalToTheBase,
-                                @RequestParam("endOfRoute") LocalDateTime endOfRoute,
+        //wybranie dnia tygodnia i ustalenie daty dnia pracy
+
+        DayOfWeek chosenDayOfWeek = DayOfWeek.valueOf(dayOfWeek.toUpperCase());
+        LocalDate today = LocalDate.now();
+        DayOfWeek todayDayOfWeek = today.getDayOfWeek();
+        int daysDifference = chosenDayOfWeek.getValue() - todayDayOfWeek.getValue();
+        LocalDate workDayDate=null;
+
+        if(daysDifference < 2 && daysDifference >-2){
+            workDayDate = today.plusDays(daysDifference);
+        }else{
+            model.addAttribute("error", "Nie można wybrać dnia: " + dayOfWeek);
+            System.out.println(" wybrany dzien tygodnia jest zly, jest za pozno lub za wczesnie na wprowadzeanie daNYCH ");
+            // przeslalbym do error z odp info uzyc message
+            return "errorPage";
+        }
+        // Obliczanie numeru tygodnia
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        int weekNumber = workDayDate.get(weekFields.weekOfWeekBasedYear());
 
 
-                                @RequestParam("numberOfRoutes") Integer numberOfStops,
-
-                                @RequestParam("marktId") String marktId,
-                                @RequestParam("beginn") LocalDateTime beginn,
-                                @RequestParam("endOfStopp") LocalDateTime endOfStopp,
-                                Model model) {
+        //sprawdzeie czy nie ma juz tego dnia dla tego uzytkownika  (nazwa dnia tygodnia, data ew kw) w bazie
 
 
-        // Utwórz obiekt WorkDay
         WorkDay workDay = new WorkDay();
-        workDay.setPersonalId(personalId);
-        workDay.setDate(date);
-        workDay.setDayOfWeek(dayOfWeek);
+        workDay.setPersonalId(employee.getPersonalId());
+        workDay.setDate(workDayDate.atStartOfDay());
+        workDay.setDayOfWeek(chosenDayOfWeek.name());
+        workDay.setKW(weekNumber);
         workDay.setStartOfWork(startOfWork);
         workDay.setPause(pause);
         workDay.setEndOfWork(endOfWork);
@@ -85,46 +97,10 @@ public class WorkDayController {
         workDay.setFaults(faults);
         workDay.setNotes(notes);
 
-        // Utwórz listę obiektów Route
-        List<Route> routes = new ArrayList<>();
-       // workDay.setRoutes(routes);
-
-
-        for (int i = 0; i < numberOfRoutes; i++) {
-            Route route = new Route();
-            route.setTruckNumber(truckNumber);
-            route.setTrailerNumber(trailerNumber);
-            route.setIdRoute(idRoute);
-            route.setStartOfRoute(startOfRoute);
-            route.setDepartureFromTheBase(departureFromTheBase);
-            route.setArrivalToTheBase(arrivalToTheBase);
-            route.setEndOfRoute(endOfRoute);
-
-            
-            List<Stop> stops = new ArrayList<>();
-            for (int j = 0; j < numberOfStops; j++) {
-                Stop stop = new Stop();
-                stop.setMarktId(marktId);
-                stop.setBeginn(beginn);
-                stop.setEndOfStopp(endOfStopp);
-
-                stops.add(stop);
-            }
-
-            route.setStops(stops);
-            routes.add(route);
-        }
-        // Ustaw listę routes dla WorkDay
-        workDay.setRoutes(routes);
-
-        // Zapisz obiekt WorkDay za pomocą serwisu
         workDayService.addWorkDay(workDay);
 
-        // Przekieruj do strony sukcesu lub wyświetl komunikat
-        return "redirect:/workDay";
+        return "redirect:/newRoute?workDayId=" + workDay.getId();
     }
-
-
     @PostMapping("/workDay/update")
     public String updateWorkDay(WorkDay workDay) {
         return "workDay";

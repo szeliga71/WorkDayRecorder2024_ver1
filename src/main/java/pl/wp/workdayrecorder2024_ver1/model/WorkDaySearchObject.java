@@ -4,8 +4,9 @@ import java.time.LocalDateTime;
 
 public class WorkDaySearchObject {
 
-    private String personalId;
-    private LocalDateTime date;
+    private String personalId;;
+    private String dayOfWeek;
+    private int KW;
 
     public String getPersonalId() {
         return personalId;
@@ -15,11 +16,19 @@ public class WorkDaySearchObject {
         this.personalId = personalId;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public String getDayOfWeek() {
+        return dayOfWeek;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
+
+    public int getKW() {
+        return KW;
+    }
+
+    public void setKW(int KW) {
+        this.KW = KW;
     }
 }

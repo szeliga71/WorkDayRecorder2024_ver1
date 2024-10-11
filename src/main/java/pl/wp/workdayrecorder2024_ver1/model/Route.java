@@ -14,13 +14,24 @@ public class Route {
     private Long id;
     private String truckNumber;
     private String trailerNumber;
-    private String idRoute;
+    private String routeNumber;
     private LocalDateTime startOfRoute;
     private LocalDateTime departureFromTheBase;
     @OneToMany(cascade= CascadeType.ALL )
     private List<Stop> stops;
     private LocalDateTime arrivalToTheBase;
     private LocalDateTime endOfRoute;
+    //@ManyToOne
+    //@JoinColumn(name = "work_day_id")
+    private Long workDayId;
+
+    public Long getWorkDayId() {
+        return workDayId;
+    }
+
+    public void setWorkDayId(Long workDayId) {
+        this.workDayId = workDayId;
+    }
 
     public Long getId() {
         return id;
@@ -46,12 +57,12 @@ public class Route {
         this.trailerNumber = trailerNumber;
     }
 
-    public String getIdRoute() {
-        return idRoute;
+    public String getRouteNumber() {
+        return routeNumber;
     }
 
-    public void setIdRoute(String idRoute) {
-        this.idRoute = idRoute;
+    public void setRouteNumber(String routeNumber) {
+        this.routeNumber = routeNumber;
     }
 
     public LocalDateTime getStartOfRoute() {
@@ -74,7 +85,7 @@ public class Route {
         return stops;
     }
 
-    public void setStops(List<Stop> stops) {
+    public void setStops(List<Stop>stops) {
         this.stops = stops;
     }
 
@@ -99,7 +110,7 @@ public class Route {
         if (this == o) return true;
         if (!(o instanceof Route route)) return false;
 
-        return Objects.equals(getId(), route.getId()) && Objects.equals(getTruckNumber(), route.getTruckNumber()) && Objects.equals(getTrailerNumber(), route.getTrailerNumber()) && Objects.equals(getIdRoute(), route.getIdRoute()) && Objects.equals(getStartOfRoute(), route.getStartOfRoute()) && Objects.equals(getDepartureFromTheBase(), route.getDepartureFromTheBase()) && Objects.equals(getStops(), route.getStops()) && Objects.equals(getArrivalToTheBase(), route.getArrivalToTheBase()) && Objects.equals(getEndOfRoute(), route.getEndOfRoute());
+        return Objects.equals(getId(), route.getId()) && Objects.equals(getTruckNumber(), route.getTruckNumber()) && Objects.equals(getTrailerNumber(), route.getTrailerNumber()) && Objects.equals(getRouteNumber(), route.getRouteNumber()) && Objects.equals(getStartOfRoute(), route.getStartOfRoute()) && Objects.equals(getDepartureFromTheBase(), route.getDepartureFromTheBase()) && Objects.equals(getStops(), route.getStops()) && Objects.equals(getArrivalToTheBase(), route.getArrivalToTheBase()) && Objects.equals(getEndOfRoute(), route.getEndOfRoute());
     }
 
     @Override
@@ -107,7 +118,7 @@ public class Route {
         int result = Objects.hashCode(getId());
         result = 31 * result + Objects.hashCode(getTruckNumber());
         result = 31 * result + Objects.hashCode(getTrailerNumber());
-        result = 31 * result + Objects.hashCode(getIdRoute());
+        result = 31 * result + Objects.hashCode(getRouteNumber());
         result = 31 * result + Objects.hashCode(getStartOfRoute());
         result = 31 * result + Objects.hashCode(getDepartureFromTheBase());
         result = 31 * result + Objects.hashCode(getStops());

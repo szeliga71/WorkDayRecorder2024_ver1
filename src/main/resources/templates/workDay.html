@@ -1,240 +1,123 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Dodaj Dzień Pracy</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .custom-input-width {
+            width: 300px; /* Ustawia szerokość pól */
+        }
+
+        .form-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .table-container {
+            margin-top: 30px;
+        }
+        .message {
+            margin-top: 20px;
+        }
+        .email-highlight {
+            color: orange; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
+        }
+    </style>
 </head>
 <body>
-<h1>Dodaj Nowy Dzień Pracy</h1>
-<form th:action="@{/workDay}" method="post">
-    <!-- Personal ID -->
-    <label for="personalId">ID Osobiste:</label>
-    <input type="text" id="personalId" name="personalId" required><br><br>
+<br>
+<div class="container">
+    <h1>ADD NEW WORK DAY</h1>
+    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+    <form th:action="@{/workDay}" method="post" class="form-container">
+        <!-- Personal ID -->
+        <div class="form-group">
 
-    <!-- Data -->
-    <label for="date">Data:</label>
-    <input type="datetime-local" id="date" name="date" required><br><br>
+            <input type="text" id="personalId" name="personalId" class="form-control custom-input-width"th:value="${personalId}" readonly />
+            <label class="form-label" for="personalId">ID Osobiste:</label>
+            <!--<input type="text" id="personalId" name="personalId" class="form-control custom-input-width" placeholder="ID Osobiste" required>
+            <label class="form-label" for="personalId">ID Osobiste</label>-->
+        </div>
 
-    <!-- Dzień Tygodnia -->
-    <label for="dayOfWeek">Dzień Tygodnia:</label>
-    <input type="number" id="dayOfWeek" name="dayOfWeek" required><br><br>
+        <!-- Data -->
+       <!-- <div class="form-group">
+            <input type="datetime-local" id="date" name="date" class="form-control custom-input-width" placeholder="Data" required>
+            <label class="form-label" for="date">Data</label>
+        </div>-->
 
-    <!-- Początek Pracy -->
-    <label for="startOfWork">Początek Pracy:</label>
-    <input type="datetime-local" id="startOfWork" name="startOfWork" required><br><br>
+        <!-- Dzień Tygodnia -->
+        <!--<div class="form-group">
+            <input type="number" id="dayOfWeek" name="dayOfWeek" class="form-control custom-input-width" placeholder="Dzień Tygodnia" required>
+            <label class="form-label" for="dayOfWeek">Dzień Tygodnia</label>
+        </div>-->
+        <div class="form-group">
+            <label class="form-label" for="dayOfWeekName">Dzień Tygodnia</label>
+            <select id="dayOfWeekName" name="dayOfWeekName" class="form-control custom-input-width" required>
+                <option value="choose day of week">---------</option>
+                <option value="MONDAY">Poniedziałek</option>
+                <option value="TUESDAY">Wtorek</option>
+                <option value="WEDNESDAY">Środa</option>
+                <option value="THURSDAY">Czwartek</option>
+                <option value="FRIDAY">Piątek</option>
+                <option value="SATURDAY">Sobota</option>
+                <option value="SUNDAY">Niedziela</option>
+            </select>
+        </div>
+        <!-- Początek Pracy -->
+        <div class="form-group">
+            <input type="datetime-local" id="startOfWork" name="startOfWork" class="form-control custom-input-width" placeholder="Początek Pracy" required>
+            <label class="form-label" for="startOfWork">Początek Pracy</label>
+        </div>
 
-    <!-- Przerwa -->
-    <label for="pause">Przerwa:</label>
-    <input type="text" id="pause" name="pause"><br><br>
+        <!-- Przerwa -->
+        <div class="form-group">
+            <input type="text" id="pause" name="pause" class="form-control custom-input-width" placeholder="Przerwa">
+            <label class="form-label" for="pause">Przerwa</label>
+        </div>
 
-    <!-- Koniec Pracy -->
-    <label for="endOfWork">Koniec Pracy:</label>
-    <input type="datetime-local" id="endOfWork" name="endOfWork" required><br><br>
+        <!-- Koniec Pracy -->
+        <div class="form-group">
+            <input type="datetime-local" id="endOfWork" name="endOfWork" class="form-control custom-input-width" placeholder="Koniec Pracy" required>
+            <label class="form-label" for="endOfWork">Koniec Pracy</label>
+        </div>
 
-    <!-- Całkowity Dystans -->
-    <label for="totalDistance">Całkowity Dystans:</label>
-    <input type="text" id="totalDistance" name="totalDistance"><br><br>
+        <!-- Całkowity Dystans -->
+        <div class="form-group">
+            <input type="text" id="totalDistance" name="totalDistance" class="form-control custom-input-width" placeholder="Całkowity Dystans">
+            <label class="form-label" for="totalDistance">Całkowity Dystans</label>
+        </div>
 
-    <!-- Wypadek -->
-    <label for="accident">Wypadek:</label>
-    <input type="checkbox" id="accident" name="accident"><br><br>
+        <!-- Wypadek -->
+        <div class="form-group form-check">
+            <input type="checkbox" id="accident" name="accident" class="form-check-input">
+            <label class="form-check-label" for="accident">Wypadek</label>
+        </div>
 
-    <!-- Usterki -->
-    <label for="faults">Usterki:</label>
-    <input type="checkbox" id="faults" name="faults"><br><br>
+        <!-- Usterki -->
+        <div class="form-group form-check">
+            <input type="checkbox" id="faults" name="faults" class="form-check-input">
+            <label class="form-check-label" for="faults">Usterki</label>
+        </div>
 
-    <!-- Notatki -->
-    <label for="notes">Notatki:</label>
-    <textarea id="notes" name="notes"></textarea><br><br>
+        <!-- Notatki -->
+        <div class="form-group">
+            <textarea id="notes" name="notes" class="form-control custom-input-width" placeholder="Notatki"></textarea>
+            <label class="form-label" for="notes">Notatki</label>
+        </div>
 
-    <!-- Ilość Tras -->
-    <label for="numberOfRoutes">Ilość Tras:</label>
-    <input type="number" id="numberOfRoutes" name="numberOfRoutes" required><br><br>
+        <!-- Przyciski -->
+        <button type="submit" class="btn btn-primary">Dodaj Dzień Pracy</button>
+    </form>
+</div>
 
-    <!-- Numer Ciężarówki (rozwijane) -->
-    <label for="truckNumber">Numer Ciężarówki:</label>
-    <select id="truckNumber" name="truckNumber" required>
-        <option value="">Wybierz ciężarówkę</option>
-        <option th:each="truck : ${trucks}" th:value="${truck.id}" th:text="${truck.number}"></option>
-    </select>
-    <!--<select id="truckNumber" name="truckNumber" th:each="truck : ${trucks}" th:value="${truck.id}" th:text="${truck.number}" required>
-        <option value="">Wybierz ciężarówkę</option>
-    </select>-->
-    <br><br>
-
-    <!-- Numer Przyczepy (rozwijane) -->
-    <label for="trailerNumber">Numer Przyczepy:</label>
-    <select id="trailerNumber" name="trailerNumber" required>
-        <option value="">Wybierz przyczepe</option>
-        <option th:each="trailer : ${trailers}" th:value="${trailer.id}" th:text="${trailer.number}"></option>
-    </select>
-    <!--<select id="trailerNumber" name="trailerNumber" th:each="trailer : ${trailers}" th:value="${trailer.id}" th:text="${trailer.number}" required>
-        <option value="">Wybierz przyczepę</option>
-    </select>-->
-    <br><br>
-
-    <!-- ID Trasy -->
-    <label for="idRoute">ID Trasy:</label>
-    <input type="text" id="idRoute" name="idRoute"><br><br>
-
-    <!-- Start Trasy -->
-    <label for="startOfRoute">Start Trasy:</label>
-    <input type="datetime-local" id="startOfRoute" name="startOfRoute"><br><br>
-
-    <!-- Wyjazd z Bazy -->
-    <label for="departureFromTheBase">Wyjazd z Bazy:</label>
-    <input type="datetime-local" id="departureFromTheBase" name="departureFromTheBase"><br><br>
-
-    <!-- Przyjazd do Bazy -->
-    <label for="arrivalToTheBase">Przyjazd do Bazy:</label>
-    <input type="datetime-local" id="arrivalToTheBase" name="arrivalToTheBase"><br><br>
-
-    <!-- Koniec Trasy -->
-    <label for="endOfRoute">Koniec Trasy:</label>
-    <input type="datetime-local" id="endOfRoute" name="endOfRoute"><br><br>
-
-    <!-- Ilość Przystanków -->
-    <label for="numberOfStops">Ilość Przystanków:</label>
-    <input type="number" id="numberOfStops" name="numberOfStops"><br><br>
-
-    <!-- Markt ID (rozwijane) -->
-    <!--<label for="marktId">Markt ID:</label>
-    <select id="marktId" name="marktId" th:each="market : ${markets}" th:value="${market.id}" th:text="${market.name}">
-        <option value="">Wybierz market</option>
-    </select><br><br>-->
-    <select id="marktId" name="marktId" required>
-        <option value="">Wybierz market</option>
-        <option th:each="market : ${markets}" th:value="${market.id}" th:text="${market.marktId}"></option>
-    </select>
-    <br><br>
-    <!-- Początek Przystanku -->
-    <label for="beginn">Początek Przystanku:</label>
-    <input type="datetime-local" id="beginn" name="beginn"><br><br>
-
-    <!-- Koniec Przystanku -->
-    <label for="endOfStopp">Koniec Przystanku:</label>
-    <input type="datetime-local" id="endOfStopp" name="endOfStopp"><br><br>
-
-    <!-- Przyciski -->
-    <button type="submit">Dodaj Dzień Pracy</button>
-</form>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
 
-
-<!--<!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Work Day</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-<body>
-<h1 class="text-center mt-4">Tagesbericht</h1>
-<p>Zalogowany użytkownik: <span class="email-highlight" sec:authentication="name"></span></p>
-</body>
-</html>-->
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Work Day</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script>
-        // Funkcja dodająca nową trasę
-        function addRoute() {
-            var container = document.getElementById('routesContainer');
-            var routeIndex = container.children.length;
-
-            var routeFields = `
-                <div class="route-fields" id="route${routeIndex}">
-                    <h4>Route:</h4>
-                    <div class="form-group">
-                        <label for="truckNumber">Truck Number:</label>
-                        <input type="text" name="truckNumbers" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="trailerNumber">Trailer Number:</label>
-                        <input type="text" name="trailerNumbers" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="numberOfRoute">Number of Route:</label>
-                        <input type="text" name="numberOfRoutes" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="startOfRoute">Start of Route:</label>
-                        <input type="datetime-local" name="startOfRoutes" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="departureFromTheBase">Departure From the Base:</label>
-                        <input type="datetime-local" name="departureFromTheBases" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="arrivalToTheBase">Arrival to the Base:</label>
-                        <input type="datetime-local" name="arrivalToTheBases" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="endOfRoute">End of Route:</label>
-                        <input type="datetime-local" name="endOfRoutes" class="form-control" required/>
-                    </div>
-                    <h5>Stops:</h5>
-                    <div id="stopsContainer${routeIndex}"></div>
-                    <button type="button" onclick="addStop(${routeIndex})" class="btn btn-secondary">Add Stop</button>
-                </div>
-            `;
-            container.insertAdjacentHTML('beforeend', routeFields);
-        }
-
-        // Funkcja dodająca nowy przystanek (Stop) do trasy (Route)
-        function addStop(routeIndex) {
-            var container = document.getElementById('stopsContainer' + routeIndex);
-            var stopFields = `
-                <div class="stop-fields">
-                    <div class="form-group">
-                        <label for="stopBeginn">Stop Beginn:</label>
-                        <input type="datetime-local" name="stopBeginns[route${routeIndex}]" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="stopEnd">Stop End:</label>
-                        <input type="datetime-local" name="stopEnds[route${routeIndex}]" class="form-control" required/>
-                    </div>
-                    <div class="form-group">
-                        <label for="stopMarktId">Stop Markt ID:</label>
-                        <input type="text" name="stopMarktIds[route${routeIndex}]" class="form-control" required/>
-                    </div>
-                </div>
-            `;
-            container.insertAdjacentHTML('beforeend', stopFields);
-        }
-    </script>
-</head>
-
-
-<body>
-<h1 class="text-center mt-4">Tagesbericht</h1>
-<form action="/workDay" method="post">
-
-
-    <div id="routesContainer">
-
-
-        <h4>Route:</h4>
-        <div class="route-fields" id="route0">
-
-
-            <div class="form-group">
-                <label for="truckNumber">Truck Number:</label>
-                <input type="text" name="truckNumber" class="form-control" required/>
-            </div>
-
-
-            <h5>Stops:</h5>
-            <div id="stopsContainer0"></div>
-            <button type="button" onclick="addStop(0)" class="btn btn-secondary">Add Stop</button>
-        </div>
-    </div>
-
-    <button type="button" onclick="addRoute()" class="btn btn-secondary">Add Route</button>
-    <button type="submit" class="btn btn-primary">Zapisz</button>
-</form>-->

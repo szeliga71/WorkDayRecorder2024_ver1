@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Admin Main Panel</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
             background-image: url('/images/pfenning.jpg'); /* Wstaw tutaj URL obrazu */
@@ -45,13 +46,43 @@
         function goToEmployees() {
             window.location.href = "employees";
         }
+        function addNewEmployee() {
+            window.location.href = "register";
+        }
+        function deleteEmployee() {
+            window.location.href = "employees";
+        }
+        function searchByEmp() {
+            window.location.href = "addEmployee";
+        }
+        function searchByDay() {
+            window.location.href = "addEmployee";
+        }
+        function searchByWeek() {
+            window.location.href = "searchWeek";
+        }
+        function addNewPlan() {
+            window.location.href = "addEmployee";
+        }
+        function getAllWorkDays() {
+            window.location.href = "workDaysListPage";
+        }
     </script>
 </head>
 <body>
 <div class="content-box text-center">
     <h1 class="text-center mt-4">ADMIN Main Panel</h1>
-    <p>Logged user : <span class="email-highlight" sec:authentication="name"></span></p>
+    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+    <!--<p>Logged user : <span class="email-highlight" sec:authentication="name"></span></p>-->
+
     <button onclick="goToEmployees()" class="btn btn-custom-1 btn-lg m-2">Employees List</button>
+    <button onclick="addNewEmployee()" class="btn btn-custom-1 btn-lg m-2">Add new Employee</button>
+    <button onclick="deleteEmployee()" class="btn btn-custom-1 btn-lg m-2">Delete Employee</button>
+    <button onclick="getAllWorkDays()" class="btn btn-custom-1 btn-lg m-2">Work Day List</button>
+    <button onclick="searchByEmp()" class="btn btn-custom-1 btn-lg m-2">Search Employee</button>
+    <button onclick="searchByDay()" class="btn btn-custom-1 btn-lg m-2">Search Day</button>
+    <button onclick="searchByWeek()" class="btn btn-custom-1 btn-lg m-2">Search Week</button>
+    <button onclick="addNewPlan()" class="btn btn-custom-1 btn-lg m-2">New Week Plan</button>
 
 </div>
 </body>

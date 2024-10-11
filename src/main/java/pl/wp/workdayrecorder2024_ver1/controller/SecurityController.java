@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
 import pl.wp.workdayrecorder2024_ver1.service.EmployeeService;
 
-import static pl.wp.workdayrecorder2024_ver1.model.Role.ADMIN;
-import static pl.wp.workdayrecorder2024_ver1.model.Role.USER;
-
 
 @Controller
 public class SecurityController {
@@ -25,29 +22,29 @@ public class SecurityController {
         return "security/login";
     }
 
-    @GetMapping("/register")
+    @GetMapping("/admin/register")
     public String getRegistrationPage(Model model) {
-        model.addAttribute("Employee", new Employee());
-        return "security/register";
+        model.addAttribute("employee", new Employee());
+        return "admin/register";
     }
 
-    @PostMapping("/register")
-    public String registerUser(@ModelAttribute("Employee") Employee employee, BindingResult result) {
-        if (employeeService.loadUserByUsername(employee.getPersonalId()) != null) { //user.getEmail()) != null) {
+    @PostMapping("/admin/register")
+    public String registerUser(@ModelAttribute("employee") Employee employee, BindingResult result) {
+
+        if (employeeService.findEmployeeByPersonalId(employee.getPersonalId())!=null) {
             result.rejectValue("confirmedPassword", "error.employee", "Email is already in use");
-            return "security/register";
+           return "admin/register";
         }
         if (employee.getPassword() == null || employee.getConfirmedPassword() == null ||
                 !employee.getPassword().equals(employee.getConfirmedPassword())) {
             result.rejectValue("confirmedPassword", "error.employee", "Passwords do not match");
-            return "security/register";
+            return "admin/register";
         }
         if (result.hasErrors()) {
-            return "security/register";
+            return "admin/register";
         }
-        employee.setRole(USER);
-
+        employee.setRole("ROLE_USER");
         employeeService.saveEmployee(employee);
-        return "security/login";
+        return "admin/adminPanel";
     }
 }

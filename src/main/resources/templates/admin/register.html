@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <title>Register</title>
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         .custom-input-width {
             width: 300px; /* Ustawia szerokość */
+        }
+        .btn-custom-3 {
+            background-color: #33FF33; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
         }
     </style>
 </head>
@@ -14,7 +21,11 @@
 <br>
 <div class="container">
     <h1>Register</h1>
-<form th:action="@{/register}" th:object="${Employee}" method="post">
+    <form th:action="@{/admin/adminPanel}" method="get">
+        <button type="submit" class="btn btn-custom-3 btn-lg m-2">Go to Admin Panel</button>
+    </form>
+    <br>
+<form th:action="@{/admin/register}" th:object="${employee}" method="post">
     <div class="form-group">
     <input type="text" id="newPersonalId" th:field="*{personalId}" class="form-control custom-input-width" placeholder="Personal ID" required/>
     <label class="form-label" for="newPersonalId">Peronal ID</label>

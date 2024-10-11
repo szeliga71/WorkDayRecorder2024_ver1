@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Employee User Home Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
             background-image: url('/images/pfenning.jpg'); /* Wstaw tutaj URL obrazu */
@@ -21,7 +21,7 @@
 
         /* Styl dla nieprzezroczystego pola */
         .content-box {
-            background-color: white;
+            background-color: #D3D3D3;
             padding: 20px;
             border: 2px solid black;
             border-radius: 10px;
@@ -61,6 +61,18 @@
             color: black; /* Czarna obwódka */
             font-weight: bold;
         }
+        .btn-custom-5 {
+            background-color: #990000; /* Inny niestandardowy kolor przycisku */
+            border: 2px solid black; /* Czarna obwódka */
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-6 {
+            background-color: #CCFFFF; /* Inny niestandardowy kolor przycisku */
+            border: 2px solid black; /* Czarna obwódka */
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
     </style>
 
     <script>
@@ -72,6 +84,9 @@
             window.location.href = "workPlan";
         }
 
+        function showLastWorkDay() {
+            window.location.href = "lastWorkDay";
+        }
         function checkWorkHistory() {
             window.location.href = "workHistory";
         }
@@ -79,19 +94,26 @@
         function createWashListe() {
             window.location.href = "waschListe";
         }
+        function changePassword() {
+            window.location.href = "changePassword";
+        }
 
     </script>
 </head>
 <body>
 <div class="content-box text-center">
     <h1 class="text-center mt-4">Employee User Home Page</h1>
-    <p>Logged user : <span class="email-highlight" sec:authentication="name"></span></p>
+    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+
+
     <br>
 
     <button onclick="enterWorkDay()" class="btn btn-custom-1 btn-lg m-2">Tagesbericht</button>
     <button onclick="showWorkPlan()" class="btn btn-custom-2 btn-lg m-2">ArbeitsPlan</button>
-    <button onclick="checkWorkHistory()" class="btn btn-custom-3 btn-lg m-2">Arbeits History</button>
-    <button onclick="createWashListe()" class="btn btn-custom-4 btn-lg m-2">Wasch Liste</button>
+    <button onclick="showLastWorkDay()" class="btn btn-custom-3 btn-lg m-2">Letzte ArbeitTag</button>
+    <button onclick="checkWorkHistory()" class="btn btn-custom-4 btn-lg m-2">ArbeitsHistory</button>
+    <button onclick="createWashListe()" class="btn btn-custom-5 btn-lg m-2">Wasch Liste</button>
+    <button onclick="changePassword()" class="btn btn-custom-6 btn-lg m-2">Change Password</button>
 </div>
 </body>
 </html>

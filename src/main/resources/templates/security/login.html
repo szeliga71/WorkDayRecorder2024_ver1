@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <title>Login Page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         .custom-input-width {
             width: 300px; /* Ustawia szerokość */
         }
+        .form-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
-<br><div class="container">
+<br>
+<div class="container">
     <h2>Login</h2>
 
 
@@ -22,9 +30,7 @@
     <div th:if="${param.error}" class="alert alert-danger">
         Nieprawidłowy login lub hasło. Spróbuj ponownie.
     </div>
-
-
-    <form th:action="@{/login}" method="post">
+    <form th:action="@{/login}" method="post" class="form-container">
         <div class="form-group">
             <label for="personalId">Personal ID</label>
             <input type="text" id="personalId" name="personalId" class="form-control custom-input-width" placeholder="Enter ID" required>

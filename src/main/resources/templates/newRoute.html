@@ -1,10 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>New Route</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .custom-input-width {
+            width: 300px; /* Ustawia szerokość pól */
+        }
+        .form-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .email-highlight {
+            color: orange; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
+        }
+    </style>
 </head>
 <body>
+<br>
+<div class="container">
+    <h1>ADD NEW ROUTE</h1>
+    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
 
+    <form th:action="@{/newRoute}" method="post" class="form-container">
+        <!-- Hidden WorkDay ID -->
+        <input type="hidden" name="workDayId" th:value="${workDay.id}"/>
+
+        <!-- Numer Ciężarówki (rozwijane) -->
+        <div class="form-group">
+            <label for="truckNumber">Numer Ciężarówki:</label>
+            <select id="truckNumber" name="truckNumber" class="form-control custom-input-width" required>
+                <option value="">Wybierz ciężarówkę</option>
+                <option th:each="truck : ${trucks}" th:value="${truck.id}" th:text="${truck.number}"></option>
+            </select>
+        </div>
+
+        <!-- Numer Przyczepy (rozwijane) -->
+        <div class="form-group">
+            <label for="trailerNumber">Numer Przyczepy:</label>
+            <select id="trailerNumber" name="trailerNumber" class="form-control custom-input-width" required>
+                <option value="">Wybierz przyczepę</option>
+                <option th:each="trailer : ${trailers}" th:value="${trailer.id}" th:text="${trailer.number}"></option>
+            </select>
+        </div>
+
+        <!-- ID Trasy -->
+        <div class="form-group">
+            <label for="routeNumber">ID Trasy:</label>
+            <input type="text" id="routeNumber" name="routeNumber" class="form-control custom-input-width">
+        </div>
+
+        <!-- Start Trasy -->
+        <div class="form-group">
+            <label for="startOfRoute">Start Trasy:</label>
+            <input type="datetime-local" id="startOfRoute" name="startOfRoute" class="form-control custom-input-width">
+        </div>
+
+        <!-- Wyjazd z Bazy -->
+        <div class="form-group">
+            <label for="departureFromTheBase">Wyjazd z Bazy:</label>
+            <input type="datetime-local" id="departureFromTheBase" name="departureFromTheBase" class="form-control custom-input-width">
+        </div>
+
+        <!-- Przyjazd do Bazy -->
+        <div class="form-group">
+            <label for="arrivalToTheBase">Przyjazd do Bazy:</label>
+            <input type="datetime-local" id="arrivalToTheBase" name="arrivalToTheBase" class="form-control custom-input-width">
+        </div>
+
+        <!-- Koniec Trasy -->
+        <div class="form-group">
+            <label for="endOfRoute">Koniec Trasy:</label>
+            <input type="datetime-local" id="endOfRoute" name="endOfRoute" class="form-control custom-input-width">
+        </div>
+
+        <!-- Przyciski -->
+        <div class="form-group">
+            <button type="submit" name="action" value="addStop" class="btn btn-secondary">Dodaj Stop</button>
+            <button type="submit" name="action" value="addRoute" class="btn btn-primary">Dodaj Nową Trasę</button>
+            <button type="submit" name="action" value="summary" class="btn btn-info">Podsumowanie</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
+<!--<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>new Route</title>
+</head>
+<body>
+<br>
+<h1>ADD NEW ROUTE</h1>
+<p>Logged employee : <span class="email-highlight" sec:authentication="name"></span></p>
+<form th:action="@{/newRoute}" method="post">
+    <input type="hidden" name="workDayId" th:value="${workDay.id}"/>
+
+
+<label for="truckNumber">Numer Ciężarówki:</label>
+<select id="truckNumber" name="truckNumber" required>
+    <option value="">Wybierz ciężarówkę</option>
+    <option th:each="truck : ${trucks}" th:value="${truck.id}" th:text="${truck.number}"></option>
+</select>
+
+
+<br><br>
+
+<label for="trailerNumber">Numer Przyczepy:</label>
+<select id="trailerNumber" name="trailerNumber" required>
+    <option value="">Wybierz przyczepe</option>
+    <option th:each="trailer : ${trailers}" th:value="${trailer.id}" th:text="${trailer.number}"></option>
+</select>
+
+<br><br>
+
+
+<label for="idRoute">ID Trasy:</label>
+<input type="text" id="idRoute" name="idRoute"><br><br>
+
+
+<label for="startOfRoute">Start Trasy:</label>
+<input type="datetime-local" id="startOfRoute" name="startOfRoute"><br><br>
+
+
+<label for="departureFromTheBase">Wyjazd z Bazy:</label>
+<input type="datetime-local" id="departureFromTheBase" name="departureFromTheBase"><br><br>
+
+
+<label for="arrivalToTheBase">Przyjazd do Bazy:</label>
+<input type="datetime-local" id="arrivalToTheBase" name="arrivalToTheBase"><br><br>
+
+
+<label for="endOfRoute">Koniec Trasy:</label>
+<input type="datetime-local" id="endOfRoute" name="endOfRoute"><br><br>
+
+    <button type="submit" name="action" value="addStop">Dodaj Stop</button>
+    <button type="submit" name="action" value="addRoute">Dodaj Nową Trasę</button>
+    <button type="submit" name="action" value="summary">Podsumowanie</button>
+
+</form>
+</body>
+</html>-->

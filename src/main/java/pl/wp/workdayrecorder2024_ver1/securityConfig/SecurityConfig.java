@@ -28,7 +28,7 @@ import java.util.Set;
 public class SecurityConfig {
 
 
-    @Autowired
+
     private final EmployeeService employeeService;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 

@@ -15,13 +15,14 @@ public class WorkDay {
     private Long id;
     private String personalId;
     private LocalDateTime date;
-    private int dayOfWeek;
+    private String dayOfWeek;
+    private int KW;
     private LocalDateTime startOfWork;
     private String pause;
     private LocalDateTime endOfWork;
     private String totalDistance;
 
-    @OneToMany(cascade=CascadeType.ALL )
+    @OneToMany(/*mappedBy="workDay",*/cascade=CascadeType.ALL )
     private List<Route> routes;
     private boolean accident;
     private boolean faults;
@@ -36,6 +37,14 @@ public class WorkDay {
         this.id = id;
     }
 
+    public int getKW() {
+        return KW;
+    }
+
+    public void setKW(int KW) {
+        this.KW = KW;
+    }
+
     public LocalDateTime getDate() {
         return date;
     }
@@ -44,11 +53,11 @@ public class WorkDay {
         this.date = date;
     }
 
-    public int getDayOfWeek() {
+    public String getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(int dayOfWeek) {
+    public void setDayOfWeek(String dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Employee</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="container">
+    <h1>Update Employee</h1>
+
+    <form th:action="@{/admin/saveEmployee}" method="post">
+        <input type="hidden" name="personalId" th:value="${employee.personalId}">
+
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" class="form-control" th:value="${employee.firstName}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" class="form-control" th:value="${employee.lastName}" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="text" id="password" name="password" class="form-control" th:value="${employee.password}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="mobilNumber">Mobile Number</label>
+            <input type="text" id="mobilNumber" name="mobilNumber" class="form-control" th:value="${employee.mobilNumber}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+</body>
+</html>

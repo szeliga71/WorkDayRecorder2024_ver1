@@ -16,6 +16,15 @@ public class Stop {
     private LocalDateTime beginn;
     private LocalDateTime endOfStopp;
     private String marktId;
+    private Long routeId;
+
+    public Long getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(Long routeId) {
+        this.routeId = routeId;
+    }
 
     public Long getId() {
         return id;

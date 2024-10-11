@@ -13,7 +13,7 @@ public class MarktService {
     @Autowired
     private MarktRepository marktRepository;
 
-    public List<Markt> getAllMarkets() {
+    public List<Markt> getAllMarkts() {
         return marktRepository.findAll();
     }
 
