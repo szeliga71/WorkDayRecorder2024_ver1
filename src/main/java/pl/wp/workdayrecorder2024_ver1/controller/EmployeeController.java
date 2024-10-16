@@ -10,15 +10,6 @@ import pl.wp.workdayrecorder2024_ver1.model.Employee;
 public class EmployeeController {
 
 
- /*  @GetMapping("/user/profile")
-    public String getUserProfile(@AuthenticationPrincipal Employee employee, Model model) {
-        model.addAttribute("firstName", employee.getFirstName());
-        model.addAttribute("lastName", employee.getLastName());
-        model.addAttribute("phoneNumber", employee.getPhoneNumber());
-        model.addAttribute("age", employee.getAge());
-        return "userProfile";*/
-
-
    @GetMapping("/home")
     public String home(Model model,@AuthenticationPrincipal Employee employee) {
         if (employee == null) {

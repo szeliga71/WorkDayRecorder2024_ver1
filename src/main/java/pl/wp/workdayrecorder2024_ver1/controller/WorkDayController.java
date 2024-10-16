@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
 import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
+import pl.wp.workdayrecorder2024_ver1.model.WorkDaySearchObject;
 import pl.wp.workdayrecorder2024_ver1.service.MarktService;
 import pl.wp.workdayrecorder2024_ver1.service.TrailerService;
 import pl.wp.workdayrecorder2024_ver1.service.TruckService;
@@ -18,6 +19,7 @@ import java.time.temporal.WeekFields;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -105,4 +107,53 @@ public class WorkDayController {
     public String updateWorkDay(WorkDay workDay) {
         return "workDay";
     }
+
+    @GetMapping("/admin/searchWeek")
+    public String searchByWeek(@AuthenticationPrincipal Employee employee,
+                               Model model) {
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        return "admin/searchWeek";
+    }
+
+    @PostMapping("/admin/searchWeek")
+    public String getSearchedDaysByWeek(@AuthenticationPrincipal Employee employee,
+                                        @RequestParam("KW") Integer KW,
+                                        Model model) {
+
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        model.addAttribute("KW", KW);
+        return "admin/resultsSearchedPage";
+    }
+    @GetMapping("/admin/resultsSearchedPage")
+    public String showSearchedDaysByWeek(@AuthenticationPrincipal Employee employee,@RequestParam("KW") Integer KW,Model model){
+
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        model.addAttribute("workDays", workDayService.getWorkDaysByKW(KW));
+        model.addAttribute("KW", KW);
+
+        return "admin/resultsSearchedPage";
+    }
+
+    @GetMapping("/admin/workDayList")
+    public String allWorkDays(@AuthenticationPrincipal Employee employee,
+                               Model model) {
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        return "admin/searchWeek";
+    }
+
+    @PostMapping("/admin/workDayList")
+    public String getAllWorkDays(@AuthenticationPrincipal Employee employee,
+                                        Model model) {
+
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        model.addAttribute("allWorkDays", workDayService.getAllWorkDays());
+        return "admin/resultsSearchedPage";
+    }
+
 }

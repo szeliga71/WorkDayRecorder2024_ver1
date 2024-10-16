@@ -8,8 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
 import pl.wp.workdayrecorder2024_ver1.model.EmployeeSearchObject;
-import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
-import pl.wp.workdayrecorder2024_ver1.model.WorkDaySearchObject;
 import pl.wp.workdayrecorder2024_ver1.service.EmployeeService;
 import pl.wp.workdayrecorder2024_ver1.service.WorkDayService;
 
@@ -127,68 +125,5 @@ public class AdminController {
         }
         return "redirect:/admin/employees";
     }
-    @GetMapping("/searchWeek")
-    public String searchByWeek(@AuthenticationPrincipal Employee employee,@RequestParam("KW") Integer KW, Model model) {
-        if (employee == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("workDaySearchObject", new WorkDaySearchObject());
-        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        return "admin/searchWeek";  // Widok formularza wyszukiwania
-    }
-
-    @PostMapping("/searchWeek")
-    public String getSearchedDaysByWeek(@AuthenticationPrincipal Employee employee,
-                                        @RequestParam("KW") Integer KW,
-                                        Model model) {
-        List<WorkDay> workDays = workDayService.getWorkDaysByKW(KW);
-        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        model.addAttribute("workDays", workDays);
-        model.addAttribute("KW", KW);
-
-        return "admin/searchWeek";  // Przekazanie wyników do widoku wyników
-    }
-
-   /* @GetMapping("/searchWeek")
-    public String searchByWeekold(@AuthenticationPrincipal Employee employee,@RequestParam("KW") Integer KW, Model model){
-        if (employee == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        model.addAttribute("workDaySearchObject" ,new WorkDaySearchObject());
-        return "admin/searchWeek";
-    }*/
-    /*@GetMapping("/searchWeek")
-    public String searchByWeek(@AuthenticationPrincipal Employee employee,
-                                        @RequestParam(value="KW", required = false) Integer KW,
-                                        Model model)
-    {
-        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-
-        if (KW != null) {
-        List<WorkDay> workDays=workDayService.getWorkDaysByKW(KW);
-        model.addAttribute("workDays", workDays);
-        model.addAttribute("KW", KW);
-
-        return "admin/resultsSearchedPage";
-        }
-        return "admin/searchWeek";
-    }
-    @GetMapping("/resultsSearchedPage")
-    public String getSearchedDaysByWeek(@AuthenticationPrincipal Employee employee,@RequestParam("workDays") List<WorkDay>workDays ,Model model){
-        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        model.addAttribute("workDays",workDays);
-        return "admin/resultsSearchedPage";
-    }*/
-   /*@GetMapping("/resultsSearchedPage")
-    public String getSearchedDaysByWeek(@AuthenticationPrincipal Employee employee,
-                                        @RequestParam("KW") Integer KW,
-                                        @RequestParam("workDays") List<WorkDay>workDays ,
-                                        Model model){
-        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        model.addAttribute("workDays", workDays);
-        model.addAttribute("KW", KW);
-        return "admin/resultsSearchedPage";
-    }*/
 
 }

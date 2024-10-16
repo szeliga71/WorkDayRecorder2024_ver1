@@ -21,8 +21,15 @@ public class WorkDayService {
         return workDayRepository.findById(workDayId).get();
     }
 
-    public List<WorkDay> getWorkDaysByKW(Integer kw) {
-
-        return workDayRepository.findByKW(kw);
+    public List<WorkDay> getWorkDaysByKW(Integer KW) {
+        List<WorkDay> workDays = workDayRepository.findByKW(KW);
+        System.out.println("Pobrane dni pracy: " + workDays);
+        return workDays;
+        //return workDayRepository.findByKW(KW);
     }
+
+    public List<WorkDay> getAllWorkDays() {
+        return workDayRepository.findAll();
+    }
+
 }
