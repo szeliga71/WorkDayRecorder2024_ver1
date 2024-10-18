@@ -63,4 +63,8 @@ public class EmployeeService implements UserDetailsService {
         return employeeRepository.findAll();
     }
 
+    public void updatePassword(Employee employee, String newPassword) {
+        employee.setPassword(passwordEncoder.encode(newPassword));
+        employeeRepository.save(employee);
+    }
 }

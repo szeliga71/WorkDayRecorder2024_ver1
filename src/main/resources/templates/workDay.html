@@ -34,10 +34,15 @@
 <div class="container">
     <h1>ADD NEW WORK DAY</h1>
     <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+
+    <!-- Jeśli istnieje komunikat o błędzie -->
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+
     <form th:action="@{/workDay}" method="post" class="form-container">
         <!-- Personal ID -->
         <div class="form-group">
-
             <input type="text" id="personalId" name="personalId" class="form-control custom-input-width"th:value="${personalId}" readonly />
             <label class="form-label" for="personalId">ID Osobiste:</label>
             <!--<input type="text" id="personalId" name="personalId" class="form-control custom-input-width" placeholder="ID Osobiste" required>
@@ -69,55 +74,85 @@
             </select>
         </div>
         <!-- Początek Pracy -->
-        <div class="form-group">
+       <!-- <div class="form-group">
             <input type="datetime-local" id="startOfWork" name="startOfWork" class="form-control custom-input-width" placeholder="Początek Pracy" required>
             <label class="form-label" for="startOfWork">Początek Pracy</label>
-        </div>
-
-        <!-- Przerwa -->
+        </div>-->
         <div class="form-group">
+            <input type="datetime-local" id="startOfWork" name="startOfWork" class="form-control custom-input-width"
+                   th:value="${workDay != null ? workDay.startOfWork : ''}" placeholder="Początek Pracy" required>
+            <label class="form-label" for="startOfWork">Początek Pracy</label>
+        </div>
+        <!-- Przerwa -->
+       <!-- <div class="form-group">
             <input type="text" id="pause" name="pause" class="form-control custom-input-width" placeholder="Przerwa">
             <label class="form-label" for="pause">Przerwa</label>
-        </div>
-
-        <!-- Koniec Pracy -->
+        </div>-->
         <div class="form-group">
+            <input type="text" id="pause" name="pause" class="form-control custom-input-width"
+                   th:value="${workDay != null ? workDay.pause : ''}" placeholder="Przerwa">
+            <label class="form-label" for="pause">Przerwa</label>
+        </div>
+        <!-- Koniec Pracy -->
+        <!--<div class="form-group">
             <input type="datetime-local" id="endOfWork" name="endOfWork" class="form-control custom-input-width" placeholder="Koniec Pracy" required>
             <label class="form-label" for="endOfWork">Koniec Pracy</label>
-        </div>
-
-        <!-- Całkowity Dystans -->
+        </div>-->
         <div class="form-group">
+            <input type="datetime-local" id="endOfWork" name="endOfWork" class="form-control custom-input-width"
+                   th:value="${workDay != null ? workDay.endOfWork : ''}" placeholder="Koniec Pracy" required>
+            <label class="form-label" for="endOfWork">Koniec Pracy</label>
+        </div>
+        <!-- Całkowity Dystans -->
+       <!-- <div class="form-group">
             <input type="text" id="totalDistance" name="totalDistance" class="form-control custom-input-width" placeholder="Całkowity Dystans">
             <label class="form-label" for="totalDistance">Całkowity Dystans</label>
+        </div>-->
+        <div class="form-group">
+            <input type="text" id="totalDistance" name="totalDistance" class="form-control custom-input-width"
+                   th:value="${workDay != null ? workDay.totalDistance : ''}" placeholder="Całkowity Dystans">
+            <label class="form-label" for="totalDistance">Całkowity Dystans</label>
         </div>
-
         <!-- Wypadek -->
-        <div class="form-group form-check">
+        <!--<div class="form-group form-check">
             <input type="checkbox" id="accident" name="accident" class="form-check-input">
+            <label class="form-check-label" for="accident">Wypadek</label>
+        </div>-->
+        <div class="form-group form-check">
+            <input type="checkbox" id="accident" name="accident" class="form-check-input"
+                   th:checked="${workDay != null && workDay.accident}">
             <label class="form-check-label" for="accident">Wypadek</label>
         </div>
 
         <!-- Usterki -->
-        <div class="form-group form-check">
+        <!--<div class="form-group form-check">
             <input type="checkbox" id="faults" name="faults" class="form-check-input">
             <label class="form-check-label" for="faults">Usterki</label>
+        </div>-->
+        <div class="form-group form-check">
+            <input type="checkbox" id="faults" name="faults" class="form-check-input"
+                   th:checked="${workDay != null && workDay.faults}">
+            <label class="form-check-label" for="faults">Usterki</label>
         </div>
-
         <!-- Notatki -->
-        <div class="form-group">
+        <!--<div class="form-group">
             <textarea id="notes" name="notes" class="form-control custom-input-width" placeholder="Notatki"></textarea>
+            <label class="form-label" for="notes">Notatki</label>
+        </div>-->
+        <div class="form-group">
+            <textarea id="notes" name="notes" class="form-control custom-input-width"
+                      th:text="${workDay != null ? workDay.notes : ''}" placeholder="Notatki"></textarea>
             <label class="form-label" for="notes">Notatki</label>
         </div>
 
         <!-- Przyciski -->
-        <button type="submit" class="btn btn-primary">Dodaj Dzień Pracy</button>
+        <button type="submit" class="btn btn-primary">Dodaj/Edytuj Dzień Pracy</button>
     </form>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
 </body>
 </html>
 

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
-            background-image: url('/images/pfenning.jpg'); /* Wstaw tutaj URL obrazu */
+            background-image: url('/images/pfenning2.jpg'); /* Wstaw tutaj URL obrazu */
             background-size: cover; /* Dopasowanie obrazu do ekranu */
             background-position: center; /* Wyśrodkowanie obrazu */
             background-repeat: no-repeat; /* Zapobiega powtarzaniu obrazu */
@@ -50,19 +50,19 @@
         }
 
         .btn-custom-3 {
-            background-color: #5bff33; /* Inny niestandardowy kolor przycisku */
+            background-color: #990000; /* Inny niestandardowy kolor przycisku */
             border: 2px solid black; /* Czarna obwódka */
             color: black; /* Czarna obwódka */
             font-weight: bold;
         }
         .btn-custom-4 {
-            background-color: #CC66CC; /* Inny niestandardowy kolor przycisku */
+            background-color: #333333; /* Inny niestandardowy kolor przycisku */
             border: 2px solid black; /* Czarna obwódka */
             color: black; /* Czarna obwódka */
             font-weight: bold;
         }
         .btn-custom-5 {
-            background-color: #990000; /* Inny niestandardowy kolor przycisku */
+            background-color: #333333; /* Inny niestandardowy kolor przycisku */
             border: 2px solid black; /* Czarna obwódka */
             color: black; /* Czarna obwódka */
             font-weight: bold;
@@ -72,6 +72,12 @@
             border: 2px solid black; /* Czarna obwódka */
             color: black; /* Czarna obwódka */
             font-weight: bold;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap; /* Pozwoli na zawijanie w razie potrzeby */
+            justify-content: center;
+            gap: 10px; /* Odstępy między przyciskami */
         }
     </style>
 
@@ -84,9 +90,6 @@
             window.location.href = "workPlan";
         }
 
-        function showLastWorkDay() {
-            window.location.href = "lastWorkDay";
-        }
         function checkWorkHistory() {
             window.location.href = "workHistory";
         }
@@ -98,6 +101,7 @@
             window.location.href = "changePassword";
         }
 
+
     </script>
 </head>
 <body>
@@ -107,13 +111,18 @@
 
 
     <br>
-
+    <div class="button-container">
     <button onclick="enterWorkDay()" class="btn btn-custom-1 btn-lg m-2">Tagesbericht</button>
     <button onclick="showWorkPlan()" class="btn btn-custom-2 btn-lg m-2">ArbeitsPlan</button>
-    <button onclick="showLastWorkDay()" class="btn btn-custom-3 btn-lg m-2">Letzte ArbeitTag</button>
     <button onclick="checkWorkHistory()" class="btn btn-custom-4 btn-lg m-2">ArbeitsHistory</button>
     <button onclick="createWashListe()" class="btn btn-custom-5 btn-lg m-2">Wasch Liste</button>
     <button onclick="changePassword()" class="btn btn-custom-6 btn-lg m-2">Change Password</button>
+
+    <form th:action="@{/logout}" method="post" style="display:inline-block;">
+        <button type="submit" class="btn btn-custom-3 btn-lg m-2">Logout</button>
+    </form>
+</div>
+
 </div>
 </body>
 </html>

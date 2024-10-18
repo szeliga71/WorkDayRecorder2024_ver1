@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Work Days By All Arguments</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .custom-input-width {
+            width: 300px; /* Ustawia szerokość */
+        }
+        .form-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .email-highlight {
+            color: orange; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
+        }
+        .btn-custom-1 {
+            background-color: #CCCC00; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-2 {
+            background-color: #3399FF; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-3 {
+            background-color: #66FF00; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<br>
+<div class="container">
+    <h2>Search Work Days By Custom Arguments</h2>
+
+    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+
+    <form th:action="@{/admin/resultsSearchedPage}" method="get" class="form-container">
+        <div class="form-group">
+            <label for="employeeId">personalId:</label>
+            <input type="number" name="personalId" id="employeeId" class="form-control custom-input-width" placeholder="Enter personal Id">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="dayOfWeek">Day of Week</label>
+            <select id="dayOfWeek" name="dayOfWeek" class="form-control custom-input-width" >
+                <option value="">Enter Day of Week</option>
+                <option value="MONDAY">Poniedziałek</option>
+                <option value="TUESDAY">Wtorek</option>
+                <option value="WEDNESDAY">Środa</option>
+                <option value="THURSDAY">Czwartek</option>
+                <option value="FRIDAY">Piątek</option>
+                <option value="SATURDAY">Sobota</option>
+                <option value="SUNDAY">Niedziela</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="KW">KW:</label>
+            <input type="number" name="KW" id="KW" class="form-control custom-input-width" placeholder="Enter KW" >
+        </div>
+        <button type="submit" class="btn btn-custom-2 btn-lg m-2">Search</button>
+    </form>
+
+        <form th:action="@{/admin/adminPanel}" method="get">
+            <button type="submit" class="btn btn-custom-3 btn-lg m-2">Go to Admin Panel</button>
+    </form>
+
+
+</div>
+</div>
+</body>
+</html>
+

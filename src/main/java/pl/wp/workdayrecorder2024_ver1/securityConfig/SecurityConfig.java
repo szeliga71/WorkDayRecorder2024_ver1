@@ -40,7 +40,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         security.
                 authorizeHttpRequests((request) -> request
-                        .requestMatchers("/","/register").permitAll()
+                        .requestMatchers("/","/changePassword").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest()
                         .authenticated())
@@ -51,7 +51,7 @@ public class SecurityConfig {
                         .failureUrl("/login?error=true")
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/logoutPage")
+                        .logoutSuccessUrl("/login?logout")   //("/security/logoutPage")"/login?logout"
                         .permitAll());
         return security.build();
     }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Work Day</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h2>Edit Work Day</h2>
+
+    <p th:text="${info}"></p>
+
+    <form th:action="@{/workDay/edit}" method="post">
+        <input type="hidden" name="workDayId" th:value="${workDay.id}"/>
+
+        <div class="form-group">
+            <label for="startOfWork">Start of Work:</label>
+            <input type="datetime-local" id="startOfWork" name="startOfWork" th:value="${workDay.startOfWork}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="pause">Pause:</label>
+            <input type="text" id="pause" name="pause" th:value="${workDay.pause}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="endOfWork">End of Work:</label>
+            <input type="datetime-local" id="endOfWork" name="endOfWork" th:value="${workDay.endOfWork}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="totalDistance">Total Distance:</label>
+            <input type="text" id="totalDistance" name="totalDistance" th:value="${workDay.totalDistance}" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="notes">Notes:</label>
+            <textarea id="notes" name="notes" class="form-control" th:text="${workDay.notes}"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+</body>
+</html>

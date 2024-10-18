@@ -4,41 +4,121 @@
     <meta charset="UTF-8">
     <title>Search Results</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .email-highlight {
+            color: orange; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
+        }
+        .parameters-highlight {
+            color: red; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
+        }
+        .btn-custom-1 {
+            background-color: #CCCC00; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-2 {
+            background-color: #33CCff; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-3 {
+            background-color: #66FF00; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-5 {
+            background-color: #CC66FF; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-6 {
+            background-color: #ff0000; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+
+    </style>
 </head>
 <body>
 <div th:if="${error}" class="alert alert-danger">
     <p th:text="${error}"></p>
 </div>
 <div class="container">
-    <h1>Search Results</h1>
-    <p>Logged user: <span th:text="${fullName}"></span></p>
+    <h2>Search Results</h2>
+    <p>Logged user: <span class="email-highlight" th:text="${fullName}"></span></p>
 
-    <h2>Results for KW: <span th:text="${KW}"></span></h2>
-    <!--<h2>Results for KW </h2>-->
-    <!-- Wyświetlenie błędu, jeśli nie znaleziono żadnych dni pracy -->
+    <!-- Wyświetlanie użytych parametrów wyszukiwania -->
+    <h4>Search parameters:</h4>
+    <ul>
+        <li th:if="${KW != null}">KW :  <span class="parameters-highlight" th:text="${KW}"></span></li>
+        <li th:if="${personalId != null}">Personal ID :  <span class="parameters-highlight" th:text="${personalId}"></span></li>
+        <li th:if="${dayOfWeek != null}">Day of Week :  <span class="parameters-highlight" th:text="${dayOfWeek}"></span></li>
+    </ul>
+
+    <!-- Wyświetlenie wyników -->
+    <h3>Results:</h3>
 
 
     <table th:if="${workDays}" class="table table-striped">
         <thead>
         <tr>
+            <th>No.</th>
+            <th>Personal Id</th>
             <th>Date</th>
-            <th>Start of Work</th>
-            <th>End of Work</th>
-            <th>Total Distance</th>
+            <th>Day of Week</th>
+            <th>Number of Week</th>
             <th>Notes</th>
+            <th>Details</th>
+            <th>Update</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="workDay : ${workDays}">
+        <tr th:each="workDay,stat : ${workDays}">
+            <td th:text="${stat.index +1}"></td>
+            <td th:text="${workDay.personalId}"></td>
             <td th:text="${workDay.date}"></td>
-            <td th:text="${workDay.startOfWork}"></td>
-            <td th:text="${workDay.endOfWork}"></td>
-            <td th:text="${workDay.totalDistance}"></td>
+            <td th:text="${workDay.dayOfWeek}"></td>
+            <td th:text="${workDay.KW}"></td>
             <td th:text="${workDay.notes}"></td>
+            <td>
+                <form th:action="@{/summary}" method="get">
+                    <input type="hidden" name="id" th:value="${workDay.id}">
+                    <button type="submit" class="btn btn-custom-5 btn-lg m-2">Details</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/editWorkDay}" method="get">
+                    <input type="hidden" name="id" th:value="${workDay.id}">
+                    <button type="submit" class="btn btn-custom-2 btn-lg m-2">Update</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/admin/confirmDeletionWorkDay}" method="post">
+                    <input type="hidden" name="id" th:value="${workDay.id}">
+                    <button type="submit" class="btn btn-custom-6 btn-lg m-2">Delete</button>
+                </form>
+            </td>
+
         </tr>
         </tbody>
     </table>
 
+    <form th:action="@{/admin/adminPanel}" method="get">
+        <button type="submit" class="btn btn-custom-3 btn-lg m-2">Go to Admin Panel</button>
+    </form>
+        <form th:action="@{/admin/searchByCustomArguments}" method="get">
+            <button type="submit" class="btn btn-custom-1 btn-lg m-2">Go to Search Panel</button>
+    </form>
 </div>
 </body>
 </html>

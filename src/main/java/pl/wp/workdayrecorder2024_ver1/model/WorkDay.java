@@ -2,6 +2,7 @@ package pl.wp.workdayrecorder2024_ver1.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -14,7 +15,7 @@ public class WorkDay {
     @GeneratedValue
     private Long id;
     private String personalId;
-    private LocalDateTime date;
+    private LocalDate date;
     private String dayOfWeek;
     private int KW;
     private LocalDateTime startOfWork;
@@ -45,11 +46,11 @@ public class WorkDay {
         this.KW = KW;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

@@ -6,6 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 
 @Controller
@@ -45,13 +47,33 @@ public class WorkDayController {
         return "workDay";
     }
 
+    @PostMapping("/workDay/edit")
+    public String editWorkDay(@RequestParam("workDayId") Long workDayId,
+                              @RequestParam("startOfWork") LocalDateTime startOfWork,
+                              @RequestParam("pause") String pause,
+                              @RequestParam("endOfWork") LocalDateTime endOfWork,
+                              @RequestParam("totalDistance") String totalDistance,
+                              @RequestParam("notes") String notes,
+                              Model model) {
+
+        Optional<WorkDay> workDayOpt = workDayService.findWorkDayById(workDayId);
+        if (workDayOpt.isPresent()) {
+            WorkDay workDay = workDayOpt.get();
+            workDay.setStartOfWork(startOfWork);
+            workDay.setPause(pause);
+            workDay.setEndOfWork(endOfWork);
+            workDay.setTotalDistance(totalDistance);
+            workDay.setNotes(notes);
+
+            workDayService.addOrUpdateWorkDay(workDay);
+        }
+        return "redirect:/home";
+        //return "redirect:/workDays";  // Przekierowanie po zapisaniu
+    }
 
     @PostMapping("/workDay")
-    public String addNewWorkDay(@AuthenticationPrincipal Employee employee,
-            //@RequestParam("personalId") String personalId,
-                               // @RequestParam("date") LocalDateTime date,
+    public String addOrUpdateWorkDay(@AuthenticationPrincipal Employee employee,
                                 @RequestParam("dayOfWeekName") String dayOfWeek,
-                                //@RequestParam("dayOfWeek") Integer dayOfWeek,
                                 @RequestParam("startOfWork") LocalDateTime startOfWork,
                                 @RequestParam("pause") String pause,
                                 @RequestParam("endOfWork") LocalDateTime endOfWork,
@@ -59,100 +81,104 @@ public class WorkDayController {
                                 @RequestParam(name="accident", required = false, defaultValue = "false") boolean accident,
                                 @RequestParam(name="faults", required = false, defaultValue = "false") boolean faults,
                                 @RequestParam("notes") String notes,
+                            Model model) {
 
-                            Model model){
-
-        //wybranie dnia tygodnia i ustalenie daty dnia pracy
+        //mechanizm wybrania dayOfWeek i ustalenie daty dnia pracy - date
 
         DayOfWeek chosenDayOfWeek = DayOfWeek.valueOf(dayOfWeek.toUpperCase());
         LocalDate today = LocalDate.now();
         DayOfWeek todayDayOfWeek = today.getDayOfWeek();
         int daysDifference = chosenDayOfWeek.getValue() - todayDayOfWeek.getValue();
-        LocalDate workDayDate=null;
+        LocalDate workDayDate = null;
 
-        if(daysDifference < 2 && daysDifference >-2){
+        if (daysDifference < 2 && daysDifference > -2) {
             workDayDate = today.plusDays(daysDifference);
-        }else{
+        } else {
             model.addAttribute("error", "Nie można wybrać dnia: " + dayOfWeek);
             System.out.println(" wybrany dzien tygodnia jest zly, jest za pozno lub za wczesnie na wprowadzeanie daNYCH ");
             // przeslalbym do error z odp info uzyc message
-            return "errorPage";
+            return "workDay";
         }
-        // Obliczanie numeru tygodnia
+        // Obliczanie numeru tygodnia KW alias weekNumber
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int weekNumber = workDayDate.get(weekFields.weekOfWeekBasedYear());
 
 
         //sprawdzeie czy nie ma juz tego dnia dla tego uzytkownika  (nazwa dnia tygodnia, data ew kw) w bazie
 
+        Optional<WorkDay> existingWorkDayOpt = workDayService.findWorkDayByPersonalIdAndDayOfWeekAndKW(
+                employee.getPersonalId(), chosenDayOfWeek.name(), weekNumber);
 
-        WorkDay workDay = new WorkDay();
-        workDay.setPersonalId(employee.getPersonalId());
-        workDay.setDate(workDayDate.atStartOfDay());
-        workDay.setDayOfWeek(chosenDayOfWeek.name());
-        workDay.setKW(weekNumber);
-        workDay.setStartOfWork(startOfWork);
-        workDay.setPause(pause);
-        workDay.setEndOfWork(endOfWork);
-        workDay.setTotalDistance(totalDistance);
-        workDay.setAccident(accident);
-        workDay.setFaults(faults);
-        workDay.setNotes(notes);
+        if (existingWorkDayOpt.isPresent()) {
+            // Rekord już istnieje, wypełnienie formularza danymi i umożliwienie edycji
+            WorkDay existingWorkDay = existingWorkDayOpt.get();
+            model.addAttribute("workDay", existingWorkDay);
+            model.addAttribute("info", "Rekord dla tego dnia już istnieje, możesz go edytować.");
+            return "editWorkDay";  // Zwracasz widok do edycji formularza
 
-        workDayService.addWorkDay(workDay);
+        } else {
 
-        return "redirect:/newRoute?workDayId=" + workDay.getId();
+            WorkDay workDay = new WorkDay();
+            workDay.setPersonalId(employee.getPersonalId());
+            workDay.setDate(workDayDate);
+            workDay.setDayOfWeek(chosenDayOfWeek.name());
+            workDay.setKW(weekNumber);
+            workDay.setStartOfWork(startOfWork);
+            workDay.setPause(pause);
+            workDay.setEndOfWork(endOfWork);
+            workDay.setTotalDistance(totalDistance);
+            workDay.setAccident(accident);
+            workDay.setFaults(faults);
+            workDay.setNotes(notes);
+
+            workDayService.addWorkDay(workDay);
+
+            return "redirect:/newRoute?workDayId=" + workDay.getId();
+        }
     }
+
     @PostMapping("/workDay/update")
     public String updateWorkDay(WorkDay workDay) {
         return "workDay";
     }
 
-    @GetMapping("/admin/searchWeek")
-    public String searchByWeek(@AuthenticationPrincipal Employee employee,
-                               Model model) {
-        if (employee == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        return "admin/searchWeek";
-    }
-
-    @PostMapping("/admin/searchWeek")
-    public String getSearchedDaysByWeek(@AuthenticationPrincipal Employee employee,
-                                        @RequestParam("KW") Integer KW,
-                                        Model model) {
-
-        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        model.addAttribute("KW", KW);
-        return "admin/resultsSearchedPage";
-    }
     @GetMapping("/admin/resultsSearchedPage")
-    public String showSearchedDaysByWeek(@AuthenticationPrincipal Employee employee,@RequestParam("KW") Integer KW,Model model){
+    public String showSearchedDaysByWeek(@AuthenticationPrincipal Employee employee,
+                                         @RequestParam(value = "personalId", required = false) String personalId,
+                                         @RequestParam(value = "dayOfWeek", required = false) String dayOfWeek,
+                                         @RequestParam(value = "KW", required = false) Integer KW,
+                                         Model model){
 
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        model.addAttribute("workDays", workDayService.getWorkDaysByKW(KW));
+        List<WorkDay> workDays = workDayService.getWorkDaysByCustomParameter(personalId, dayOfWeek, KW);
+        model.addAttribute("workDays", workDays);
+        model.addAttribute("personalId", personalId);
+        model.addAttribute("dayOfWeek", dayOfWeek);
         model.addAttribute("KW", KW);
-
         return "admin/resultsSearchedPage";
     }
 
-    @GetMapping("/admin/workDayList")
-    public String allWorkDays(@AuthenticationPrincipal Employee employee,
-                               Model model) {
+
+    @GetMapping("/admin/searchByCustomArguments")
+    public String searchByAllArguments(@AuthenticationPrincipal Employee employee,
+                                       Model model){
         if (employee == null) {
             return "redirect:/login";
         }
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        return "admin/searchWeek";
+        return "admin/searchByCustomArguments";
     }
 
-    @PostMapping("/admin/workDayList")
-    public String getAllWorkDays(@AuthenticationPrincipal Employee employee,
-                                        Model model) {
-
+    @PostMapping("/admin/searchByCustomArguments")
+    public String searchByAllArguments(@AuthenticationPrincipal Employee employee,
+                                       @RequestParam(value = "personalId", required = false) String personalId,
+                                       @RequestParam(value = "dayOfWeek", required = false) String dayOfWeek,
+                                       @RequestParam(value = "KW", required = false) Integer KW,
+                                       Model model){
+        if (employee == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        model.addAttribute("allWorkDays", workDayService.getAllWorkDays());
         return "admin/resultsSearchedPage";
     }
 
