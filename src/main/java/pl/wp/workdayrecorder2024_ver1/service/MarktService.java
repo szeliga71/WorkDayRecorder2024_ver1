@@ -18,4 +18,15 @@ public class MarktService {
     }
 
 
+    public Markt getMarktByMarktId(String marktId) {
+        return marktRepository.findByMarktId(marktId).get();
+    }
+
+    public void deleteMarkt(Markt markt) {
+        marktRepository.delete(markt);
+    }
+
+    public void saveMarkt(Markt markt) {
+        marktRepository.save(markt);
+    }
 }
