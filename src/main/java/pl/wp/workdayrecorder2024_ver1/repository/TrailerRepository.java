@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 import pl.wp.workdayrecorder2024_ver1.model.Trailer;
 @Repository
 public interface TrailerRepository extends JpaRepository<Trailer,String> {
-    Trailer findTrailerByTrailerId(String trailerId);
+    Trailer findTrailerByNumber(String trailerId);
+
+    void deleteByNumber(String trailerId);
 
 }

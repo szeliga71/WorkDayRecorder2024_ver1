@@ -13,7 +13,7 @@
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Markt List</title>
+    <title>Trailer List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -53,42 +53,30 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="text-center mt-4">Markt List</h1>
+    <h1 class="text-center mt-4">Trailer List</h1>
     <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
     <form th:action="@{/admin/adminPanel}" method="get">
         <button type="submit" class="btn btn-custom-3 btn-lg m-2">Go to Admin Panel</button>
     </form>
-    <form th:action="@{/admin/addMarket}" method="get">
-        <button type="submit" class="btn btn-custom-7 btn-lg m-2">Add Market</button>
+    <form th:action="@{/admin/addTrailer}" method="post">
+        <button type="submit" class="btn btn-custom-7 btn-lg m-2">Add Trailer</button>
     </form>
     <div class="table-container">
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
             <tr>
                 <th>No.</th>
-                <th>Markt Id</th>
-                <th>name</th>
-                <th>Postal Code</th>
-                <th>Citi</th>
-                <th>Street</th>
-                <th>Buil No</th>
-                <th>Notes</th>
+                <th>Trailer No.</th>
                 <th>Update</th>
                 <th>Delete</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="markt, stat : ${markets}">
+            <tr th:each="trailer, stat : ${trailers}">
                 <td th:text="${stat.index +1}"></td>
-                <td th:text="${markt.getMarktId()}"></td>
-                <td th:text="${markt.getName()}"></td>
-                <td th:text="${markt.getPostalCode()}"></td>
-                <td th:text="${markt.getCiti()}"></td>
-                <td th:text="${markt.getStreet()}"></td>
-                <td th:text="${markt.getBuildingNumber()}"></td>
-                <td th:text="${markt.getNotes()}"></td>
+                <td th:text="${trailer.getNumber()}"></td>
                 <td>
-                    <form th:action="@{/admin/updateMarkt}" method="get">
+                    <form th:action="@{/admin/updateTrailer}" method="get">
                         <input type="hidden" name="marktId" th:value="${markt.marktId}">
                         <button type="submit" class="btn btn-custom-2 btn-lg m-2">Update Markt</button>
                     </form>
@@ -105,4 +93,4 @@
     </div>
 </div>
 </body>
-</htm
+</html>

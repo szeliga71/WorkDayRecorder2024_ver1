@@ -17,11 +17,11 @@ public class TrailerService {
     }
 
     public Trailer getTrailerByTrailerId(String trailerId) {
-        return trailerRepository.findTrailerByTrailerId(trailerId);
+        return trailerRepository.findTrailerByNumber(trailerId);
     }
 
     public void deleteTrailer(String trailerId) {
-        trailerRepository.deleteById(trailerId);
+        trailerRepository.deleteByNumber(trailerId);
     }
 
     public void saveTrailer(Trailer trailer) {
