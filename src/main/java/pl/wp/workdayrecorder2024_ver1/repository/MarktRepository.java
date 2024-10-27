@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface MarktRepository extends JpaRepository<Markt,String> {
 
 
-    Optional<Markt> findByMarktId(String marktId);
+    Markt findByMarktId(String marktId);
+
+
 }

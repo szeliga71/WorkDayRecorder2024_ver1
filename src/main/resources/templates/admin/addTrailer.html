@@ -2,17 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update Markt</title>
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>add Markt</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <div class="container">
-    <h1>Update Markt</h1>
+    <h1>add Markt</h1>
 
     <form th:action="@{/admin/saveMarkt}" method="post">
-        <input type="hidden" name="marktId" th:value="${markt.marktId}">
 
+        <div class="form-group">
+            <label for="marktId">Markt id</label>
+            <input type="text" id="marktId" name="marktId" class="form-control" th:value="${markt.marktId}" required>
+        </div>
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" class="form-control" th:value="${markt.name}" required>

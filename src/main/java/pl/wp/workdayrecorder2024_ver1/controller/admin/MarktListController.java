@@ -35,11 +35,13 @@ public class MarktListController {
             return "redirect:/login";
         }
         model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
-        Markt markt = marktService.getMarktByMarktId(marktId);
+
+       Markt markt = marktService.getMarktByMarktId(marktId);
         if (markt != null) {
             model.addAttribute("markt", markt);
             return "admin/confirmDeletionMarkt";
-        } else {
+
+    } else {
             model.addAttribute("error", "Markt with id: " + marktId + " not found.");
             return "redirect:/admin/markets";
         }
@@ -54,6 +56,7 @@ public class MarktListController {
         Markt markt = marktService.getMarktByMarktId(marktId);
         if (markt != null) {
             marktService.deleteMarkt(markt);
+            model.addAttribute("markt", markt);
             model.addAttribute("message", "Markt with id: " + marktId + " has been removed.");
         } else {
             model.addAttribute("error", "Markt with id: " + marktId + " not found.");
@@ -70,6 +73,7 @@ public class MarktListController {
         return "admin/confirmDeletionMarkt";
 
     }
+
     @GetMapping("/admin/deleteMarkt")
     public String deleteMarkt(@AuthenticationPrincipal Employee employee,Model model){
         if (employee == null) {
@@ -78,16 +82,14 @@ public class MarktListController {
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "admin/deleteMarkt";
     }
-    @GetMapping("/admin/updateMarkt")
-    public String showUpdateMarktForm(@RequestParam("marktId") String marktId, Model model) {
-        Markt markt = marktService.getMarktByMarktId(marktId);
-        if (markt != null) {
-            model.addAttribute("markt", markt);
-            return "admin/updateMarkt";
-        } else {
-            model.addAttribute("error", "Markt with id: " + marktId + " not found.");
-            return "redirect:/admin/markets";
-        }
+
+    @GetMapping("/admin/addMarket")
+    public String showMarktForm( @AuthenticationPrincipal Employee employee,Model model) {
+            if (employee == null) {
+                return "errorPage"; }
+            model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+      model.addAttribute("markt",new Markt());
+        return "admin/addMarket";
     }
     @PostMapping("/admin/saveMarkt")
     public String updateMarkt(@RequestParam("marktId") String marktId,
@@ -100,6 +102,8 @@ public class MarktListController {
                                  Model model) {
         Markt markt = marktService.getMarktByMarktId(marktId);
         if (markt != null) {
+            model.addAttribute("markt", markt);
+
             markt.setMarktId(marktId);
             markt.setName(name);
             markt.setPostalCode(postalCode);
@@ -107,14 +111,25 @@ public class MarktListController {
             markt.setStreet(street);
             markt.setBuildingNumber(buildingNumber);
             markt.setNotes(notes);
+
             marktService.saveMarkt(markt);
             model.addAttribute("message", "Markt updated successfully");
+
         } else {
             model.addAttribute("error", "Markt with id: " + marktId + " not found.");
         }
-        return "redirect:/admin/markets";
+            return "redirect:/admin/markets";
+        }
+
+    @GetMapping("/admin/updateMarkt")
+    public String showUpdateMarktForm(@RequestParam("marktId") String marktId, Model model) {
+    Markt markt=marktService.getMarktByMarktId(marktId);
+         if (markt != null) {
+            model.addAttribute("markt", markt);
+            return "admin/updateMarkt";
+       } else {
+            model.addAttribute("error", "Markt with id: " + marktId + " not found.");
+            return "redirect:/admin/markets";
+        }
     }
-
-
-
 }

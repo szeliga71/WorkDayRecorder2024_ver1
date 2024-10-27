@@ -15,4 +15,16 @@ public class TrailerService {
     public List<Trailer> getAllTrailers() {
         return trailerRepository.findAll();
     }
+
+    public Trailer getTrailerByTrailerId(String trailerId) {
+        return trailerRepository.findTrailerByTrailerId(trailerId);
+    }
+
+    public void deleteTrailer(String trailerId) {
+        trailerRepository.deleteById(trailerId);
+    }
+
+    public void saveTrailer(Trailer trailer) {
+        trailerRepository.save(trailer);
+    }
 }

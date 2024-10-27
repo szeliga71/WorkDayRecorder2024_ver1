@@ -6,6 +6,7 @@ import pl.wp.workdayrecorder2024_ver1.model.Markt;
 import pl.wp.workdayrecorder2024_ver1.repository.MarktRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MarktService {
@@ -19,7 +20,7 @@ public class MarktService {
 
 
     public Markt getMarktByMarktId(String marktId) {
-        return marktRepository.findByMarktId(marktId).get();
+        return marktRepository.findByMarktId(marktId);
     }
 
     public void deleteMarkt(Markt markt) {

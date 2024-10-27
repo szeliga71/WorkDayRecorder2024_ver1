@@ -10,6 +10,7 @@ public class Markt {
     @Id
     @GeneratedValue
     private Long id;
+
     private String marktId;
     private String name;
     private String postalCode;
