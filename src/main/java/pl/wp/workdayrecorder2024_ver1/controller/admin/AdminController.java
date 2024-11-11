@@ -31,7 +31,7 @@ public class AdminController {
         return "admin/adminPanel";
     }
 
-    @GetMapping("/employees")
+  /*  @GetMapping("/employees")
     public String getEmployeesList(@AuthenticationPrincipal Employee employee,Model model) {
         if (employee == null) {
             return "redirect:/login";
@@ -121,6 +121,6 @@ public class AdminController {
             model.addAttribute("error", "Employee with id: " + personalId + " not found.");
         }
         return "redirect:/admin/employees";
-    }
+    }*/
 
 }

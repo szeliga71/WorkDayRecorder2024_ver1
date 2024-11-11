@@ -12,20 +12,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update Trailer</title>
+    <title>Update Truck</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <div class="container">
-    <h1>Update Trailer</h1>
+    <h1>Update Truck</h1>
 
-    <form th:action="@{/admin/updateTrailer}" method="post">
-        <input type="hidden" name="number" th:value="${trailer.number}">
+    <form th:action="@{/admin/updateTruck}" method="post">
+        <input type="hidden" name="number" th:value="${truck.number}">
 
         <div class="form-group">
             <label for="notes">Notes</label>
-            <input type="text" id="notes" name="notes" class="form-control" th:value="${trailer.notes}">
+            <input type="text" id="notes" name="notes" class="form-control" th:value="${truck.notes}">
         </div>
 
         <button type="submit" class="btn btn-primary">Save Changes</button>

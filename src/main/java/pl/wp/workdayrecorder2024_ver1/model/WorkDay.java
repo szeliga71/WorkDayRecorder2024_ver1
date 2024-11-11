@@ -34,8 +34,8 @@ public class WorkDay {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long workDayId) {
+        this.id = workDayId;
     }
 
     public int getKW() {

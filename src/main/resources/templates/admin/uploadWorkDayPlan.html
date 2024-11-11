@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Upload File</title>
+</head>
+<body>
+
+<h3>Upload WorkDayPlan File</h3>
+<p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+<form id="uploadForm">
+    <div id="dropZone" style="border: 2px dashed #ccc; padding: 20px;">
+        <p>Drag and drop file here, or click to select file</p>
+        <p id="fileName" style="font-weight: bold;"></p> <!-- Nowy element do wyświetlania nazwy pliku -->
+        <input type="file" id="fileInput" style="display: none;" />
+    </div>
+    <br>
+    <button type="submit">Upload</button>
+</form>
+<br>
+<a href="/viewWeekWorkPlan" class="btn btn-primary mb-4">Check Uplouded File</a>
+<br>
+<a href="/admin/adminPanel" class="btn btn-primary mb-4">Back to Admin Panel</a>
+
+<script>
+    const dropZone = document.getElementById("dropZone");
+    const fileInput = document.getElementById("fileInput");
+    const fileNameDisplay = document.getElementById("fileName"); // Element wyświetlający nazwę pliku
+
+    dropZone.addEventListener("click", () => fileInput.click());
+
+    dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+    });
+
+    dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("dragover");
+    });
+
+    dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+        const files = e.dataTransfer.files;
+        if (files.length) {fileInput.files = files;
+        fileNameDisplay.textContent = files[0].name; }// Wyświetlanie nazwy pliku
+    });
+    fileInput.addEventListener("change", () => {
+        if (fileInput.files.length) {
+            fileNameDisplay.textContent = fileInput.files[0].name; // Wyświetlanie nazwy pliku po wybraniu z systemu plików
+        }
+    });
+
+    document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+
+        console.log("Dodany plik:", formData.get("file"));
+
+        const response = await fetch("/admin/uploadWorkDayPlan", {
+            method: "POST",
+            body: formData,
+            credentials: "include"
+        });
+
+        if (response.ok) alert("File uploaded successfully");
+        else{
+            console.log(await response.text());
+        alert("File upload failed");}
+    });
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Confirmation deletion of Trailer</title>
+    <title>Confirmation deletion of Truck</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -17,19 +17,19 @@
 <div class="container centered-content">
 
     <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
-    <h1 class="mb-4">The TRAILER will be deleted</h1>
+    <h1 class="mb-4">The TRUCK will be deleted</h1>
 
-    <h2 class="mb-4">Operacja usunięcia Trailer</h2>
+    <h2 class="mb-4">Operacja usunięcia Truck</h2>
     <div class="mb-4">
-        <p><strong>Trailer ID:</strong> <span th:text="${trailer.number}"></span></p>
+        <p><strong>Truck ID:</strong> <span th:text="${truck.number}"></span></p>
     </div>
 
-    <form th:action="@{/admin/deleteTrailer}" method="post">
-        <input type="hidden" name="number" th:value="${trailer.number}">
+    <form th:action="@{/admin/deleteTruck}" method="post">
+        <input type="hidden" name="number" th:value="${truck.number}">
         <button type="submit" class="btn btn-danger btn-lg m-2">Delete</button>
     </form>
 
-    <a href="/admin/trailers" class="btn btn-success btn-lg m-2">Powrót do listy Trailer</a>
+    <a href="/admin/trucks" class="btn btn-success btn-lg m-2">Powrót do listy Truck</a>
 </div>
 </body>
 </html>

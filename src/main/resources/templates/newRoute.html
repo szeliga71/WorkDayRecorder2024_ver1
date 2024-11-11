@@ -37,7 +37,7 @@
             <label for="truckNumber">Numer Ciężarówki:</label>
             <select id="truckNumber" name="truckNumber" class="form-control custom-input-width" required>
                 <option value="">Wybierz ciężarówkę</option>
-                <option th:each="truck : ${trucks}" th:value="${truck.id}" th:text="${truck.number}"></option>
+                <option th:each="truck : ${trucks}" th:value="${truck.number}" th:text="${truck.number}"></option>
             </select>
         </div>
 
@@ -46,7 +46,7 @@
             <label for="trailerNumber">Numer Przyczepy:</label>
             <select id="trailerNumber" name="trailerNumber" class="form-control custom-input-width" required>
                 <option value="">Wybierz przyczepę</option>
-                <option th:each="trailer : ${trailers}" th:value="${trailer.id}" th:text="${trailer.number}"></option>
+                <option th:each="trailer : ${trailers}" th:value="${trailer.number}" th:text="${trailer.number}"></option>
             </select>
         </div>
 

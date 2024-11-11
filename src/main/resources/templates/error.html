@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<H1>Error</H1>
+<h1> PRZYCISK POWROTU  w zaleznosci kto jest zalogowany przekieruj  na home lub na adminPanel</h1>
+<br>
+<p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+<br>
+<a th:href="${role == 'ROLE_ADMIN' ? '/admin/adminPanel' : '/home'}" class="btn btn-primary mb-4">Back to Home</a>
+</body>
+</html>

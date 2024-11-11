@@ -34,7 +34,7 @@ public class StopController {
         Route route = routeService.getRouteById(routeId);
         //model.addAttribute("stop", new Stop());
         model.addAttribute("route", route);
-        model.addAttribute("markts", marktService.getAllMarkts());
+        model.addAttribute("markets", marktService.getAllMarkts());
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "newStop";
     }
@@ -42,8 +42,8 @@ public class StopController {
     @PostMapping("/newStop")
     public String addStop(@RequestParam("routeId") Long routeId,
                            @RequestParam("marktId") String marktId,
-                           @RequestParam("beginn") LocalDateTime beginn,
-                           @RequestParam("endOfStopp") LocalDateTime endOfStopp,
+                           @RequestParam("begin") LocalDateTime begin,
+                           @RequestParam("endOfStop") LocalDateTime endOfStop,
                            @RequestParam("action") String action,
                            Model model) {
 
@@ -54,8 +54,8 @@ public class StopController {
         Stop stop = new Stop();
         stop.setRouteId(routeId);
         stop.setMarktId(marktId);
-        stop.setBeginn(beginn);
-        stop.setEndOfStopp(endOfStopp);
+        stop.setBeginn(begin);
+        stop.setEndOfStopp(endOfStop);
 
         stopService.addStop(stop);
 

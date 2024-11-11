@@ -37,20 +37,20 @@
             <label for="marktId">Markt ID:</label>
             <select id="marktId" name="marktId" class="form-control custom-input-width" required>
                 <option value="">Wybierz market</option>
-                <option th:each="markt : ${markts}" th:value="${markt.id}" th:text="${markt.marktId}"></option>
+                <option th:each="markt : ${markets}" th:value="${markt.marktId}" th:text="${markt.marktId}"></option>
             </select>
         </div>
 
         <!-- Początek przystanku -->
         <div class="form-group">
-            <label for="beginn">Początek Przystanku:</label>
-            <input type="datetime-local" id="beginn" name="beginn" class="form-control custom-input-width" required>
+            <label for="begin">Początek Przystanku:</label>
+            <input type="datetime-local" id="begin" name="begin" class="form-control custom-input-width" required>
         </div>
 
         <!-- Koniec przystanku -->
         <div class="form-group">
-            <label for="endOfStopp">Koniec Przystanku:</label>
-            <input type="datetime-local" id="endOfStopp" name="endOfStopp" class="form-control custom-input-width" required>
+            <label for="endOfStop">Koniec Przystanku:</label>
+            <input type="datetime-local" id="endOfStop" name="endOfStop" class="form-control custom-input-width" required>
         </div>
 
         <!-- Przyciski wyboru akcji -->

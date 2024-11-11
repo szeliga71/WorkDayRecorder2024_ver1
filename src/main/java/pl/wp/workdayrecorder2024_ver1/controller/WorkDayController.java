@@ -6,12 +6,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
 import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
-import pl.wp.workdayrecorder2024_ver1.model.WorkDaySearchObject;
 import pl.wp.workdayrecorder2024_ver1.service.MarktService;
 import pl.wp.workdayrecorder2024_ver1.service.TrailerService;
 import pl.wp.workdayrecorder2024_ver1.service.TruckService;
@@ -20,7 +18,6 @@ import java.time.temporal.WeekFields;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -89,15 +86,25 @@ public class WorkDayController {
         LocalDate today = LocalDate.now();
         DayOfWeek todayDayOfWeek = today.getDayOfWeek();
         int daysDifference = chosenDayOfWeek.getValue() - todayDayOfWeek.getValue();
+        System.out.println(daysDifference);
         LocalDate workDayDate = null;
 
-        if (daysDifference < 2 && daysDifference > -2) {
+        if (daysDifference < 2 && daysDifference > -2){
             workDayDate = today.plusDays(daysDifference);
+            System.out.println("opcja1 ");
+        }
+           else if(daysDifference==-6){
+                workDayDate = today.plusDays(1);
+                System.out.println("opcja2 ");
+            }
+        else if(daysDifference==6){
+            workDayDate = today.minusDays(1);
+            System.out.println("opcja3 ");
         } else {
             model.addAttribute("error", "Nie można wybrać dnia: " + dayOfWeek);
             System.out.println(" wybrany dzien tygodnia jest zly, jest za pozno lub za wczesnie na wprowadzeanie daNYCH ");
             // przeslalbym do error z odp info uzyc message
-            return "workDay";
+            return "error";
         }
         // Obliczanie numeru tygodnia KW alias weekNumber
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
@@ -142,7 +149,7 @@ public class WorkDayController {
         return "workDay";
     }
 
-    @GetMapping("/admin/resultsSearchedPage")
+    /*@GetMapping("/admin/resultsSearchedPage")
     public String showSearchedDaysByWeek(@AuthenticationPrincipal Employee employee,
                                          @RequestParam(value = "personalId", required = false) String personalId,
                                          @RequestParam(value = "dayOfWeek", required = false) String dayOfWeek,
@@ -180,6 +187,6 @@ public class WorkDayController {
         }
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "admin/resultsSearchedPage";
-    }
+    }*/
 
 }

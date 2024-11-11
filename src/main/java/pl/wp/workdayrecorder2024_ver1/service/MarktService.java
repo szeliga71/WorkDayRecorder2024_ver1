@@ -28,7 +28,6 @@ public class MarktService {
     }
 
     public void saveMarkt(Markt markt) {
-        System.out.println(markt + "  zapisany ?");
         marktRepository.save(markt);
     }
 }

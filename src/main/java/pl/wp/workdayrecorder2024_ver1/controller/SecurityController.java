@@ -22,7 +22,7 @@ public class SecurityController {
         return "security/login";
     }
 
-    @GetMapping("/admin/register")
+    /*@GetMapping("/admin/register")
     public String getRegistrationPage(Model model) {
         model.addAttribute("employee", new Employee());
         return "admin/register";
@@ -46,5 +46,5 @@ public class SecurityController {
         employee.setRole("ROLE_USER");
         employeeService.saveEmployee(employee);
         return "admin/adminPanel";
-    }
+    }*/
 }

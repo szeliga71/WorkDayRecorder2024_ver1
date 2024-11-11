@@ -12,7 +12,23 @@ public class TruckService {
 
     @Autowired
     private TruckRepository truckRepository;
+
     public List<Truck> getAllTrucks() {
         return truckRepository.findAll();
     }
+
+    public Truck getTruckByTruckId(String truckId) {
+        return truckRepository.findByNumber(truckId);
+        //findTrailerByNumber(trailerId);
+    }
+
+    public void deleteTruck(String truckId) {
+        truckRepository.deleteById(truckId);
+    }
+
+    public void saveTruck(Truck truck) {
+        truckRepository.save(truck);
+    }
+
+
 }

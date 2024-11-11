@@ -38,10 +38,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
-        security.
-                authorizeHttpRequests((request) -> request
+        security
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/uploadWorkDayPlan"))  // Wyłącz CSRF dla tego endpointu
+                .authorizeHttpRequests((request) -> request
                         .requestMatchers("/","/changePassword").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        //.requestMatchers("/storage/**").permitAll()
+                        //.requestMatchers("/admin/**").hasRole("ADMIN")//permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest()
                         .authenticated())
                 .formLogin((form) -> form

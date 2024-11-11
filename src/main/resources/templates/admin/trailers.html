@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Trailer List</title>
-</head>
-<body>
-
-</body>
-</html>
-
-<!DOCTYPE html>
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
@@ -58,7 +47,7 @@
     <form th:action="@{/admin/adminPanel}" method="get">
         <button type="submit" class="btn btn-custom-3 btn-lg m-2">Go to Admin Panel</button>
     </form>
-    <form th:action="@{/admin/addTrailer}" method="post">
+    <form th:action="@{/admin/addTrailer}" method="get">
         <button type="submit" class="btn btn-custom-7 btn-lg m-2">Add Trailer</button>
     </form>
     <div class="table-container">
@@ -67,6 +56,7 @@
             <tr>
                 <th>No.</th>
                 <th>Trailer No.</th>
+                <th>Notes</th>
                 <th>Update</th>
                 <th>Delete</th>
             </tr>
@@ -75,15 +65,16 @@
             <tr th:each="trailer, stat : ${trailers}">
                 <td th:text="${stat.index +1}"></td>
                 <td th:text="${trailer.getNumber()}"></td>
+                <td th:text="${trailer.getNotes()}"></td>
                 <td>
                     <form th:action="@{/admin/updateTrailer}" method="get">
-                        <input type="hidden" name="marktId" th:value="${markt.marktId}">
-                        <button type="submit" class="btn btn-custom-2 btn-lg m-2">Update Markt</button>
+                        <input type="hidden" name="number" th:value="${trailer.number}">
+                        <button type="submit" class="btn btn-custom-2 btn-lg m-2">Update Trailer</button>
                     </form>
                 </td>
                 <td>
-                    <form th:action="@{/admin/confirmDeletionMarkt}" method="post">
-                        <input type="hidden" name="marktId" th:value="${markt.marktId}">
+                    <form th:action="@{/admin/confirmDeletionTrailer}" method="post">
+                        <input type="hidden" name="number" th:value="${trailer.number}">
                         <button type="submit" class="btn btn-custom-1 btn-lg m-2">Delete</button>
                     </form>
                 </td>

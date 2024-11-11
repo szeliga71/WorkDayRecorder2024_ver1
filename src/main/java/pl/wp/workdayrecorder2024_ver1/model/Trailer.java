@@ -1,23 +1,14 @@
 package pl.wp.workdayrecorder2024_ver1.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 @Entity
 public class Trailer {
 
     @Id
-    @GeneratedValue
-    private Long id;
     private String number;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(length = 1000)
+    private String notes;
 
     public String getNumber() {
         return number;
@@ -25,5 +16,13 @@ public class Trailer {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
-import pl.wp.workdayrecorder2024_ver1.model.Markt;
 import pl.wp.workdayrecorder2024_ver1.model.Trailer;
-import pl.wp.workdayrecorder2024_ver1.service.MarktService;
 import pl.wp.workdayrecorder2024_ver1.service.TrailerService;
 
 @Controller
@@ -30,36 +28,36 @@ public class TrailerListController {
         return "admin/trailers";
     }
     @PostMapping("/admin/confirmDeletionTrailer")
-    public String confirmDeletionTrailer(@AuthenticationPrincipal Employee loggedEmployee, @RequestParam("trailerId") String trailerId, Model model) {
+    public String confirmDeletionTrailer(@AuthenticationPrincipal Employee loggedEmployee, @RequestParam("number") String number, Model model) {
         if (loggedEmployee == null) {
             return "redirect:/login";
         }
         model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
 
-        Trailer trailer=trailerService.getTrailerByTrailerId(trailerId);
+        Trailer trailer=trailerService.getTrailerByTrailerId(number);
         if (trailer != null) {
             model.addAttribute("trailer", trailer);
             return "admin/confirmDeletionTrailer";
 
         } else {
-            model.addAttribute("error", "Trailer with id: " + trailerId + " not found.");
+            model.addAttribute("error", "Trailer with id: " + number + " not found.");
             return "redirect:/admin/trailers";
         }
     }
 
     @PostMapping("/admin/deleteTrailer")
-    public String deleteTrailer(@AuthenticationPrincipal Employee loggedEmployee,@RequestParam("trailerId") String trailerId, Model model) {
+    public String deleteTrailer(@AuthenticationPrincipal Employee loggedEmployee,@RequestParam("number") String number, Model model) {
         if (loggedEmployee == null) {
             return "redirect:/login";
         }
         model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
-        Trailer trailer=trailerService.getTrailerByTrailerId(trailerId);
+        Trailer trailer=trailerService.getTrailerByTrailerId(number);
         if (trailer != null) {
-            trailerService.deleteTrailer(trailerId);
+            trailerService.deleteTrailer(number);
             model.addAttribute("trailer", trailer);
-            model.addAttribute("message", "Trailer with id: " + trailerId + " has been removed.");
+            model.addAttribute("message", "Trailer with id: " + number + " has been removed.");
         } else {
-            model.addAttribute("error", "Trailer with id: " + trailerId + " not found.");
+            model.addAttribute("error", "Trailer with id: " + number + " not found.");
         }
         return "admin/deleteTrailer";
     }
@@ -92,31 +90,50 @@ public class TrailerListController {
         return "admin/addTrailer";
     }
     @PostMapping("/admin/saveTrailer")
-    public String updateTrailer(@RequestParam("trailerId") String trailerId,
+    public String saveTrailer(@RequestParam("number") String number,
+                                @RequestParam("notes") String notes,
                               Model model) {
-        Trailer trailer=trailerService.getTrailerByTrailerId(trailerId);
-        if (trailer != null) {
-            model.addAttribute("trailer" ,trailer);
-            trailer.setNumber(trailerId);
-
-            trailerService.saveTrailer(trailer);
-            model.addAttribute("message", "Trailer updated successfully");
-
+        Trailer trailerExist = trailerService.getTrailerByTrailerId(number);
+        if (trailerExist != null) {
+            model.addAttribute("error", "Trailer with id: " + number + " exist.");
+            return "admin/addTrailer";
         } else {
-            model.addAttribute("error", "Trailer with id: " + trailerId + " not found.");
+            Trailer trailer=new Trailer();
+            model.addAttribute("trailer", trailer);
+            trailer.setNumber(number);
+            trailer.setNotes(notes);
+            trailerService.saveTrailer(trailer);
+            model.addAttribute("message", "Trailer saved successfully");
         }
         return "redirect:/admin/trailers";
     }
 
     @GetMapping("/admin/updateTrailer")
-    public String showUpdateTrailerForm(@RequestParam("trailerId") String trailerId, Model model) {
-        Trailer trailer=trailerService.getTrailerByTrailerId(trailerId);
+    public String updateTrailer(@RequestParam("number") String number, Model model) {
+
+        Trailer trailer=trailerService.getTrailerByTrailerId(number);
         if (trailer != null) {
-            model.addAttribute("trailer",trailer);
+            model.addAttribute("trailer", trailer);
             return "admin/updateTrailer";
         } else {
-            model.addAttribute("error", "Trailer with id: " + trailerId + " not found.");
+            model.addAttribute("error", "Trailer with id: " + number + " not found.");
             return "redirect:/admin/trailers";
         }
+    }
+    @PostMapping("/admin/updateTrailer")
+    public String updateTrailer(@RequestParam("number") String number,
+                              @RequestParam("notes") String notes,
+                              Model model) {
+        Trailer trailer=trailerService.getTrailerByTrailerId(number);
+        if (trailer != null) {
+            trailer.setNotes(notes);
+            trailerService.saveTrailer(trailer);
+            model.addAttribute("message", "Trailer updated successfully");
+
+        } else {
+
+            model.addAttribute("error", "Trailer with number: " + number + " not found.");
+        }
+        return "redirect:/admin/trailers";
     }
 }

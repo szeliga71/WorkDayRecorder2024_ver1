@@ -59,11 +59,11 @@
         function goToEmployees() {
             window.location.href = "employees";
         }
-        function addNewEmployee() {
-            window.location.href = "register";
-        }
+       // function addNewEmployee() {
+         //   window.location.href = "register";
+        //}
         function addNewPlan() {
-            window.location.href = "addEmployee";
+            window.location.href = "uploadWorkDayPlan";
         }
         function searchWorkingDays() {
             window.location.href = "searchByCustomArguments";
@@ -86,10 +86,10 @@
     <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
 
     <div class="button-container">
-    <button onclick="goToEmployees()" class="btn btn-custom-1 btn-lg m-2">Employees List</button>
-    <button onclick="addNewEmployee()" class="btn btn-custom-1 btn-lg m-2">Add new Employee</button>
-    <button onclick="addNewPlan()" class="btn btn-custom-1 btn-lg m-2">New Week Plan</button>
     <button onclick="searchWorkingDays()" class="btn btn-custom-1 btn-lg m-2">Search</button>
+        <button onclick="addNewPlan()" class="btn btn-custom-1 btn-lg m-2">New Week Plan</button>
+        <button onclick="goToEmployees()" class="btn btn-custom-1 btn-lg m-2">Employees List</button>
+        <!--<button onclick="addNewEmployee()" class="btn btn-custom-1 btn-lg m-2">Add new Employee</button>-->
     <button onclick="goToTrucks()" class="btn btn-custom-1 btn-lg m-2">Truck List</button>
     <button onclick="goToTrailers()" class="btn btn-custom-1 btn-lg m-2">Trailer List</button>
     <button onclick="goToMarkts()" class="btn btn-custom-1 btn-lg m-2">Markt List</button>

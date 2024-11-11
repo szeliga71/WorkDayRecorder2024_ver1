@@ -1,16 +1,10 @@
 package pl.wp.workdayrecorder2024_ver1.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Markt {
     @Id
-    @GeneratedValue
-    private Long id;
-
     private String marktId;
     private String name;
     private String postalCode;
@@ -20,14 +14,6 @@ public class Markt {
     @Column(length = 1000)
     private String notes;
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getMarktId() {
         return marktId;
