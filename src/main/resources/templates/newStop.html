@@ -21,6 +21,39 @@
             font-weight: bold; /* Pogrubienie */
         }
     </style>
+    <script>
+        function updateAddress() {
+            const selectElement = document.getElementById('marktId');
+            const addressDisplay = document.getElementById('addressDisplay');
+            const addressText = document.getElementById('addressText');
+
+            // Pobierz wybrany element
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+
+            // Pobierz adres z atrybutu `data-address`
+            const name = selectedOption.getAttribute('data-name');
+            const street = selectedOption.getAttribute('data-street');
+            const buildingNumber = selectedOption.getAttribute('data-building-number');
+            const postalCode = selectedOption.getAttribute('data-postal-code');
+            const citi = selectedOption.getAttribute('data-citi');
+            const notes = selectedOption.getAttribute('data-notes');
+
+            if (name || street || buildingNumber || postalCode || citi || notes) {
+                const fullAddress = `
+                ${name ? `Nazwa: ${name}` : ''}<br>
+                ${street ? `Ulica: ${street}` : ''} ${buildingNumber ?  ` ${buildingNumber}` : ''}<br>
+                ${postalCode ? `Miasto: ${postalCode}` : ''} ${citi ? ` ${citi}` : ''}<br>
+                ${notes ? `Notatki: ${notes}` : ''}
+            `.trim();
+
+                addressText.innerHTML = fullAddress; // Ustaw treść z HTML-em
+                addressDisplay.style.display = 'block';
+            } else {
+                addressText.textContent = '';
+                addressDisplay.style.display = 'none';
+            }
+        }
+    </script>
 </head>
 <body>
 <br>
@@ -35,10 +68,22 @@
         <!-- Markt ID (rozwijane) -->
         <div class="form-group">
             <label for="marktId">Markt ID:</label>
-            <select id="marktId" name="marktId" class="form-control custom-input-width" required>
+            <select id="marktId" name="marktId" class="form-control custom-input-width" required onchange="updateAddress()">
                 <option value="">Wybierz market</option>
-                <option th:each="markt : ${markets}" th:value="${markt.marktId}" th:text="${markt.marktId}"></option>
+                <option th:each="markt : ${markets}"
+                        th:value="${markt.marktId}"
+                        th:data-name="${markt.name}"
+                        th:data-street="${markt.street}"
+                        th:data-building-number="${markt.buildingNumber}"
+                        th:data-postal-code="${markt.postalCode}"
+                        th:data-citi="${markt.citi}"
+                        th:data-notes="${markt.notes}"
+                        th:text="${markt.marktId}"></option>
             </select>
+        </div>
+        <div id="addressDisplay" class="form-group" style="display:none;">
+            <label>Adres:</label>
+            <p id="addressText"></p>
         </div>
 
         <!-- Początek przystanku -->

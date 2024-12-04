@@ -20,6 +20,12 @@
         .route-table, .stop-table {
             margin-bottom: 30px;
         }
+        .button-container {
+            margin-bottom: 10px;
+        }
+        .btn-space {
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -28,40 +34,56 @@
     <p>Logged in user: <strong th:text="${fullName}"></strong></p>
 
     <h2>Work Day Details</h2>
-    <p><strong>Work Day ID:</strong> <span th:text="${workDay.id}"></span></p>
+    <p><strong>Day of Week:</strong> <span th:text="${workDay.getDayOfWeek()}"></span></p>
     <p><strong>Date:</strong> <span th:text="${workDay.date}"></span></p>
-
+    <div class="button-container">
+        <a th:href="@{/editWorkDay(id=${workDay.id})}" class="btn btn-warning btn-space">Detail/Edit</a>
+        <a th:href="@{/confirmDeletionWorkDay(id=${workDay.id})}" class="btn btn-danger btn-space">Delete</a>
+        <a th:href="@{/newRoute(workDayId=${workDay.id})}" class="btn btn-success btn-space">Add Route</a>
+    </div>
     <h2>Routes</h2>
     <div th:each="route : ${routes}" class="route-table">
-        <h3>Route ID: <span th:text="${route.id}"></span></h3>
-        <p><strong>Truck Number:</strong> <span th:text="${route.truckNumber}"></span></p>
+        <h3>Route Number: <span th:text="${route.routeNumber}"></span></h3>
+        <!--<p><strong>Truck Number:</strong> <span th:text="${route.truckNumber}"></span></p>
         <p><strong>Trailer Number:</strong> <span th:text="${route.trailerNumber}"></span></p>
         <p><strong>Route Number:</strong> <span th:text="${route.routeNumber}"></span></p>
         <p><strong>Start of Route:</strong> <span th:text="${route.startOfRoute}"></span></p>
-        <p><strong>End of Route:</strong> <span th:text="${route.endOfRoute}"></span></p>
-
-        <h4>Stops for Route ID <span th:text="${route.id}"></span></h4>
+        <p><strong>End of Route:</strong> <span th:text="${route.endOfRoute}"></span></p>-->
+        <div class="button-container">
+            <a th:href="@{/editRoute(id=${route.id},workDayId=${workDay.id})}" class="btn btn-warning btn-space">Detail/Edit</a>
+            <a th:href="@{/confirmDeletionRoute(id=${route.id})}" class="btn btn-danger btn-space">Delete</a>
+            <a th:href="@{/newStop(routeId=${route.id})}" class="btn btn-success btn-space">Add Stop</a>
+        </div>
+        <h4>Stops for Route No: <span th:text="${route.getRouteNumber()}"></span></h4>
         <table class="stop-table">
             <thead>
             <tr>
-                <th>ID Stop</th>
+                <!--<th>ID Stop</th>-->
+                <th>Market</th>
                 <th>Start</th>
                 <th>End</th>
-                <th>Market ID</th>
+                <th>Actions</th>
+
             </tr>
             </thead>
             <tbody>
             <tr th:each="stop : ${route.stops}">
-                <td th:text="${stop.id}"></td>
+                <td th:text="${stop.marktId}"></td>
                 <td th:text="${stop.beginn}"></td>
                 <td th:text="${stop.endOfStopp}"></td>
-                <td th:text="${stop.marktId}"></td>
+                <td>
+                    <div class="button-container">
+                        <a th:href="@{/editStop(id=${stop.id},workDayId=${workDay.id})}" class="btn btn-warning btn-space">Details/Edit</a>
+                        <a th:href="@{/confirmDeletionStop(id=${stop.id})}" class="btn btn-danger btn-space">Delete</a>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
     <div class="mt-3">
         <a th:href="${role == 'ROLE_ADMIN' ? '/admin/adminPanel' : '/home'}" class="btn btn-primary mb-4">Back to Home</a>
+        <a th:if="${role == 'ROLE_ADMIN'}" th:href="@{/admin/searchByCustomArguments}" class="btn btn-secondary btn-space">Back to Search</a>
         <!--<a href="/home" class="btn btn-primary">Go to Home</a>-->
     </div>
 </div>

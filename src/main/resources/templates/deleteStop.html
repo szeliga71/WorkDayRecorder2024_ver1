@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Stop</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .custom-input-width {
+            width: 300px; /* Ustawia szerokość */
+        }
+        .centered-content {
+            margin-top: 50px; /* Odległość od górnej krawędzi */
+            text-align: center; /* Wyśrodkowanie zawartości */
+        }
+        .email-highlight {
+            color: orange; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
+        }
+    </style>
+</head>
+
+<body>
+<div class="container centered-content">
+
+    <!--<p>Logged user : <span class="email-highlight" sec:authentication="name"></span></p>-->
+    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+    <h1 class="mb-4">The Stop has been deleted</h1>
+
+    <h2 class="mb-4">Operacja usunięcia Stop</h2>
+
+    <h2 th:if="${message}" th:text="${message}" class="text-success"></h2>
+    <h2 th:if="${error}" th:text="${error}" class="text-danger"></h2>
+    <a href="/summary" class="btn btn-success">Powrót</a>
+   <!-- <div th:if="${message}">
+        <p th:text="${message}"></p>
+    </div>-->
+
+
+    <!--<a href="/summary" class="btn btn-success">Powrót</a>-->
+</div>
+</body>
+</html>

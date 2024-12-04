@@ -3,6 +3,8 @@ package pl.wp.workdayrecorder2024_ver1.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.wp.workdayrecorder2024_ver1.model.Route;
 import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
 import pl.wp.workdayrecorder2024_ver1.repository.WorkDayRepository;
 
@@ -71,4 +73,24 @@ public class WorkDayService {
     public Optional<WorkDay> findWorkDayById(Long workDayId) {
         return workDayRepository.findById(workDayId);
     }
+
+    @Transactional
+    public WorkDay updateWorkDay(Long workDayId, WorkDay updatedWorkDay) {
+        // Pobranie istniejącego obiektu Route z bazy danych
+        WorkDay existingWorkDay = workDayRepository.findById(workDayId).orElse(null);
+        if (existingWorkDay != null) {
+            // Aktualizacja pól istniejącej trasy na podstawie zaktualizowanych wartości
+            existingWorkDay.setStartOfWork(updatedWorkDay.getStartOfWork());
+            existingWorkDay.setPause(updatedWorkDay.getPause());
+            existingWorkDay.setEndOfWork(updatedWorkDay.getEndOfWork());
+            existingWorkDay.setTotalDistance(updatedWorkDay.getTotalDistance());
+            existingWorkDay.setAccident(updatedWorkDay.isAccident());
+            existingWorkDay.setFaults(updatedWorkDay.isFaults());
+            existingWorkDay.setNotes(updatedWorkDay.getNotes());
+            // Zapis zaktualizowanej trasy w bazie danych
+            return workDayRepository.save(existingWorkDay);
+        }
+        return null;
+    }
 }
+

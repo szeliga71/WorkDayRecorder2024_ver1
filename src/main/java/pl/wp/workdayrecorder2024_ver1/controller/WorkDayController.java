@@ -6,9 +6,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
+import pl.wp.workdayrecorder2024_ver1.model.Route;
 import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
 import pl.wp.workdayrecorder2024_ver1.service.MarktService;
 import pl.wp.workdayrecorder2024_ver1.service.TrailerService;
@@ -44,7 +46,7 @@ public class WorkDayController {
         return "workDay";
     }
 
-    @PostMapping("/workDay/edit")
+  /*  @PostMapping("/workDay/edit")
     public String editWorkDay(@RequestParam("workDayId") Long workDayId,
                               @RequestParam("startOfWork") LocalDateTime startOfWork,
                               @RequestParam("pause") String pause,
@@ -66,7 +68,7 @@ public class WorkDayController {
         }
         return "redirect:/home";
         //return "redirect:/workDays";  // Przekierowanie po zapisaniu
-    }
+    }*/
 
     @PostMapping("/workDay")
     public String addOrUpdateWorkDay(@AuthenticationPrincipal Employee employee,
@@ -121,7 +123,8 @@ public class WorkDayController {
             WorkDay existingWorkDay = existingWorkDayOpt.get();
             model.addAttribute("workDay", existingWorkDay);
             model.addAttribute("info", "Rekord dla tego dnia już istnieje, możesz go edytować.");
-            return "editWorkDay";  // Zwracasz widok do edycji formularza
+            return "summary";
+           // return "editWorkDay";  // Zwracasz widok do edycji formularza
 
         } else {
 
@@ -144,10 +147,47 @@ public class WorkDayController {
         }
     }
 
-    @PostMapping("/workDay/update")
+        @GetMapping("/editWorkDay")
+        public String editWorkDay(@AuthenticationPrincipal Employee employee,
+                                  @RequestParam("id") Long workDayId,
+                                  Model model) {
+            if (employee == null) {
+                return "redirect:/login";
+            }
+
+            if (workDayId == null) {
+                throw new IllegalArgumentException("WorkDay ID nie może być puste");
+            }
+
+            WorkDay workDay = workDayService.getWorkDayById(workDayId);
+
+            if (workDay == null) {
+                model.addAttribute("info", "Nie znaleziono WorkDay.");
+                return "error";
+            }
+
+            model.addAttribute("workDay", workDay);
+            model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+            return "editWorkDay"; // Upewnij się, że nazwa widoku pasuje do Twojego pliku HTML
+        }
+    @PostMapping("/editWorkDay")
+    public String saveWorkDay(
+            @RequestParam("workDayId") Long workDayId,@ModelAttribute WorkDay workDay) {
+
+        // Zapisz dane w bazie danych
+        workDayService.updateWorkDay(workDayId, workDay);
+
+        // Przekieruj na stronę podsumowania
+        return "redirect:/summary?workDayId=" + workDayId;
+    }
+}
+
+
+
+  /*  @PostMapping("/workDay/update")
     public String updateWorkDay(WorkDay workDay) {
         return "workDay";
-    }
+    }*/
 
     /*@GetMapping("/admin/resultsSearchedPage")
     public String showSearchedDaysByWeek(@AuthenticationPrincipal Employee employee,
@@ -189,4 +229,4 @@ public class WorkDayController {
         return "admin/resultsSearchedPage";
     }*/
 
-}
+

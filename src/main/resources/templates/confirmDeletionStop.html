@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation deletion of Stop</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .email-highlight {
+            color: orange; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
+        }
+    </style>
+</head>
+<body>
+<div class="container centered-content">
+
+    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+    <h1 class="mb-4">The Stop will be deleted</h1>
+
+    <h2 class="mb-4">Operacja usunięcia Stop</h2>
+    <div class="mb-4">
+        <p><strong>Stop ID:</strong> <span th:text="${stop.id}"></span></p>
+    </div>
+
+    <form th:action="@{/deleteStop}" method="post">
+        <input type="hidden" name="id" th:value="${stop.id}">
+        <button type="submit" class="btn btn-danger btn-lg m-2">Delete</button>
+    </form>
+
+    <a href="/summary" class="btn btn-success btn-lg m-2">Powrót</a>
+</div>
+</body>
+</html>
+
+<!--<div th:if="${stop == null}">
+    <h2>Błąd</h2>
+    <p>Nie znaleziono przystanku o podanym ID.</p>
+</div>-->

@@ -11,6 +11,6 @@ public interface StopRepository extends JpaRepository<Stop,Long> {
 
     List<Stop>findAllByRouteId(Long routeId);
 
-    Stop findStopByRouteId(Long routeId);
+    Stop findStopById(Long stopId);
 }
 

@@ -5,6 +5,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
@@ -92,4 +93,45 @@ public class RouteController {
         return "redirect:/summary?workDayId=" + workDayId;
     }
 
+    @GetMapping("/editRoute")
+    public String editRoute(@AuthenticationPrincipal Employee employee,
+                              @RequestParam("id") Long id,@RequestParam("workDayId") Long workDayId,
+                              Model model) {
+        if (employee == null) {
+            return "redirect:/login";
+        }
+
+        if (id == null) {
+            throw new IllegalArgumentException("Route ID nie może być puste");
+        }
+
+       Route route = routeService.getRouteById(id);
+
+        if(route == null) {
+            model.addAttribute("info", "Nie znaleziono route.");
+            return "error";
+        }
+        WorkDay workDay = workDayService.getWorkDayById(workDayId);
+
+        model.addAttribute("workDay", workDay);
+        model.addAttribute("route", route);
+        model.addAttribute("trucks", truckService.getAllTrucks());
+        model.addAttribute("trailers", trailerService.getAllTrailers());
+        model.addAttribute("selectedTruckNumber", route.getTruckNumber());
+        model.addAttribute("selectedTrailerNumber", route.getTrailerNumber());
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        return "editRoute"; // Upewnij się, że nazwa widoku pasuje do Twojego pliku HTML
+    }
+    @PostMapping("/editRoute")
+    public String saveRoute(
+            @RequestParam("workDayId") Long workDayId,@RequestParam("routeId") Long routeId,@ModelAttribute Route route) {
+
+        // Zapisz dane w bazie danych
+        routeService.updateRoute(routeId, route);
+
+        // Przekieruj na stronę podsumowania
+        return "redirect:/summary?workDayId=" + workDayId;
+    }
 }
+
+

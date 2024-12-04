@@ -11,7 +11,7 @@
 
     <p th:text="${info}"></p>
 
-    <form th:action="@{/workDay/edit}" method="post">
+    <form th:action="@{/editWorkDay}" method="post">
         <input type="hidden" name="workDayId" th:value="${workDay.id}"/>
 
         <div class="form-group">
@@ -33,20 +33,35 @@
             <label for="totalDistance">Total Distance:</label>
             <input type="text" id="totalDistance" name="totalDistance" th:value="${workDay.totalDistance}" class="form-control">
         </div>
+        <div class="form-group form-check">
+            <input type="checkbox" id="accident" name="accident" class="form-check-input"
+                   th:checked="${workDay != null && workDay.accident}">
+            <label class="form-check-label" for="accident">Wypadek</label>
+        </div>
 
+        <!-- Usterki -->
+        <!--<div class="form-group form-check">
+            <input type="checkbox" id="faults" name="faults" class="form-check-input">
+            <label class="form-check-label" for="faults">Usterki</label>
+        </div>-->
+        <div class="form-group form-check">
+            <input type="checkbox" id="faults" name="faults" class="form-check-input"
+                   th:checked="${workDay != null && workDay.faults}">
+            <label class="form-check-label" for="faults">Usterki</label>
+        </div>
         <div class="form-group">
             <label for="notes">Notes:</label>
             <textarea id="notes" name="notes" class="form-control" th:text="${workDay.notes}"></textarea>
         </div>
 
         <button type="submit" class="btn btn-primary">Save Changes</button>
-
-        <button type="submit" name="action" value="addStop" class="btn btn-secondary">Dodaj Kolejny Stop</button>
-        <button type="submit" name="action" value="addRoute" class="btn btn-primary">Dodaj Nowa Trase</button>
-        <button type="submit" name="action" value="summary" class="btn btn-info">Zakończ i Wyświetl Podsumowanie</button>
+        <!--<button type="submit" name="action" value="summary" class="btn btn-info">Wroc do Podsumowania</button>-->
+        <!--<a href="/summary" class="btn btn-secondary">Wroc do Podsumowania</a>-->
+        <a th:href="@{/summary(workDayId=${workDay.id})}" class="btn btn-primary">Wroc do Podsumowania</a>
+        <!--<button onclick="history.back()" class="btn btn-secondary">Go Back</button>-->
 
     </form>
-    <a href="/home" class="btn btn-primary mb-4">Cancel</a>
+   <!-- <a href="/home" class="btn btn-primary mb-4">Cancel</a>-->
 </div>
 </body>
 </html>

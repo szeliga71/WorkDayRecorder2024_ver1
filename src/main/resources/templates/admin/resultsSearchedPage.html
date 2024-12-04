@@ -92,19 +92,19 @@
             <td th:text="${workDay.notes}"></td>
             <td>
                 <form th:action="@{/summary}" method="get">
-                    <input type="hidden" name="id" th:value="${workDay.id}">
+                    <input type="hidden" name="workDayId" th:value="${workDay.id}">
                     <button type="submit" class="btn btn-custom-5 btn-lg m-2">Details</button>
                 </form>
             </td>
             <td>
                 <form th:action="@{/editWorkDay}" method="get">
-                    <input type="hidden" name="id" th:value="${workDay.id}">
+                    <input type="hidden" name="workDayId" th:value="${workDay.id}">
                     <button type="submit" class="btn btn-custom-2 btn-lg m-2">Update</button>
                 </form>
             </td>
             <td>
                 <form th:action="@{/admin/confirmDeletionWorkDay}" method="post">
-                    <input type="hidden" name="id" th:value="${workDay.id}">
+                    <input type="hidden" name="workDayId" th:value="${workDay.id}">
                     <button type="submit" class="btn btn-custom-6 btn-lg m-2">Delete</button>
                 </form>
             </td>
