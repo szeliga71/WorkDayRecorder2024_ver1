@@ -92,5 +92,9 @@ public class WorkDayService {
         }
         return null;
     }
+
+    public void deleteWorkDay(WorkDay workDay){
+        workDayRepository.delete(workDay);
+    }
 }
 

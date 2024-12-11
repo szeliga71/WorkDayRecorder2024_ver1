@@ -23,7 +23,7 @@ public class WorkDay {
     private LocalDateTime endOfWork;
     private String totalDistance;
 
-    @OneToMany(/*mappedBy="workDay",*/cascade=CascadeType.ALL )
+    @OneToMany(/*mappedBy="workDay",*/cascade=CascadeType.ALL ,orphanRemoval = true)
     private List<Route> routes;
     private boolean accident;
     private boolean faults;

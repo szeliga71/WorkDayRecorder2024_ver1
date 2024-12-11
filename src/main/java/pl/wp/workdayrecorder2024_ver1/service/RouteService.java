@@ -14,7 +14,9 @@ public class RouteService {
     @Autowired
     private RouteRepository routeRepository;
 
-
+    public void deleteRoute(Route route) {
+    routeRepository.delete(route);
+    }
 
     public void addRoute(Route route) {
         routeRepository.save(route);

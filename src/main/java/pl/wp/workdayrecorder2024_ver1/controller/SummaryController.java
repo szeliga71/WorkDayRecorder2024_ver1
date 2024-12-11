@@ -13,6 +13,8 @@ import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
 import pl.wp.workdayrecorder2024_ver1.service.RouteService;
 import pl.wp.workdayrecorder2024_ver1.service.StopService;
 import pl.wp.workdayrecorder2024_ver1.service.WorkDayService;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,6 +30,8 @@ public class SummaryController {
 
     @GetMapping("/summary")
     public String summary(@AuthenticationPrincipal Employee employee,Model model,@RequestParam("workDayId")Long workDayId) {
+
+
         if (employee == null) {
             return "redirect:/login";
         }
@@ -37,9 +41,10 @@ public class SummaryController {
         WorkDay workDay = workDayService.getWorkDayById(workDayId);
         List<Route> routes=routeService.getAllRoutesByWorkDayId(workDayId);
 
+
         for(Route route:routes){
             Long idRoute=route.getId();
-            List<Stop> stops=stopService.getAllStopsByRouteId(idRoute);
+            List<Stop>stops=stopService.getAllStopsByRouteId(idRoute);
             route.setStops(stops);
         }
         workDay.setRoutes(routes);

@@ -64,6 +64,8 @@
     <form th:action="@{/newStop}" method="post" class="form-container">
         <!-- Hidden Route ID -->
         <input type="hidden" name="routeId" th:value="${route.id}"/>
+        <input type="hidden" name="workDayId" th:value="${workDay.id}"/>
+        <!--<input type="hidden" name="workDayId" th:value="${workDay.id}" />-->
 
         <!-- Markt ID (rozwijane) -->
         <div class="form-group">
@@ -100,9 +102,10 @@
 
         <!-- Przyciski wyboru akcji -->
         <div class="form-group">
-            <button type="submit" name="action" value="addStop" class="btn btn-secondary">Dodaj Kolejny Stop</button>
-            <button type="submit" name="action" value="addRoute" class="btn btn-primary">Dodaj Nowa Trase</button>
+
+            <button type="submit" name="action" value="addStop" class="btn btn-secondary">Add New Stop</button>
             <button type="submit" name="action" value="summary" class="btn btn-info">Zakończ i Wyświetl Podsumowanie</button>
+            <a th:href="@{/summary(workDayId=${workDay.id})}" class="btn btn-primary">Wroc do Podsumowania</a>
         </div>
     </form>
 </div>
@@ -112,41 +115,3 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
-<!--<!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>New Stop</title>
-</head>
-<body>
-<br>
-<h1>ADD NEW STOP</h1>
-<p>Logged employee : <span class="email-highlight" sec:authentication="name"></span></p>
-<form th:action="@{/newStop}" method="post">
-
-    <input type="hidden" name="routeId" th:value="${route.id}">
-
-
-    <label for="marktId">Markt ID:</label>
-    <select id="marktId" name="marktId" required>
-        <option value="">Wybierz market</option>
-        <option th:each="markt : ${markts}" th:value="${markt.id}" th:text="${markt.name}"></option>
-    </select>
-    <br><br>
-
-
-    <label for="beginn">Początek Przystanku:</label>
-    <input type="datetime-local" id="beginn" name="beginn" required><br><br>
-
-
-    <label for="endOfStopp">Koniec Przystanku:</label>
-    <input type="datetime-local" id="endOfStopp" name="endOfStopp" required><br><br>
-
-
-    <button type="submit" name="action" value="addStop">Dodaj Kolejny Stop</button>
-    <button type="submit" name="action" value="addRoute">Dodaj Nowa Trase</button>
-    <button type="submit" name="action" value="summary">Zakończ i Wyświetl Podsumowanie</button>
-</form>
-
-</body>
-</html>-->

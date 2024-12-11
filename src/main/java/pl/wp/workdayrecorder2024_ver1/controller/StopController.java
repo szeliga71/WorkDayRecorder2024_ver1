@@ -32,13 +32,25 @@ public class StopController {
     private WorkDayService workDayService;
 
     @GetMapping("/newStop")
-    public String newStop(@AuthenticationPrincipal Employee employee,@RequestParam("routeId") Long routeId, Model model) {
+    public String newStop(@AuthenticationPrincipal Employee employee,
+                          @RequestParam("routeId") Long routeId,
+                          @RequestParam(value = "workDayId",required = false) Long workDayId,
+                          Model model) {
         if (employee == null) {
             return "redirect:/login";
         }
+        WorkDay workDay = workDayService.getWorkDayById(workDayId);
+        if (workDayId != null) {
+            workDay = workDayService.getWorkDayById(workDayId);
+            model.addAttribute("workDay", workDay);
+        } else {
+            model.addAttribute("workDay", null);
+        }
         Route route = routeService.getRouteById(routeId);
+        model.addAttribute("workDay", workDay);
         //model.addAttribute("stop", new Stop());
         model.addAttribute("route", route);
+        model.addAttribute("workDayId", workDayId);
         model.addAttribute("markets", marktService.getAllMarkts());
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "newStop";
@@ -57,7 +69,7 @@ public class StopController {
 
         // Utwórz nowy obiekt stop i ustaw jego właściwości
         Stop stop = new Stop();
-        stop.setRouteId(routeId);
+        stop.setRoute(route);
         stop.setMarktId(marktId);
         stop.setBeginn(begin);
         stop.setEndOfStopp(endOfStop);
@@ -68,16 +80,24 @@ public class StopController {
 
         routeService.updateRoute(routeId,route);
 
-        if ("addStop".equals(action)) {
-            return "redirect:/newStop?routeId=" + route.getId();
-        } else if ("addRoute".equals(action)) {
-            return "redirect:/newRoute?workDayId=" + route.getWorkDayId() ;
-        } else if ("summary".equals(action)) {
-            return "redirect:/summary?workDayId=" + route.getWorkDayId() ;
-        }
-        return "redirect:/summary?workDayId=" + route.getWorkDayId() ;
 
+
+        if ("addStop".equals(action)) {
+            return "redirect:/newStop?routeId=" + route.getId() + "&workDayId=" + route.getWorkDay().getId();
+        } else if ("addRoute".equals(action)) {
+           // return "redirect:/newRoute?workDayId=" + route.getWorkDayId() ;
+            return "redirect:/newRoute?workDayId=" + route.getWorkDay().getId() ;
+        } else if ("summary".equals(action)) {
+            return "redirect:/summary?workDayId=" + route.getWorkDay().getId() ;
+            //return "redirect:/summary?workDay=" + route.getWorkDay() ;
+        }
+        //return "redirect:/summary?workDayId=" + route.getWorkDayId() ;
+        return "redirect:/summary?workDayId=" + route.getWorkDay().getId() ;
     }
+
+
+
+
 
     @GetMapping("/editStop")
     public String editRoute(@AuthenticationPrincipal Employee employee,
@@ -120,14 +140,18 @@ public class StopController {
     //===============================================
     //     USUWANIE
        @GetMapping("/confirmDeletionStop")
-    public String confirmDeletionStop(@AuthenticationPrincipal Employee loggedEmployee, @RequestParam("id") Long id, Model model) {
+    public String confirmDeletionStop(@AuthenticationPrincipal Employee loggedEmployee, @RequestParam("id") Long id,@RequestParam(value = "workDayId", required = false) Long workDayId ,Model model) {
         if (loggedEmployee == null) {
             return "redirect:/login";
         }
         model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
 
+
         Stop stop =stopService.getStopById(id);
 
+        model.addAttribute("workdayId", workDayId);
+        WorkDay workDay = workDayService.getWorkDayById(workDayId);
+        model.addAttribute("workDay", workDay);
         if (stop == null) {
             model.addAttribute("error", "Stop with markt number: " + stop.getMarktId() + " not found.");
             return "redirect:/summary";
@@ -140,20 +164,30 @@ public class StopController {
     }
 
     @PostMapping("/deleteStop")
-    public String deleteStop(@AuthenticationPrincipal Employee loggedEmployee,@RequestParam("id") Long id, Model model) {
+    public String eraseStop(@AuthenticationPrincipal Employee loggedEmployee,@RequestParam("id") Long id, Model model) {
         if (loggedEmployee == null) {
             return "redirect:/login";
         }
         model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
+
         Stop stop =stopService.getStopById(id);
+        Long workDayId = stop.getRoute().getWorkDay().getId();
         if (stop != null) {
+            workDayId = stop.getRoute().getWorkDay().getId(); // Pobierz workDayId z relacji
+            if (workDayId == null && stop != null) {
+                workDayId = stop.getRoute().getWorkDay().getId();
+            }
             stopService.deleteStop(id);
+
+            model.addAttribute("workDayId", workDayId);
             model.addAttribute("stop", stop);
             model.addAttribute("message", "Stop with market number: " + stop.getMarktId() + " has been removed.");
         } else {
             model.addAttribute("error", /*"Stop with number: " + stop.getMarktId() + " not found.*/"Stop with the given ID not found.");
         }
-        return "deleteStop";
+
+        return "redirect:/summary?workDayId=" + workDayId;
+        //return "deleteStop";
     }
 
     /*@GetMapping("/confirmDeletionStop")
@@ -167,11 +201,21 @@ public class StopController {
     }*/
 
     @GetMapping("/deleteStop")
-    public String deleteStop(@AuthenticationPrincipal Employee employee,Model model){
+    public String deleteStop(@AuthenticationPrincipal Employee employee,@RequestParam(value = "workDayId",required = false) Long workDayId,Model model){
         if (employee == null) {
             return "redirect:/login";
         }
+        model.addAttribute("workDayId", workDayId);
+
+        if (workDayId != null) {
+            WorkDay workDay = workDayService.getWorkDayById(workDayId);
+            model.addAttribute("workDay", workDay);
+        } else {
+            model.addAttribute("workDay", null);
+        }
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        //return "redirect:/summary?workDayId=" + workDayId;
+
         return "deleteStop";
     }
 }

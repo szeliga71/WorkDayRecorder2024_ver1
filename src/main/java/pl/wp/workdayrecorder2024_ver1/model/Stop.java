@@ -1,8 +1,6 @@
 package pl.wp.workdayrecorder2024_ver1.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,15 +14,27 @@ public class Stop {
     private LocalDateTime beginn;
     private LocalDateTime endOfStopp;
     private String marktId;
-    private Long routeId;
+    //private Long routeId;
 
-    public Long getRouteId() {
+    @ManyToOne
+    @JoinColumn(name = "route_id",nullable = false)
+    private Route route;
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
+
+    /*public Long getRouteId() {
         return routeId;
     }
 
     public void setRouteId(Long routeId) {
         this.routeId = routeId;
-    }
+    }*/
 
     public Long getId() {
         return id;

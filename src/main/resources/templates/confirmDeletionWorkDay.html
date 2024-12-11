@@ -25,11 +25,12 @@
     </div>
 
     <form th:action="@{/deleteWorkDay}" method="post">
-        <input type="hidden" name="number" th:value="${workDay.id}">
+        <input type="hidden" name="workDayId" th:value="${workDay.id}">
         <button type="submit" class="btn btn-danger btn-lg m-2">Delete</button>
     </form>
-
-    <a href="/summary" class="btn btn-success btn-lg m-2">Powrót</a>
+    <!--<a th:href="${role == 'ROLE_ADMIN' ? '/admin/adminPanel' : '/home'}" class="btn btn-primary mb-4">Back to Home</a>-->
+    <!--<a href="/summary" class="btn btn-success btn-lg m-2">Powrót</a>-->
+    <a th:href="@{/summary(workDayId=${workDay.id})}" class="btn btn-primary">Wroc do Podsumowania</a>
 </div>
 </body>
 </html>

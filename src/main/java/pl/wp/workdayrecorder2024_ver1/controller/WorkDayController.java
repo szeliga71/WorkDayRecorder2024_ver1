@@ -46,29 +46,6 @@ public class WorkDayController {
         return "workDay";
     }
 
-  /*  @PostMapping("/workDay/edit")
-    public String editWorkDay(@RequestParam("workDayId") Long workDayId,
-                              @RequestParam("startOfWork") LocalDateTime startOfWork,
-                              @RequestParam("pause") String pause,
-                              @RequestParam("endOfWork") LocalDateTime endOfWork,
-                              @RequestParam("totalDistance") String totalDistance,
-                              @RequestParam("notes") String notes,
-                              Model model) {
-
-        Optional<WorkDay> workDayOpt = workDayService.findWorkDayById(workDayId);
-        if (workDayOpt.isPresent()) {
-            WorkDay workDay = workDayOpt.get();
-            workDay.setStartOfWork(startOfWork);
-            workDay.setPause(pause);
-            workDay.setEndOfWork(endOfWork);
-            workDay.setTotalDistance(totalDistance);
-            workDay.setNotes(notes);
-
-            workDayService.addOrUpdateWorkDay(workDay);
-        }
-        return "redirect:/home";
-        //return "redirect:/workDays";  // Przekierowanie po zapisaniu
-    }*/
 
     @PostMapping("/workDay")
     public String addOrUpdateWorkDay(@AuthenticationPrincipal Employee employee,
@@ -81,6 +58,11 @@ public class WorkDayController {
                                 @RequestParam(name="faults", required = false, defaultValue = "false") boolean faults,
                                 @RequestParam("notes") String notes,
                             Model model) {
+
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
 
         //mechanizm wybrania dayOfWeek i ustalenie daty dnia pracy - date
 
@@ -121,9 +103,12 @@ public class WorkDayController {
         if (existingWorkDayOpt.isPresent()) {
             // Rekord już istnieje, wypełnienie formularza danymi i umożliwienie edycji
             WorkDay existingWorkDay = existingWorkDayOpt.get();
+            Long workDayId = existingWorkDay.getId();
+            model.addAttribute("workDayId", workDayId);
             model.addAttribute("workDay", existingWorkDay);
             model.addAttribute("info", "Rekord dla tego dnia już istnieje, możesz go edytować.");
-            return "summary";
+            return "redirect:/summary?workDayId=" + workDayId;
+            //return "summary";
            // return "editWorkDay";  // Zwracasz widok do edycji formularza
 
         } else {
@@ -180,53 +165,92 @@ public class WorkDayController {
         // Przekieruj na stronę podsumowania
         return "redirect:/summary?workDayId=" + workDayId;
     }
+
+    //===============================================
+    //     USUWANIE
+    @GetMapping("/confirmDeletionWorkDay")
+    public String confirmDeletionWorkDay(@AuthenticationPrincipal Employee loggedEmployee,
+                                         @RequestParam("id") Long id,
+                                      @RequestParam(value = "workDayId") Long workDayId,
+                                      Model model) {
+        if (loggedEmployee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
+
+        model.addAttribute("workDayId", workDayId);
+        WorkDay workDay = workDayService.getWorkDayById(workDayId);
+        model.addAttribute("workDay", workDay);
+
+       /* if (workDay == null) {
+            model.addAttribute("error", "WorkDay with: " + workDay.getDayOfWeek() + " " + "not found.");
+            return "redirect:/summary";
+        }
+        else{
+            model.addAttribute("workDay" ,workDay);
+            return "confirmDeletionWorkDay";
+        }*/
+        return "confirmDeletionWorkDay";
+    }
+
+    @PostMapping("/deleteWorkDay")
+    public String deleteWorkDay(@AuthenticationPrincipal Employee loggedEmployee,@RequestParam("workDayId") Long workDayId, Model model) {
+        if (loggedEmployee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
+        WorkDay workDay = workDayService.getWorkDayById(workDayId);
+
+
+        if (workDay != null) {
+
+
+            workDayService.deleteWorkDay(workDay);
+
+            model.addAttribute("workDayId", workDayId);
+            model.addAttribute("message", "WorkDay : " + workDay.getDayOfWeek() + " has been removed.");
+        } else {
+            model.addAttribute("error", /*"Stop with number: " + stop.getMarktId() + " not found.*/"Work Day with the given ID not found.");
+        }
+        if (loggedEmployee.getRole().contains("ROLE_ADMIN")) {
+            return "redirect:/admin/adminPanel";
+        } else {
+            return "redirect:/home";
+        }
+        //return "redirect:/summary?workDayId=" + workDayId;
+
+    }
+
+    /*@GetMapping("/confirmDeletionStop")
+    public String confirmDeletionStop(@AuthenticationPrincipal Employee employee,Model model){
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        return "confirmDeletionStop";
+
+    }*/
+
+    @GetMapping("/deleteWorkDay")
+    public String deleteRoute(@AuthenticationPrincipal Employee employee,@RequestParam(value = "workDayId") Long workDayId,Model model){
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        if (workDayId != null) {
+            WorkDay workDay = workDayService.getWorkDayById(workDayId);
+            model.addAttribute("workDay", workDay);
+        } else {
+            model.addAttribute("workDay", null);
+        }
+        model.addAttribute("workDayId", workDayId);
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        return "deleteWorkDay";
+    }
 }
 
 
 
-  /*  @PostMapping("/workDay/update")
-    public String updateWorkDay(WorkDay workDay) {
-        return "workDay";
-    }*/
-
-    /*@GetMapping("/admin/resultsSearchedPage")
-    public String showSearchedDaysByWeek(@AuthenticationPrincipal Employee employee,
-                                         @RequestParam(value = "personalId", required = false) String personalId,
-                                         @RequestParam(value = "dayOfWeek", required = false) String dayOfWeek,
-                                         @RequestParam(value = "KW", required = false) Integer KW,
-                                         Model model){
-
-        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        List<WorkDay> workDays = workDayService.getWorkDaysByCustomParameter(personalId, dayOfWeek, KW);
-        model.addAttribute("workDays", workDays);
-        model.addAttribute("personalId", personalId);
-        model.addAttribute("dayOfWeek", dayOfWeek);
-        model.addAttribute("KW", KW);
-        return "admin/resultsSearchedPage";
-    }
 
 
-    @GetMapping("/admin/searchByCustomArguments")
-    public String searchByAllArguments(@AuthenticationPrincipal Employee employee,
-                                       Model model){
-        if (employee == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        return "admin/searchByCustomArguments";
-    }
-
-    @PostMapping("/admin/searchByCustomArguments")
-    public String searchByAllArguments(@AuthenticationPrincipal Employee employee,
-                                       @RequestParam(value = "personalId", required = false) String personalId,
-                                       @RequestParam(value = "dayOfWeek", required = false) String dayOfWeek,
-                                       @RequestParam(value = "KW", required = false) Integer KW,
-                                       Model model){
-        if (employee == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        return "admin/resultsSearchedPage";
-    }*/
 
 

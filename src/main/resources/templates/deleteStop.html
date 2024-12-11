@@ -27,18 +27,17 @@
     <!--<p>Logged user : <span class="email-highlight" sec:authentication="name"></span></p>-->
     <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
     <h1 class="mb-4">The Stop has been deleted</h1>
-
+    <!--<input type="hidden" id="workDayId" th:value="${workDayId}" />-->
     <h2 class="mb-4">Operacja usunięcia Stop</h2>
-
+    <!--<form th:action="@{/deleteStop}" method="post" class="form-container">-->
     <h2 th:if="${message}" th:text="${message}" class="text-success"></h2>
     <h2 th:if="${error}" th:text="${error}" class="text-danger"></h2>
+
     <a href="/summary" class="btn btn-success">Powrót</a>
-   <!-- <div th:if="${message}">
-        <p th:text="${message}"></p>
-    </div>-->
+        <button onclick="window.location.href='/summary?workDayId=' + workDayId" class="btn btn-info">Zakończ i Wyświetl PodsumowanieJS</button>
+        <a th:href="@{/summary(workDayId=${workDayId})}" class="btn btn-info">Zakończ i Wyświetl Podsumowanie</a>
 
 
-    <!--<a href="/summary" class="btn btn-success">Powrót</a>-->
 </div>
 </body>
 </html>

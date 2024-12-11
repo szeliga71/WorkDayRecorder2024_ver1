@@ -38,21 +38,16 @@
     <p><strong>Date:</strong> <span th:text="${workDay.date}"></span></p>
     <div class="button-container">
         <a th:href="@{/editWorkDay(id=${workDay.id})}" class="btn btn-warning btn-space">Detail/Edit</a>
-        <a th:href="@{/confirmDeletionWorkDay(id=${workDay.id})}" class="btn btn-danger btn-space">Delete</a>
+        <a th:href="@{/confirmDeletionWorkDay(id=${workDay.id}, workDayId=${workDay.id})}" class="btn btn-danger btn-space">Delete</a>
         <a th:href="@{/newRoute(workDayId=${workDay.id})}" class="btn btn-success btn-space">Add Route</a>
     </div>
     <h2>Routes</h2>
     <div th:each="route : ${routes}" class="route-table">
         <h3>Route Number: <span th:text="${route.routeNumber}"></span></h3>
-        <!--<p><strong>Truck Number:</strong> <span th:text="${route.truckNumber}"></span></p>
-        <p><strong>Trailer Number:</strong> <span th:text="${route.trailerNumber}"></span></p>
-        <p><strong>Route Number:</strong> <span th:text="${route.routeNumber}"></span></p>
-        <p><strong>Start of Route:</strong> <span th:text="${route.startOfRoute}"></span></p>
-        <p><strong>End of Route:</strong> <span th:text="${route.endOfRoute}"></span></p>-->
         <div class="button-container">
             <a th:href="@{/editRoute(id=${route.id},workDayId=${workDay.id})}" class="btn btn-warning btn-space">Detail/Edit</a>
-            <a th:href="@{/confirmDeletionRoute(id=${route.id})}" class="btn btn-danger btn-space">Delete</a>
-            <a th:href="@{/newStop(routeId=${route.id})}" class="btn btn-success btn-space">Add Stop</a>
+            <a th:href="@{/confirmDeletionRoute(routeId=${route.id},workDayId=${workDay.id})}" class="btn btn-danger btn-space">Delete</a>
+            <a th:href="@{/newStop(routeId=${route.id},workDayId=${workDay.id})}" class="btn btn-success btn-space">Add Stop</a>
         </div>
         <h4>Stops for Route No: <span th:text="${route.getRouteNumber()}"></span></h4>
         <table class="stop-table">
@@ -74,7 +69,7 @@
                 <td>
                     <div class="button-container">
                         <a th:href="@{/editStop(id=${stop.id},workDayId=${workDay.id})}" class="btn btn-warning btn-space">Details/Edit</a>
-                        <a th:href="@{/confirmDeletionStop(id=${stop.id})}" class="btn btn-danger btn-space">Delete</a>
+                        <a th:href="@{/confirmDeletionStop(id=${stop.id},workDayId=${workDay.id})}" class="btn btn-danger btn-space">Delete</a>
                     </div>
                 </td>
             </tr>

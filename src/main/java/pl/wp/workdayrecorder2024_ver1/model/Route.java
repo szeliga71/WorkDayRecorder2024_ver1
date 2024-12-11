@@ -15,23 +15,35 @@ public class Route {
     private String truckNumber;
     private String trailerNumber;
     private String routeNumber;
+    //private int distance;
     private LocalDateTime startOfRoute;
     private LocalDateTime departureFromTheBase;
-    @OneToMany(cascade= CascadeType.ALL )
+    @OneToMany(cascade= CascadeType.ALL,orphanRemoval = true )
+    @JoinColumn(name = "route_id")
     private List<Stop> stops;
     private LocalDateTime arrivalToTheBase;
     private LocalDateTime endOfRoute;
-    //@ManyToOne
-    //@JoinColumn(name = "work_day_id")
-    private Long workDayId;
+    @ManyToOne
+    @JoinColumn(name = "work_day_id",nullable = false)
+    private WorkDay workDay;
+    //private Long workDayId;
 
-    public Long getWorkDayId() {
+    public WorkDay getWorkDay() {
+        return workDay;
+    }
+
+    public void setWorkDay(WorkDay workDay) {
+        this.workDay = workDay;
+    }
+
+
+   /* public Long getWorkDayId() {
         return workDayId;
     }
 
     public void setWorkDayId(Long workDayId) {
         this.workDayId = workDayId;
-    }
+    }*/
 
     public Long getId() {
         return id;

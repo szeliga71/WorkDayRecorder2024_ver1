@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
 import pl.wp.workdayrecorder2024_ver1.model.Route;
+import pl.wp.workdayrecorder2024_ver1.model.Stop;
 import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
 import pl.wp.workdayrecorder2024_ver1.service.RouteService;
 import pl.wp.workdayrecorder2024_ver1.service.TrailerService;
@@ -37,6 +38,7 @@ public class RouteController {
         WorkDay workDay = workDayService.getWorkDayById(workDayId);
         // Dodaj obiekt Route do modelu
         //model.addAttribute("route", new Route());
+        model.addAttribute("workDayId", workDayId);
         model.addAttribute("workDay", workDay);
         model.addAttribute("trucks", truckService.getAllTrucks());
         model.addAttribute("trailers", trailerService.getAllTrailers());
@@ -48,7 +50,7 @@ public class RouteController {
     @PostMapping("/newRoute")
     public String addRoute(@RequestParam("workDayId") Long workDayId,
                            @RequestParam("truckNumber") String truckNumber,
-                           @RequestParam("trailerNumber") String trailerNumber,
+                           @RequestParam(value="trailerNumber", required = false) String trailerNumber,
                            @RequestParam("routeNumber") String routeNumber,
                            @RequestParam("startOfRoute") LocalDateTime startOfRoute,
                            @RequestParam("departureFromTheBase") LocalDateTime departureFromTheBase,
@@ -62,8 +64,14 @@ public class RouteController {
 
         // Utwórz nowy obiekt Route i ustaw jego właściwości
         Route route = new Route();
-        route.setWorkDayId(workDayId);
+        route.setWorkDay(workDay);
+       // route.setWorkDayId(workDayId);
         route.setTruckNumber(truckNumber);
+        if (trailerNumber != null && !trailerNumber.isEmpty()) {
+            route.setTrailerNumber(trailerNumber);
+        } else {
+            route.setTrailerNumber(null); // Brak przyczepy
+        }
         route.setTrailerNumber(trailerNumber);
         route.setRouteNumber(routeNumber);
         route.setStartOfRoute(startOfRoute);
@@ -80,8 +88,8 @@ public class RouteController {
 
         // Wybierz następną akcję w zależności od wartości parametru 'action'
         if ("addStop".equals(action)) {
-            System.out.println(route.getId());
-            return "redirect:/newStop?routeId=" + route.getId();
+            return "redirect:/newStop?routeId=" + route.getId() + "&workDayId=" + route.getWorkDay().getId();
+            //return "redirect:/newStop?routeId=" + route.getId();
         } else if ("addRoute".equals(action)) {
             return "redirect:/newRoute?workDayId=" + workDayId;
         } else if ("summary".equals(action)) {
@@ -131,6 +139,84 @@ public class RouteController {
 
         // Przekieruj na stronę podsumowania
         return "redirect:/summary?workDayId=" + workDayId;
+    }
+    //===============================================
+    //     USUWANIE
+    @GetMapping("/confirmDeletionRoute")
+    public String confirmDeletionStop(@AuthenticationPrincipal Employee loggedEmployee,
+                                      @RequestParam("routeId") Long routeId,
+                                      @RequestParam(value = "workDayId", required = false) Long workDayId,
+                                      Model model) {
+        if (loggedEmployee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
+
+        Route route =routeService.getRouteById(routeId);
+        model.addAttribute("workDayId", workDayId);
+        WorkDay workDay = workDayService.getWorkDayById(workDayId);
+        model.addAttribute("workDay", workDay);
+
+        if (route == null) {
+            model.addAttribute("error", "Route with number: " + route.getRouteNumber() + " not found.");
+            return "redirect:/summary";
+            //return "error";
+        }
+        else{
+            model.addAttribute("route" ,route);
+            return "confirmDeletionRoute";
+        }
+    }
+
+    @PostMapping("/deleteRoute")
+    public String deleteStop(@AuthenticationPrincipal Employee loggedEmployee,@RequestParam("id") Long id, Model model) {
+        if (loggedEmployee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
+        Route route =routeService.getRouteById(id);
+        Long workDayId = route.getWorkDay().getId();
+
+        if (route != null) {
+            workDayId = route.getWorkDay().getId(); // Pobierz workDayId z relacji
+            if (workDayId == null && route != null) {
+                workDayId = route.getWorkDay().getId();
+            }
+            routeService.deleteRoute(route);
+            model.addAttribute("workDayId", workDayId);
+            model.addAttribute("route", route);
+            model.addAttribute("message", "Route with number: " + route.getRouteNumber() + " has been removed.");
+        } else {
+            model.addAttribute("error", /*"Stop with number: " + stop.getMarktId() + " not found.*/"Route with the given ID not found.");
+        }
+        return "redirect:/summary?workDayId=" + workDayId;
+        //return "deleteRoute";
+    }
+
+    /*@GetMapping("/confirmDeletionStop")
+    public String confirmDeletionStop(@AuthenticationPrincipal Employee employee,Model model){
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        return "confirmDeletionStop";
+
+    }*/
+
+    @GetMapping("/deleteRoute")
+    public String deleteRoute(@AuthenticationPrincipal Employee employee,@RequestParam(value = "workDayId",required = false) Long workDayId,Model model){
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        if (workDayId != null) {
+            WorkDay workDay = workDayService.getWorkDayById(workDayId);
+            model.addAttribute("workDay", workDay);
+        } else {
+            model.addAttribute("workDay", null);
+        }
+        model.addAttribute("workDayId", workDayId);
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        return "deleteRoute";
     }
 }
 
