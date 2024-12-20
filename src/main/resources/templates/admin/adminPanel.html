@@ -21,20 +21,43 @@
         }
 
         .btn-custom-1 {
-            background-color: #ff5733; /* Niestandardowy kolor przycisku */
+            background-color: #D3D3D3; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-2 {
+            background-color: #c0c0c0; /* Niestandardowy kolor przycisku */
             border: 2px solid black;
             color: black; /* Czarna obwódka */
             font-weight: bold;
         }
         .btn-custom-3 {
-            background-color: #990000; /* Inny niestandardowy kolor przycisku */
+            background-color: #a9a9a9; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-4 {
+            background-color: #808080; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-5 {
+            background-color: #696969; /* Inny niestandardowy kolor przycisku */
             border: 2px solid black; /* Czarna obwódka */
             color: black; /* Czarna obwódka */
             font-weight: bold;
         }
-
+        .btn-custom-6 {
+            background-color: #0066FF; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
         .email-highlight {
-            color: orange; /* Kolor tekstu */
+            color: #008080; /* Kolor tekstu */
             font-family: 'Arial', sans-serif; /* Czcionka */
             font-weight: bold; /* Pogrubienie */
         }
@@ -53,15 +76,15 @@
             justify-content: center;
             gap: 10px; /* Odstępy między przyciskami */
         }
+        .btn-fixed-width {
+            width: 190px; /* Ustaw szerokość według własnych potrzeb */
+        }
 
     </style>
     <script>
         function goToEmployees() {
             window.location.href = "employees";
         }
-       // function addNewEmployee() {
-         //   window.location.href = "register";
-        //}
         function addNewPlan() {
             window.location.href = "uploadWorkDayPlan";
         }
@@ -82,20 +105,20 @@
 </head>
 <body>
 <div class="content-box text-center">
-    <h1 class="text-center mt-4">ADMIN Main Panel</h1>
-    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+    <h1 class="text-center mt-4"  style="color: #0066FF; font-weight: bold;">Admin Hauptmenü</h1>
+    <p>Benutzer : <span class="email-highlight" th:text="${fullName}"></span></p>
 
     <div class="button-container">
-    <button onclick="searchWorkingDays()" class="btn btn-custom-1 btn-lg m-2">Search</button>
-        <button onclick="addNewPlan()" class="btn btn-custom-1 btn-lg m-2">New Week Plan</button>
-        <button onclick="goToEmployees()" class="btn btn-custom-1 btn-lg m-2">Employees List</button>
-        <!--<button onclick="addNewEmployee()" class="btn btn-custom-1 btn-lg m-2">Add new Employee</button>-->
-    <button onclick="goToTrucks()" class="btn btn-custom-1 btn-lg m-2">Truck List</button>
-    <button onclick="goToTrailers()" class="btn btn-custom-1 btn-lg m-2">Trailer List</button>
-    <button onclick="goToMarkts()" class="btn btn-custom-1 btn-lg m-2">Markt List</button>
+    <button onclick="searchWorkingDays()" class="btn btn-custom-1 btn-lg m-2 btn-fixed-width" >Suchen</button>
+        <button onclick="addNewPlan()" class="btn btn-custom-2 btn-lg m-2 btn-fixed-width">Arbeitsplan</button>
+        <button onclick="goToEmployees()" class="btn btn-custom-3 btn-lg m-2 btn-fixed-width">Mitarbeiterliste</button>
+
+    <button onclick="goToTrucks()" class="btn btn-custom-4 btn-lg m-2 btn-fixed-width">LKW Liste</button>
+    <button onclick="goToTrailers()" class="btn btn-custom-5 btn-lg m-2 btn-fixed-width">Aufliegerliste</button>
+    <button onclick="goToMarkts()" class="btn btn-custom-6 btn-lg m-2 btn-fixed-width">Märkteliste</button>
 
     <form th:action="@{/logout}" method="post" style="display:inline-block;">
-        <button type="submit" class="btn btn-custom-3 btn-lg m-2">Logout</button>
+        <button type="submit" class="btn btn-custom-5 btn-lg m-2 btn-fixed-width">Abmelden</button>
     </form>
     </div>
 </div>

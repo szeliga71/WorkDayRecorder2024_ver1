@@ -17,11 +17,11 @@ public class WorkDay {
     private String personalId;
     private LocalDate date;
     private String dayOfWeek;
-    private int KW;
+    private Integer KW;
     private LocalDateTime startOfWork;
     private String pause;
     private LocalDateTime endOfWork;
-    private String totalDistance;
+    private Integer totalDistance;
 
     @OneToMany(/*mappedBy="workDay",*/cascade=CascadeType.ALL ,orphanRemoval = true)
     private List<Route> routes;
@@ -38,11 +38,11 @@ public class WorkDay {
         this.id = workDayId;
     }
 
-    public int getKW() {
+    public Integer getKW() {
         return KW;
     }
 
-    public void setKW(int KW) {
+    public void setKW(Integer KW) {
         this.KW = KW;
     }
 
@@ -86,11 +86,11 @@ public class WorkDay {
         this.endOfWork = endOfWork;
     }
 
-    public String getTotalDistance() {
+    public Integer getTotalDistance() {
         return totalDistance;
     }
 
-    public void setTotalDistance(String totalDistance) {
+    public void setTotalDistance(Integer totalDistance) {
         this.totalDistance = totalDistance;
     }
 
@@ -100,6 +100,7 @@ public class WorkDay {
 
     public void setRoutes(List<Route> routes) {
         this.routes = routes;
+        calculateTotalDistance();
     }
 
     public boolean isAccident() {
@@ -132,6 +133,18 @@ public class WorkDay {
 
     public void setPersonalId(String personalId) {
         this.personalId = personalId;
+    }
+
+    public void calculateTotalDistance() {
+        if (routes != null) {
+            this.totalDistance = routes.stream()
+                    .map(Route::getDistance)
+                    .filter(Objects::nonNull)
+                    .mapToInt(Integer::intValue)
+                    .sum();
+        } else {
+            this.totalDistance = 0;
+        }
     }
 
     @Override

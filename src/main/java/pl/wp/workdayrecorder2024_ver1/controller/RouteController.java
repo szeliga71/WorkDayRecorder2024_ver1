@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
 import pl.wp.workdayrecorder2024_ver1.model.Route;
-import pl.wp.workdayrecorder2024_ver1.model.Stop;
 import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
 import pl.wp.workdayrecorder2024_ver1.service.RouteService;
 import pl.wp.workdayrecorder2024_ver1.service.TrailerService;
@@ -18,6 +17,7 @@ import pl.wp.workdayrecorder2024_ver1.service.TruckService;
 import pl.wp.workdayrecorder2024_ver1.service.WorkDayService;
 
 import java.time.LocalDateTime;
+
 @Controller
 public class RouteController {
 
@@ -31,13 +31,13 @@ public class RouteController {
     private WorkDayService workDayService;
 
     @GetMapping("/newRoute")
-    public String newRoute(@AuthenticationPrincipal Employee employee,@RequestParam("workDayId") Long workDayId, Model model) {
+    public String newRoute(@AuthenticationPrincipal Employee employee,
+                           @RequestParam("workDayId") Long workDayId,
+                           Model model) {
         if (employee == null) {
             return "redirect:/login";
         }
         WorkDay workDay = workDayService.getWorkDayById(workDayId);
-        // Dodaj obiekt Route do modelu
-        //model.addAttribute("route", new Route());
         model.addAttribute("workDayId", workDayId);
         model.addAttribute("workDay", workDay);
         model.addAttribute("trucks", truckService.getAllTrucks());
@@ -46,26 +46,22 @@ public class RouteController {
         return "newRoute";
     }
 
-
     @PostMapping("/newRoute")
     public String addRoute(@RequestParam("workDayId") Long workDayId,
                            @RequestParam("truckNumber") String truckNumber,
-                           @RequestParam(value="trailerNumber", required = false) String trailerNumber,
+                           @RequestParam(value = "trailerNumber", required = false) String trailerNumber,
                            @RequestParam("routeNumber") String routeNumber,
+                           @RequestParam("distance") Integer distance,
                            @RequestParam("startOfRoute") LocalDateTime startOfRoute,
                            @RequestParam("departureFromTheBase") LocalDateTime departureFromTheBase,
                            @RequestParam("arrivalToTheBase") LocalDateTime arrivalToTheBase,
                            @RequestParam("endOfRoute") LocalDateTime endOfRoute,
+                           @RequestParam("notes") String notes,
                            @RequestParam("action") String action,
                            Model model) {
-
-        // Pobierz WorkDay z bazy danych
         WorkDay workDay = workDayService.getWorkDayById(workDayId);
-
-        // Utwórz nowy obiekt Route i ustaw jego właściwości
         Route route = new Route();
         route.setWorkDay(workDay);
-       // route.setWorkDayId(workDayId);
         route.setTruckNumber(truckNumber);
         if (trailerNumber != null && !trailerNumber.isEmpty()) {
             route.setTrailerNumber(trailerNumber);
@@ -74,53 +70,48 @@ public class RouteController {
         }
         route.setTrailerNumber(trailerNumber);
         route.setRouteNumber(routeNumber);
+        route.setDistance(distance);
         route.setStartOfRoute(startOfRoute);
         route.setDepartureFromTheBase(departureFromTheBase);
         route.setArrivalToTheBase(arrivalToTheBase);
         route.setEndOfRoute(endOfRoute);
-
+        route.setNotes(notes);
         routeService.addRoute(route);
-        // Dodaj Route do WorkDay
         workDay.getRoutes().add(route);
-
-        // Zapisz zaktualizowany WorkDay z nowym Route
+        Integer dist = 0;
+        for (Route rout : workDay.getRoutes()) {
+            dist += rout.getDistance();
+        }
+        workDay.setTotalDistance(dist);
         workDayService.addWorkDay(workDay);
-
         // Wybierz następną akcję w zależności od wartości parametru 'action'
         if ("addStop".equals(action)) {
             return "redirect:/newStop?routeId=" + route.getId() + "&workDayId=" + route.getWorkDay().getId();
-            //return "redirect:/newStop?routeId=" + route.getId();
         } else if ("addRoute".equals(action)) {
             return "redirect:/newRoute?workDayId=" + workDayId;
         } else if ("summary".equals(action)) {
             return "redirect:/summary?workDayId=" + workDayId;
         }
-
-
-        // Domyślnie przekieruj do podsumowania, jeśli żadne warunki nie zostały spełnione
         return "redirect:/summary?workDayId=" + workDayId;
     }
 
     @GetMapping("/editRoute")
     public String editRoute(@AuthenticationPrincipal Employee employee,
-                              @RequestParam("id") Long id,@RequestParam("workDayId") Long workDayId,
-                              Model model) {
+                            @RequestParam("id") Long id,
+                            @RequestParam("workDayId") Long workDayId,
+                            Model model) {
         if (employee == null) {
             return "redirect:/login";
         }
-
         if (id == null) {
             throw new IllegalArgumentException("Route ID nie może być puste");
         }
-
-       Route route = routeService.getRouteById(id);
-
-        if(route == null) {
+        Route route = routeService.getRouteById(id);
+        if (route == null) {
             model.addAttribute("info", "Nie znaleziono route.");
             return "error";
         }
         WorkDay workDay = workDayService.getWorkDayById(workDayId);
-
         model.addAttribute("workDay", workDay);
         model.addAttribute("route", route);
         model.addAttribute("trucks", truckService.getAllTrucks());
@@ -128,20 +119,24 @@ public class RouteController {
         model.addAttribute("selectedTruckNumber", route.getTruckNumber());
         model.addAttribute("selectedTrailerNumber", route.getTrailerNumber());
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        return "editRoute"; // Upewnij się, że nazwa widoku pasuje do Twojego pliku HTML
+        return "editRoute";
     }
+
     @PostMapping("/editRoute")
-    public String saveRoute(
-            @RequestParam("workDayId") Long workDayId,@RequestParam("routeId") Long routeId,@ModelAttribute Route route) {
-
-        // Zapisz dane w bazie danych
+    public String saveRoute(@RequestParam("workDayId") Long workDayId,
+                            @RequestParam("routeId") Long routeId,
+                            @ModelAttribute Route route) {
+        WorkDay workDay = workDayService.getWorkDayById(workDayId);
         routeService.updateRoute(routeId, route);
-
-        // Przekieruj na stronę podsumowania
+        Integer dist = 0;
+        for (Route rout : workDay.getRoutes()) {
+            dist += rout.getDistance();
+        }
+        workDay.setTotalDistance(dist);
+        workDayService.updateWorkDay(workDayId, workDay);
         return "redirect:/summary?workDayId=" + workDayId;
     }
-    //===============================================
-    //     USUWANIE
+
     @GetMapping("/confirmDeletionRoute")
     public String confirmDeletionStop(@AuthenticationPrincipal Employee loggedEmployee,
                                       @RequestParam("routeId") Long routeId,
@@ -152,7 +147,7 @@ public class RouteController {
         }
         model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
 
-        Route route =routeService.getRouteById(routeId);
+        Route route = routeService.getRouteById(routeId);
         model.addAttribute("workDayId", workDayId);
         WorkDay workDay = workDayService.getWorkDayById(workDayId);
         model.addAttribute("workDay", workDay);
@@ -160,21 +155,19 @@ public class RouteController {
         if (route == null) {
             model.addAttribute("error", "Route with number: " + route.getRouteNumber() + " not found.");
             return "redirect:/summary";
-            //return "error";
-        }
-        else{
-            model.addAttribute("route" ,route);
+        } else {
+            model.addAttribute("route", route);
             return "confirmDeletionRoute";
         }
     }
 
     @PostMapping("/deleteRoute")
-    public String deleteStop(@AuthenticationPrincipal Employee loggedEmployee,@RequestParam("id") Long id, Model model) {
+    public String deleteStop(@AuthenticationPrincipal Employee loggedEmployee, @RequestParam("id") Long id, Model model) {
         if (loggedEmployee == null) {
             return "redirect:/login";
         }
         model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
-        Route route =routeService.getRouteById(id);
+        Route route = routeService.getRouteById(id);
         Long workDayId = route.getWorkDay().getId();
 
         if (route != null) {
@@ -187,24 +180,15 @@ public class RouteController {
             model.addAttribute("route", route);
             model.addAttribute("message", "Route with number: " + route.getRouteNumber() + " has been removed.");
         } else {
-            model.addAttribute("error", /*"Stop with number: " + stop.getMarktId() + " not found.*/"Route with the given ID not found.");
+            model.addAttribute("error", "Route with the given ID not found.");
         }
         return "redirect:/summary?workDayId=" + workDayId;
-        //return "deleteRoute";
     }
 
-    /*@GetMapping("/confirmDeletionStop")
-    public String confirmDeletionStop(@AuthenticationPrincipal Employee employee,Model model){
-        if (employee == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        return "confirmDeletionStop";
-
-    }*/
-
     @GetMapping("/deleteRoute")
-    public String deleteRoute(@AuthenticationPrincipal Employee employee,@RequestParam(value = "workDayId",required = false) Long workDayId,Model model){
+    public String deleteRoute(@AuthenticationPrincipal Employee employee,
+                              @RequestParam(value = "workDayId", required = false) Long workDayId,
+                              Model model) {
         if (employee == null) {
             return "redirect:/login";
         }

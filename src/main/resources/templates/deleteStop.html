@@ -1,43 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Delete Stop</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        .custom-input-width {
-            width: 300px; /* Ustawia szerokość */
+        body {
+            background-color: #e9ecef;
         }
-        .centered-content {
-            margin-top: 50px; /* Odległość od górnej krawędzi */
-            text-align: center; /* Wyśrodkowanie zawartości */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        h1 {
+            color: #0066FF;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
         .email-highlight {
-            color: orange; /* Kolor tekstu */
-            font-family: 'Arial', sans-serif; /* Czcionka */
-            font-weight: bold; /* Pogrubienie */
+            color: #008080;
+            font-weight: bold;
+        }
+        .btn-width {
+            width: 250px;
         }
     </style>
 </head>
-
 <body>
-<div class="container centered-content">
+<div class="container">
+    <p>Logged user: <span class="email-highlight" th:text="${fullName}"></span></p>
+    <h1>Der Stopp wurde gelöscht</h1>
+    <h2 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Löschvorgang für den Stopp</h2>
 
-    <!--<p>Logged user : <span class="email-highlight" sec:authentication="name"></span></p>-->
-    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
-    <h1 class="mb-4">The Stop has been deleted</h1>
-    <!--<input type="hidden" id="workDayId" th:value="${workDayId}" />-->
-    <h2 class="mb-4">Operacja usunięcia Stop</h2>
-    <!--<form th:action="@{/deleteStop}" method="post" class="form-container">-->
     <h2 th:if="${message}" th:text="${message}" class="text-success"></h2>
     <h2 th:if="${error}" th:text="${error}" class="text-danger"></h2>
 
-    <a href="/summary" class="btn btn-success">Powrót</a>
-        <button onclick="window.location.href='/summary?workDayId=' + workDayId" class="btn btn-info">Zakończ i Wyświetl PodsumowanieJS</button>
-        <a th:href="@{/summary(workDayId=${workDayId})}" class="btn btn-info">Zakończ i Wyświetl Podsumowanie</a>
-
-
+    <div class="text-center">
+        <a href="/summary" class="btn btn-success btn-lg m-2 btn-width">Powrót</a>
+        <button onclick="window.location.href='/summary?workDayId=' + workDayId" class="btn btn-custom-70 btn-lg m-2 btn-width">Zakończ i Wyświetl Podsumowanie</button>
+    </div>
 </div>
 </body>
 </html>

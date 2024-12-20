@@ -15,7 +15,7 @@ public class Route {
     private String truckNumber;
     private String trailerNumber;
     private String routeNumber;
-    //private int distance;
+    private Integer distance;
     private LocalDateTime startOfRoute;
     private LocalDateTime departureFromTheBase;
     @OneToMany(cascade= CascadeType.ALL,orphanRemoval = true )
@@ -27,6 +27,25 @@ public class Route {
     @JoinColumn(name = "work_day_id",nullable = false)
     private WorkDay workDay;
     //private Long workDayId;
+    @Column(length = 1000)
+    private String notes;
+
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
 
     public WorkDay getWorkDay() {
         return workDay;

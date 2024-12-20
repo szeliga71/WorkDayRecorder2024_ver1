@@ -20,28 +20,27 @@
 <body>
 <br>
 <div class="container">
-    <h2>Login</h2>
-
+    <h2>Anmeldung</h2>
 
     <div th:if="${param.logout}" class="alert alert-success">
-        Zostałeś wylogowany pomyślnie.
+        Sie wurden erfolgreich abgemeldet.
     </div>
 
     <div th:if="${param.error}" class="alert alert-danger">
-        Nieprawidłowy login lub hasło. Spróbuj ponownie.
+        Ungültiger Benutzername oder Passwort. Bitte versuchen Sie es erneut.
     </div>
     <form th:action="@{/login}" method="post" class="form-container">
         <div class="form-group">
-            <label for="personalId">Personal ID</label>
-            <input type="text" id="personalId" name="personalId" class="form-control custom-input-width" placeholder="Enter ID" required>
+            <label for="personalId">Personalnummer</label>
+            <input type="text" id="personalId" name="personalId" class="form-control custom-input-width" placeholder="Personalnummer eingeben" required>
         </div>
 
         <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control custom-input-width" placeholder="Enter Password" required>
+            <label for="password">Passwort</label>
+            <input type="password" id="password" name="password" class="form-control custom-input-width" placeholder="Passwort eingeben" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary">Anmelden</button>
     </form>
 </div>
 </body>

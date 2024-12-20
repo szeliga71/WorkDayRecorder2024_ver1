@@ -5,47 +5,36 @@
     <title>Search Results</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
+        .btn-custom-10 {
+            background-color: #696969;
+            color: #fff;
+        }
+        .btn-custom-20 {
+            background-color: #a9a9a9;
+            color: #fff;
+        }
+        .btn-custom-20:hover {
+            background-color: #e53935;
+            border-color: #e53935;
+        }
+        .btn-custom-30 {
+            background-color: #808080;
+            color: #fff;
+        }
+        .btn-custom-70 {
+            background-color: #0066FF;
+            color: #fff;
+        }
         .email-highlight {
-            color: orange; /* Kolor tekstu */
+            color: #008080; /* Kolor tekstu */
             font-family: 'Arial', sans-serif; /* Czcionka */
             font-weight: bold; /* Pogrubienie */
         }
         .parameters-highlight {
-            color: red; /* Kolor tekstu */
+            color: #0099ff; /* Kolor tekstu */
             font-family: 'Arial', sans-serif; /* Czcionka */
             font-weight: bold; /* Pogrubienie */
         }
-        .btn-custom-1 {
-            background-color: #CCCC00; /* Niestandardowy kolor przycisku */
-            border: 2px solid black;
-            color: black; /* Czarna obwódka */
-            font-weight: bold;
-        }
-        .btn-custom-2 {
-            background-color: #33CCff; /* Niestandardowy kolor przycisku */
-            border: 2px solid black;
-            color: black; /* Czarna obwódka */
-            font-weight: bold;
-        }
-        .btn-custom-3 {
-            background-color: #66FF00; /* Niestandardowy kolor przycisku */
-            border: 2px solid black;
-            color: black; /* Czarna obwódka */
-            font-weight: bold;
-        }
-        .btn-custom-5 {
-            background-color: #CC66FF; /* Niestandardowy kolor przycisku */
-            border: 2px solid black;
-            color: black; /* Czarna obwódka */
-            font-weight: bold;
-        }
-        .btn-custom-6 {
-            background-color: #ff0000; /* Niestandardowy kolor przycisku */
-            border: 2px solid black;
-            color: black; /* Czarna obwódka */
-            font-weight: bold;
-        }
-
     </style>
 </head>
 <body>
@@ -53,33 +42,43 @@
     <p th:text="${error}"></p>
 </div>
 <div class="container">
-    <h2>Search Results</h2>
-    <p>Logged user: <span class="email-highlight" th:text="${fullName}"></span></p>
+
+    <h2 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">ArbeitstagesListe</h2>
+    <p>Benuzer : <span class="email-highlight" th:text="${fullName}"></span></p>
 
     <!-- Wyświetlanie użytych parametrów wyszukiwania -->
-    <h4>Search parameters:</h4>
+    <h4>Suchparameter :</h4>
     <ul>
         <li th:if="${KW != null}">KW :  <span class="parameters-highlight" th:text="${KW}"></span></li>
-        <li th:if="${personalId != null}">Personal ID :  <span class="parameters-highlight" th:text="${personalId}"></span></li>
-        <li th:if="${dayOfWeek != null}">Day of Week :  <span class="parameters-highlight" th:text="${dayOfWeek}"></span></li>
+        <li th:if="${personalId != null}">Personalnummer :  <span class="parameters-highlight" th:text="${personalId}"></span></li>
+        <li th:if="${dayOfWeek != null}">Wochentag :  <span class="parameters-highlight" th:text="${dayOfWeek}"></span></li>
     </ul>
-
-    <!-- Wyświetlenie wyników -->
-    <h3>Results:</h3>
-
-
+    <div class="d-flex justify-content-start">
+        <form th:action="@{/admin/adminPanel}" method="get" class="mr-2">
+            <button type="submit" class="btn btn-custom-30 btn-lg m-2">Zum Admin Panel</button>
+        </form>
+        <form th:action="@{/admin/searchByCustomArguments}" method="get" class="mr-2">
+            <button type="submit" class="btn btn-custom-70 btn-lg m-2">Zum Such Panel</button>
+        </form>
+        </form>
+        <form th:action="@{/admin/exportToTagesbericht}" method="post">
+            <div th:each="workDay : ${workDays}">
+                <input type="hidden" name="workDayIds" th:value="${workDay.id}">
+            </div>
+            <button type="submit" class="btn btn-custom-30 btn-lg m-2">In Tagesbericht exportieren</button>
+        </form>
+    </div>
+    <br>
     <table th:if="${workDays}" class="table table-striped">
         <thead>
         <tr>
-            <th>No.</th>
-            <th>Personal Id</th>
+            <th>Nr.</th>
+            <th>Personal Nr.</th>
             <th>Date</th>
-            <th>Day of Week</th>
-            <th>Number of Week</th>
-            <th>Notes</th>
+            <th>Wochentag</th>
+            <th>Wochennummer</th>
             <th>Details</th>
-            <th>Update</th>
-            <th>Delete</th>
+            <th>Löschen</th>
         </tr>
         </thead>
         <tbody>
@@ -89,36 +88,40 @@
             <td th:text="${workDay.date}"></td>
             <td th:text="${workDay.dayOfWeek}"></td>
             <td th:text="${workDay.KW}"></td>
-            <td th:text="${workDay.notes}"></td>
             <td>
                 <form th:action="@{/summary}" method="get">
                     <input type="hidden" name="workDayId" th:value="${workDay.id}">
-                    <button type="submit" class="btn btn-custom-5 btn-lg m-2">Details</button>
+                    <button type="submit" class="btn btn-custom-10 btn-lg m-2">Details</button>
                 </form>
             </td>
+
             <td>
-                <form th:action="@{/editWorkDay}" method="get">
+                <form th:action="@{/confirmDeletionWorkDay}" method="post">
                     <input type="hidden" name="workDayId" th:value="${workDay.id}">
-                    <button type="submit" class="btn btn-custom-2 btn-lg m-2">Update</button>
-                </form>
-            </td>
-            <td>
-                <form th:action="@{/admin/confirmDeletionWorkDay}" method="post">
-                    <input type="hidden" name="workDayId" th:value="${workDay.id}">
-                    <button type="submit" class="btn btn-custom-6 btn-lg m-2">Delete</button>
+                    <button type="submit" class="btn btn-custom-20 btn-lg m-2">Löschen</button>
                 </form>
             </td>
 
         </tr>
         </tbody>
     </table>
-
-    <form th:action="@{/admin/adminPanel}" method="get">
-        <button type="submit" class="btn btn-custom-3 btn-lg m-2">Go to Admin Panel</button>
+    <br>
+    <br>
+    <div class="d-flex justify-content-start">
+    <form th:action="@{/admin/adminPanel}" method="get" class="mr-2">
+        <button type="submit" class="btn btn-custom-30 btn-lg m-2">Zum Admin Panel</button>
     </form>
-        <form th:action="@{/admin/searchByCustomArguments}" method="get">
-            <button type="submit" class="btn btn-custom-1 btn-lg m-2">Go to Search Panel</button>
+        <form th:action="@{/admin/searchByCustomArguments}" method="get" class="mr-2">
+            <button type="submit" class="btn btn-custom-70 btn-lg m-2">Zum Such Panel</button>
     </form>
+    </form>
+    <form th:action="@{/admin/exportToTagesbericht}" method="post">
+        <div th:each="workDay : ${workDays}">
+            <input type="hidden" name="workDayIds" th:value="${workDay.id}">
+        </div>
+        <button type="submit" class="btn btn-custom-30 btn-lg m-2">In Tagesbericht exportieren</button>
+    </form>
+        </div>
 </div>
 </body>
 </html>

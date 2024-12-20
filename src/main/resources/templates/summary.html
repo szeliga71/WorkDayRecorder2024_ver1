@@ -6,80 +6,279 @@
     <title>Summary</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        /* Kontener z przewijaniem dla tabeli */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* Lepsze przewijanie na urządzeniach mobilnych */
         }
-        table, th, td {
-            border: 1px solid black;
+
+        body {
+            background-color: #e9ecef;
         }
-        th, td {
-            padding: 10px;
-            text-align: left;
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
         }
-        .route-table, .stop-table {
+
+        .email-highlight {
+            color: #008080; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
+        }
+
+        h2, h3, h4 {
+            text-align: center;
+            font-size: 1.0rem;
+        }
+        h1 ,h2{
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        h2 {
             margin-bottom: 30px;
         }
-        .button-container {
-            margin-bottom: 10px;
+
+        .work-day-details {
+            text-align: center;
+            margin-bottom: 30px;
         }
+
+        table {
+            width: 100%;/* Tabela zajmuje pełną szerokość */
+            margin: 0 auto;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 10px; /* Jeszcze mniejsza czcionka dla tabeli */
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            font-size: 12px; /* Zmniejszenie rozmiaru czcionki */
+        }
+
+        th, td {
+            padding: 4px;/* Mniejsze paddingi komórek */
+            text-align: center;
+        }
+
+        .route-section {
+            border: 2px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            background-color: #fff;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
         .btn-space {
-            margin-right: 5px;
+            margin: 5px;
+        }
+
+        /* Stylowanie dla małych ekranów */
+        @media (max-width: 576px) {
+            .btn-custom {
+                font-size: 10px; /* Mniejszy rozmiar czcionki dla przycisków */
+                padding: 5px 10px; /* Mniejsze paddingi w przyciskach */
+                width: auto; /* Automatyczna szerokość przycisków */
+            }
+            .button-container {
+                display: flex;
+                flex-direction: column;
+                gap: 5px; /* Mniejszy odstęp między przyciskami */
+            }
+            h1, h2, h3 {
+                font-size: 1.2rem; /* Zmniejszenie rozmiaru nagłówków */
+            }
+
+            .container {
+                padding: 10px; /* Mniejsze paddingi kontenera */
+            }
+            .stop-table, .stop-table thead {
+                display: block;
+            }
+
+            .stop-table tr {
+                display: block;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                padding: 8px;
+                background-color: #fff;
+            }
+
+            .stop-table th {
+                display: none; /* Ukryj nagłówki w standardowej formie */
+            }
+
+            .stop-table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 3px 0;
+            }
+
+            .stop-table td::before {
+                content: attr(data-label); /* Ustawienie etykiety z atrybutu data-label */
+                font-weight: bold;
+                flex-basis: 50%;
+            }
+
+            .stop-table .button-container {
+                text-align: center;
+                margin-top: 10px;
+            }
+        }
+
+        .btn-custom {
+            width: 30%; /* Szerokość przycisków */
+            margin-bottom: 15px; /* Odstęp między przyciskami */
+        }
+        .btn-custom-edit {
+            background-color: #a9a9a9;
+            color: white;
+            border: 2px solid #a9a9a9;
+            font-weight: normal;
+        }
+
+        .btn-custom-delete {
+            background-color: #0066FF;
+            color: white;
+            border: 2px solid #0066FF;
+            font-weight: normal;
+        }
+
+        .btn-custom-add {
+            background-color: #696969;
+            color: white;
+            border: 2px solid #696969;
+            font-weight: normal;
+        }
+
+        .btn-custom-edit:hover {
+            background-color: #a9a9a9;
+            border-color: #a9a9a9;
+        }
+
+        .btn-custom-delete:hover {
+            background-color: #e53935;
+            border-color: #e53935;
+        }
+
+        .btn-custom-add:hover {
+            background-color: #1976D2;
+            border-color: #1976D2;
+        }
+        .stop-table {
+            width: 100%;      /* Tabela zajmuje całą szerokość kontenera */
+            table-layout: fixed; /* Równomierne rozłożenie szerokości kolumn */
+        }
+
+        /* Stylowanie dla nagłówków i komórek */
+        .stop-table th,
+        .stop-table td {
+            word-wrap: break-word; /* Zawijanie tekstu, aby nie wychodził poza komórkę */
+            padding: 6px;          /* Mniejszy padding dla lepszego dopasowania */
+            font-size: 0.9rem;     /* Zmniejszony rozmiar czcionki */
+        }
+        /* Poszerzenie przycisków i wyśrodkowanie w sekcji "Funktionen" */
+        .stop-table .button-container {
+            display: flex;
+            justify-content: center; /* Wyśrodkowanie przycisków */
+            gap: 10px;               /* Odstęp między przyciskami */
+        }
+
+        .stop-table .button-container .btn {
+            width: 120px;            /* Ustaw szerokość przycisków według potrzeb */
+            text-align: center;      /* Wyśrodkowanie tekstu na przycisku */
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Work Day Summary</h1>
-    <p>Logged in user: <strong th:text="${fullName}"></strong></p>
-
-    <h2>Work Day Details</h2>
-    <p><strong>Day of Week:</strong> <span th:text="${workDay.getDayOfWeek()}"></span></p>
-    <p><strong>Date:</strong> <span th:text="${workDay.date}"></span></p>
-    <div class="button-container">
-        <a th:href="@{/editWorkDay(id=${workDay.id})}" class="btn btn-warning btn-space">Detail/Edit</a>
-        <a th:href="@{/confirmDeletionWorkDay(id=${workDay.id}, workDayId=${workDay.id})}" class="btn btn-danger btn-space">Delete</a>
-        <a th:href="@{/newRoute(workDayId=${workDay.id})}" class="btn btn-success btn-space">Add Route</a>
+    <h1 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Zusammenfassung</h1>
+    <p>Benutzer : <span class="email-highlight" th:text="${fullName}"></span></p>
+    <div class="work-day-details">
+        <p><strong>Wochentag :</strong> <span th:text="${workDay.getDayOfWeek()}"></span></p>
+        <p><strong>Datum :</strong> <span th:text="${workDay.date}"></span></p>
     </div>
-    <h2>Routes</h2>
-    <div th:each="route : ${routes}" class="route-table">
-        <h3>Route Number: <span th:text="${route.routeNumber}"></span></h3>
+
+    <div class="button-container">
+        <a th:href="@{/editWorkDay(id=${workDay.id})}" class="btn btn-custom btn-custom-edit">Details/Bearbeiten</a>
+        <a th:href="@{/confirmDeletionWorkDay(id=${workDay.id}, workDayId=${workDay.id})}" class="btn btn-custom btn-custom-delete">Löschen</a>
+        <a th:href="@{/newRoute(workDayId=${workDay.id})}" class="btn btn-custom btn-custom-add">Route hinzufügen</a>
+    </div>
+
+    <h3>Routen</h3>
+    <div th:each="route : ${routes}" class="route-section">
+        <h3>Routennummer: <span th:text="${route.routeNumber}"></span></h3>
         <div class="button-container">
-            <a th:href="@{/editRoute(id=${route.id},workDayId=${workDay.id})}" class="btn btn-warning btn-space">Detail/Edit</a>
-            <a th:href="@{/confirmDeletionRoute(routeId=${route.id},workDayId=${workDay.id})}" class="btn btn-danger btn-space">Delete</a>
-            <a th:href="@{/newStop(routeId=${route.id},workDayId=${workDay.id})}" class="btn btn-success btn-space">Add Stop</a>
+            <a th:href="@{/editRoute(id=${route.id},workDayId=${workDay.id})}" class="btn btn-custom btn-custom-edit">Details/Bearbeiten</a>
+            <a th:href="@{/confirmDeletionRoute(routeId=${route.id},workDayId=${workDay.id})}" class="btn btn-custom btn-custom-delete">Löschen</a>
+            <a th:href="@{/newStop(routeId=${route.id},workDayId=${workDay.id})}" class="btn btn-custom btn-custom-add">Stopp hinzufügen</a>
         </div>
-        <h4>Stops for Route No: <span th:text="${route.getRouteNumber()}"></span></h4>
-        <table class="stop-table">
+
+        <h3>Stopps für die Route No: <span th:text="${route.getRouteNumber()}"></span></h3>
+        <div class="table-responsive">
+            <table class="stop-table table table-striped">
+                <thead>
+                <tr>
+                    <th>Markt</th>
+                    <th>Stopp-Begin</th>
+                    <th>Stopp-Ende</th>
+                    <th>Funktionen</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="stop : ${route.stops}">
+                    <td data-label="Markt" th:text="${stop.marktId}"></td>
+                    <td data-label="Stopp-Begin" th:text="${stop.beginn}"></td>
+                    <td data-label="Stopp-Ende" th:text="${stop.endOfStopp}"></td>
+                    <td data-label="Funktionen">
+                        <div class="button-container">
+                            <a th:href="@{/editStop(id=${stop.id},workDayId=${workDay.id})}" class="btn btn-custom btn-custom-edit">Details</a>
+                            <a th:href="@{/confirmDeletionStop(id=${stop.id},workDayId=${workDay.id})}" class="btn btn-custom btn-custom-delete">Löschen</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--<table class="stop-table">
             <thead>
             <tr>
-                <!--<th>ID Stop</th>-->
-                <th>Market</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Actions</th>
-
+                <th>Markt</th>
+                <th>Stopp-Begin</th>
+                <th>Stopp-Ende</th>
+                <th>Funktionen</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="stop : ${route.stops}">
-                <td th:text="${stop.marktId}"></td>
-                <td th:text="${stop.beginn}"></td>
-                <td th:text="${stop.endOfStopp}"></td>
-                <td>
+                <td data-label="Markt" th:text="${stop.marktId}"></td>
+                <td data-label="Stopp-Begin" th:text="${stop.beginn}"></td>
+                <td data-label="Stopp-Ende" th:text="${stop.endOfStopp}"></td>
+                <td data-label="Funktionen">
                     <div class="button-container">
-                        <a th:href="@{/editStop(id=${stop.id},workDayId=${workDay.id})}" class="btn btn-warning btn-space">Details/Edit</a>
-                        <a th:href="@{/confirmDeletionStop(id=${stop.id},workDayId=${workDay.id})}" class="btn btn-danger btn-space">Delete</a>
+                        <a th:href="@{/editStop(id=${stop.id},workDayId=${workDay.id})}" class="btn btn-custom btn-custom-edit">Details</a>
+                        <a th:href="@{/confirmDeletionStop(id=${stop.id},workDayId=${workDay.id})}" class="btn btn-custom btn-custom-delete">Löschen</a>
                     </div>
                 </td>
             </tr>
             </tbody>
-        </table>
+        </table>-->
     </div>
-    <div class="mt-3">
-        <a th:href="${role == 'ROLE_ADMIN' ? '/admin/adminPanel' : '/home'}" class="btn btn-primary mb-4">Back to Home</a>
-        <a th:if="${role == 'ROLE_ADMIN'}" th:href="@{/admin/searchByCustomArguments}" class="btn btn-secondary btn-space">Back to Search</a>
-        <!--<a href="/home" class="btn btn-primary">Go to Home</a>-->
+
+    <div class="mt-3 button-container">
+        <a th:href="${role == 'ROLE_ADMIN' ? '/admin/adminPanel' : '/home'}" class="btn btn-primary btn-space">Zurück zur Startseite</a>
     </div>
 </div>
 </body>

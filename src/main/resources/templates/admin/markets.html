@@ -6,64 +6,75 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        .btn-custom-1 {
-            background-color: #ff0000; /* Niestandardowy kolor przycisku */
-            border: 2px solid black;
-            color: black; /* Czarna obwódka */
-            font-weight: bold;
+        .btn-width{
+            width: 250px;
         }
-        .btn-custom-2 {
-            background-color: #33CCff; /* Niestandardowy kolor przycisku */
-            border: 2px solid black;
-            color: black; /* Czarna obwódka */
-            font-weight: bold;
+        .btn-width1{
+            width: 120px;
         }
-        .btn-custom-3 {
-            background-color: #33FF33; /* Niestandardowy kolor przycisku */
-            border: 2px solid black;
-            color: black; /* Czarna obwódka */
-            font-weight: bold;
+        .btn-custom-10 {
+            background-color: #696969;
+            color: #fff;
+            font-size: 14px;
         }
-        .btn-custom-7 {
-            background-color: #0000FF; /* Niestandardowy kolor przycisku */
-            border: 2px solid black;
-            color: black; /* Czarna obwódka */
-            font-weight: bold;
+        .btn-custom-10:hover {
+            background-color: #e53935;
+            border-color: #e53935;
+        }
+        .btn-custom-20 {
+            background-color: #a9a9a9;
+            color: #fff;
+            font-size: 14px;
+        }
+        .btn-custom-30 {
+            background-color: #808080;
+            color: #fff;
+            font-size: 14px;
+        }
+        .btn-custom-70 {
+            background-color: #0066FF;
+            color: #fff;
+            font-size: 14px;
         }
         .table-container {
             margin-top: 30px;
         }
         .email-highlight {
-            color: orange; /* Kolor tekstu */
+            color: #008080; /* Kolor tekstu */
             font-family: 'Arial', sans-serif; /* Czcionka */
             font-weight: bold; /* Pogrubienie */
+        }
+        .table-container {
+            margin-top: 30px;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1 class="text-center mt-4">Markt List</h1>
-    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+    <h1 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Marktliste</h1>
+    <p>Benuzer  : <span class="email-highlight" th:text="${fullName}"></span></p>
+    <div class="d-flex justify-content-start">
     <form th:action="@{/admin/adminPanel}" method="get">
-        <button type="submit" class="btn btn-custom-3 btn-lg m-2">Go to Admin Panel</button>
+        <button type="submit" class="btn btn-custom-20 btn-lg m-2 btn-width">Zum Admin Panel</button>
     </form>
     <form th:action="@{/admin/addMarket}" method="get">
-        <button type="submit" class="btn btn-custom-7 btn-lg m-2">Add Market</button>
+        <button type="submit" class="btn btn-custom-30 btn-lg m-2 btn-width">Markt hinzufügen</button>
     </form>
+        </div>
     <div class="table-container">
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
             <tr>
-                <th>No.</th>
-                <th>Markt Id</th>
-                <th>name</th>
-                <th>Postal Code</th>
-                <th>Citi</th>
-                <th>Street</th>
-                <th>Buil No</th>
-                <th>Notes</th>
-                <th>Update</th>
-                <th>Delete</th>
+                <th>Nr.</th>
+                <th>Marktnummer</th>
+                <th>Name</th>
+                <th>Postleitzal</th>
+                <th>Stadt</th>
+                <th>Straße</th>
+                <th>Hausnummer</th>
+                <th>Notizen</th>
+                <th>Aktualisieren</th>
+                <th>Löschen</th>
             </tr>
             </thead>
             <tbody>
@@ -79,13 +90,13 @@
                 <td>
                     <form th:action="@{/admin/updateMarkt}" method="get">
                         <input type="hidden" name="marktId" th:value="${markt.marktId}">
-                        <button type="submit" class="btn btn-custom-2 btn-lg m-2">Update Markt</button>
+                        <button type="submit" class="btn btn-custom-70 btn-lg m-2 btn-width1">Aktualisieren</button>
                     </form>
                 </td>
                 <td>
                     <form th:action="@{/admin/confirmDeletionMarkt}" method="post">
                         <input type="hidden" name="marktId" th:value="${markt.marktId}">
-                        <button type="submit" class="btn btn-custom-1 btn-lg m-2">Delete</button>
+                        <button type="submit" class="btn btn-custom-10 btn-lg m-2 btn-width1">Löschen</button>
                     </form>
                 </td>
             </tr>

@@ -29,7 +29,6 @@ public class WeekPlanController {
         model.addAttribute("role", employee.getRole());
         return "viewWeekWorkPlan";
     }
-
     @GetMapping("/{filename}")
     @ResponseBody
     public ResponseEntity<Resource> displayFile(@PathVariable String filename) {
@@ -40,7 +39,7 @@ public class WeekPlanController {
                 // Ustawienie odpowiednich nagłówków
                 HttpHeaders headers = new HttpHeaders();
                 headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"");
-                headers.add(HttpHeaders.CONTENT_TYPE, Files.probeContentType(filePath)); // Wykrywanie typu MIME
+                headers.add(HttpHeaders.CONTENT_TYPE, Files.probeContentType(filePath));
                 return ResponseEntity.ok()
                         .headers(headers)
                         .body(resource);

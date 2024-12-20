@@ -2,39 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Confirmation deletion of employee</title>
+    <title>Confirmation Deletion of Market</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        .btn-width {
+            width: 250px;
+        }
+        .btn-custom-70 {
+            background-color: #0066FF;
+            color: #fff;;
+        }
+
+        body {
+            background-color: #e9ecef;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #0066FF;
+            font-weight: bold;
+        }
+        button {
+            width: 100%;
+        }
         .email-highlight {
-            color: orange; /* Kolor tekstu */
-            font-family: 'Arial', sans-serif; /* Czcionka */
-            font-weight: bold; /* Pogrubienie */
+            color: #008080;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-<div class="container centered-content">
+<div class="container">
+    <h1 class="mt-4">Löschvorgang für den Markt</h1>
 
-    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
-    <h1 class="mb-4">The markt will be deleted</h1>
+    <p>Benutzer: <span class="email-highlight" th:text="${fullName}"></span></p>
 
-    <h2 class="mb-4">Operacja usunięcia Markt</h2>
     <div class="mb-4">
         <p><strong>Markt ID:</strong> <span th:text="${markt.marktId}"></span></p>
         <p><strong>Name:</strong> <span th:text="${markt.name}"></span></p>
         <p><strong>Postal Code:</strong> <span th:text="${markt.postalCode}"></span></p>
-        <p><strong>Citi:</strong> <span th:text="${markt.citi}"></span></p>
+        <p><strong>Stadt:</strong> <span th:text="${markt.citi}"></span></p>
         <p><strong>Strasse:</strong> <span th:text="${markt.street}"></span></p>
-        <p><strong>Hause No:</strong> <span th:text="${markt.buildingNumber}"></span></p>
+        <p><strong>Hausnummer:</strong> <span th:text="${markt.buildingNumber}"></span></p>
     </div>
 
-    <form th:action="@{/admin/deleteMarkt}" method="post">
-        <input type="hidden" name="marktId" th:value="${markt.marktId}">
-        <button type="submit" class="btn btn-danger btn-lg m-2">Delete</button>
-    </form>
-
-    <a href="/admin/markets" class="btn btn-success btn-lg m-2">Powrót do listy Markts</a>
+    <div class="text-center">
+        <form th:action="@{/admin/deleteMarkt}" method="post" class="d-inline-block">
+            <input type="hidden" name="marktId" th:value="${markt.marktId}">
+            <button type="submit" class="btn btn-danger btn-lg m-2 btn-width">Löschen</button>
+        </form>
+        <a href="/admin/markets" class="btn btn-custom-70 btn-lg m-2 btn-width">Abbrechen</a>
+    </div>
 </div>
 </body>
 </html>

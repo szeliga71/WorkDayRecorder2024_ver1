@@ -5,6 +5,80 @@
     <title>Update Employee</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #e9ecef;
+        }
+
+        .container {
+            max-width: 600px; /* Szerokość kontenera */
+            margin: 0 auto;   /* Wyśrodkowanie kontenera */
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .custom-input-width {
+            width: 100%; /* Szerokość pól na 100% dla responsywności */
+        }
+
+        .form-container {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 100%; /* Przycisk na pełną szerokość dla lepszego wyświetlania na mobilnych */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Mitarbeiter aktualisieren</h1>
+    <!-- Formularz do aktualizacji danych pracownika -->
+    <form th:action="@{/admin/saveEmployee}" method="post" class="form-container">
+        <input type="hidden" name="personalId" th:value="${employee.personalId}">
+
+        <div class="form-group">
+            <label for="firstName">Vorname</label>
+            <input type="text" id="firstName" name="firstName" class="form-control custom-input-width" th:value="${employee.firstName}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Nachname</label>
+            <input type="text" id="lastName" name="lastName" class="form-control custom-input-width" th:value="${employee.lastName}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Passwort</label>
+            <input type="text" id="password" name="password" class="form-control custom-input-width" th:value="${employee.password}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="mobilNumber">Handynummer</label>
+            <input type="text" id="mobilNumber" name="mobilNumber" class="form-control custom-input-width" th:value="${employee.mobilNumber}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Änderungen speichern</button>
+    </form>
+</div>
+
+</body>
+</html>
+
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Employee</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <div class="container">
@@ -36,4 +110,4 @@
     </form>
 </div>
 </body>
-</html>
+</html>-->

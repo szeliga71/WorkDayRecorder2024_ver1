@@ -38,10 +38,12 @@ public class RouteService {
             existingRoute.setTruckNumber(updatedRoute.getTruckNumber());
             existingRoute.setTrailerNumber(updatedRoute.getTrailerNumber());
             existingRoute.setRouteNumber(updatedRoute.getRouteNumber());
+            existingRoute.setDistance(updatedRoute.getDistance());
             existingRoute.setStartOfRoute(updatedRoute.getStartOfRoute());
             existingRoute.setDepartureFromTheBase(updatedRoute.getDepartureFromTheBase());
             existingRoute.setArrivalToTheBase(updatedRoute.getArrivalToTheBase());
             existingRoute.setEndOfRoute(updatedRoute.getEndOfRoute());
+            existingRoute.setNotes(updatedRoute.getNotes());
 
             // Zapis zaktualizowanej trasy w bazie danych
             return routeRepository.save(existingRoute);

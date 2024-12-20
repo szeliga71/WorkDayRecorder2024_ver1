@@ -6,6 +6,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        body {
+            background-color: #e9ecef;
+        }
+
+        .container {
+            max-width: 600px; /* Ustawia szerokość kontenera */
+            margin: 0 auto; /* Wyśrodkowanie kontenera */
+        }
+
         .custom-input-width {
             width: 300px; /* Ustawia szerokość pól */
         }
@@ -15,25 +24,38 @@
             padding: 20px;
             background-color: #f8f9fa;
             border-radius: 8px;
+            width: 100%;
         }
-        .table-container {
-            margin-top: 30px;
-        }
-        .message {
-            margin-top: 20px;
-        }
+
         .email-highlight {
-            color: orange; /* Kolor tekstu */
+            color: #008080; /* Kolor tekstu */
             font-family: 'Arial', sans-serif; /* Czcionka */
             font-weight: bold; /* Pogrubienie */
+        }
+
+        h2 {
+            text-align: center; /* Wyśrodkowanie tytułu */
+        }
+        .btn-width{
+            width: 200px;
+        }
+
+        .btn-custom-20 {
+            background-color: #a9a9a9;
+            color: #fff;
+        }
+
+        .btn-custom-70 {
+            background-color: #0066FF;
+            color: #fff;
         }
     </style>
 </head>
 <body>
 <br>
 <div class="container">
-    <h1>ADD NEW WORK DAY</h1>
-    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+    <h1 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Arbeitsbericht erstellen</h1>
+    <p>Benutzer : <span class="email-highlight" th:text="${fullName}"></span></p>
 
     <!-- Jeśli istnieje komunikat o błędzie -->
     <div th:if="${error}" class="alert alert-danger">
@@ -43,116 +65,57 @@
     <form th:action="@{/workDay}" method="post" class="form-container">
         <!-- Personal ID -->
         <div class="form-group">
-            <input type="text" id="personalId" name="personalId" class="form-control custom-input-width"th:value="${personalId}" readonly />
-            <label class="form-label" for="personalId">ID Osobiste:</label>
-            <!--<input type="text" id="personalId" name="personalId" class="form-control custom-input-width" placeholder="ID Osobiste" required>
-            <label class="form-label" for="personalId">ID Osobiste</label>-->
+            <label class="form-label" for="personalId">Personalnummer:</label>
+            <input type="text" id="personalId" name="personalId" class="form-control custom-input-width"
+                   th:value="${personalId}" readonly/>
         </div>
-
-        <!-- Data -->
-       <!-- <div class="form-group">
-            <input type="datetime-local" id="date" name="date" class="form-control custom-input-width" placeholder="Data" required>
-            <label class="form-label" for="date">Data</label>
-        </div>-->
-
-        <!-- Dzień Tygodnia -->
-        <!--<div class="form-group">
-            <input type="number" id="dayOfWeek" name="dayOfWeek" class="form-control custom-input-width" placeholder="Dzień Tygodnia" required>
-            <label class="form-label" for="dayOfWeek">Dzień Tygodnia</label>
-        </div>-->
         <div class="form-group">
-            <label class="form-label" for="dayOfWeekName">Dzień Tygodnia</label>
+            <label class="form-label" for="dayOfWeekName">Wochentag:</label>
             <select id="dayOfWeekName" name="dayOfWeekName" class="form-control custom-input-width" required>
-                <option value="choose day of week">---------</option>
-                <option value="MONDAY">Poniedziałek</option>
-                <option value="TUESDAY">Wtorek</option>
-                <option value="WEDNESDAY">Środa</option>
-                <option value="THURSDAY">Czwartek</option>
-                <option value="FRIDAY">Piątek</option>
-                <option value="SATURDAY">Sobota</option>
-                <option value="SUNDAY">Niedziela</option>
+                <option value="Wochentag eingeben">Wochentag eingeben</option>
+                <option value="MONDAY">Montag</option>
+                <option value="TUESDAY">Dienstag</option>
+                <option value="WEDNESDAY">Mittwoch</option>
+                <option value="THURSDAY">Donnerstag</option>
+                <option value="FRIDAY">Freitag</option>
+                <option value="SATURDAY">Samstag</option>
+                <option value="SUNDAY">Sonntag</option>
             </select>
         </div>
-        <!-- Początek Pracy -->
-       <!-- <div class="form-group">
-            <input type="datetime-local" id="startOfWork" name="startOfWork" class="form-control custom-input-width" placeholder="Początek Pracy" required>
-            <label class="form-label" for="startOfWork">Początek Pracy</label>
-        </div>-->
         <div class="form-group">
+            <label class="form-label" for="startOfWork">Arbeitsbeginn:</label>
             <input type="datetime-local" id="startOfWork" name="startOfWork" class="form-control custom-input-width"
-                   th:value="${workDay != null ? workDay.startOfWork : ''}" placeholder="Początek Pracy" required>
-            <label class="form-label" for="startOfWork">Początek Pracy</label>
+                   th:value="${workDay != null ? workDay.startOfWork : ''}" placeholder="Arbeitsbeginn eingeben" required>
         </div>
-        <!-- Przerwa -->
-       <!-- <div class="form-group">
-            <input type="text" id="pause" name="pause" class="form-control custom-input-width" placeholder="Przerwa">
-            <label class="form-label" for="pause">Przerwa</label>
-        </div>-->
         <div class="form-group">
+            <label class="form-label" for="pause">Pause:</label>
             <input type="text" id="pause" name="pause" class="form-control custom-input-width"
-                   th:value="${workDay != null ? workDay.pause : ''}" placeholder="Przerwa">
-            <label class="form-label" for="pause">Przerwa</label>
+                   th:value="${workDay != null ? workDay.pause : ''}" placeholder="Pause eingeben">
         </div>
-        <!-- Koniec Pracy -->
-        <!--<div class="form-group">
-            <input type="datetime-local" id="endOfWork" name="endOfWork" class="form-control custom-input-width" placeholder="Koniec Pracy" required>
-            <label class="form-label" for="endOfWork">Koniec Pracy</label>
-        </div>-->
         <div class="form-group">
+            <label class="form-label" for="endOfWork">Arbeitsende:</label>
             <input type="datetime-local" id="endOfWork" name="endOfWork" class="form-control custom-input-width"
-                   th:value="${workDay != null ? workDay.endOfWork : ''}" placeholder="Koniec Pracy" required>
-            <label class="form-label" for="endOfWork">Koniec Pracy</label>
+                   th:value="${workDay != null ? workDay.endOfWork : ''}" placeholder="Arbeitsende eingeben" required>
         </div>
-        <!-- Całkowity Dystans -->
-       <!-- <div class="form-group">
-            <input type="text" id="totalDistance" name="totalDistance" class="form-control custom-input-width" placeholder="Całkowity Dystans">
-            <label class="form-label" for="totalDistance">Całkowity Dystans</label>
-        </div>-->
-        <div class="form-group">
-            <input type="text" id="totalDistance" name="totalDistance" class="form-control custom-input-width"
-                   th:value="${workDay != null ? workDay.totalDistance : ''}" placeholder="Całkowity Dystans">
-            <label class="form-label" for="totalDistance">Całkowity Dystans</label>
-        </div>
-        <!-- Wypadek -->
-        <!--<div class="form-group form-check">
-            <input type="checkbox" id="accident" name="accident" class="form-check-input">
-            <label class="form-check-label" for="accident">Wypadek</label>
-        </div>-->
         <div class="form-group form-check">
             <input type="checkbox" id="accident" name="accident" class="form-check-input"
                    th:checked="${workDay != null && workDay.accident}">
-            <label class="form-check-label" for="accident">Wypadek</label>
+            <label class="form-check-label" for="accident">Fuhrenbruch</label>
         </div>
-
-        <!-- Usterki -->
-        <!--<div class="form-group form-check">
-            <input type="checkbox" id="faults" name="faults" class="form-check-input">
-            <label class="form-check-label" for="faults">Usterki</label>
-        </div>-->
         <div class="form-group form-check">
             <input type="checkbox" id="faults" name="faults" class="form-check-input"
                    th:checked="${workDay != null && workDay.faults}">
-            <label class="form-check-label" for="faults">Usterki</label>
+            <label class="form-check-label" for="faults">Unfall</label>
         </div>
-        <!-- Notatki -->
-        <!--<div class="form-group">
-            <textarea id="notes" name="notes" class="form-control custom-input-width" placeholder="Notatki"></textarea>
-            <label class="form-label" for="notes">Notatki</label>
-        </div>-->
-        <div class="form-group">
-            <textarea id="notes" name="notes" class="form-control custom-input-width"
-                      th:text="${workDay != null ? workDay.notes : ''}" placeholder="Notatki"></textarea>
-            <label class="form-label" for="notes">Notatki</label>
-        </div>
-
+        <br>
         <!-- Przyciski -->
-        <button type="submit" class="btn btn-primary">Dodaj/Edytuj Dzień Pracy</button>
+        <div class="text-center">
+        <button type="submit" class="btn btn-custom-70  btn-lg m-2 btn-width">Arbeitstag hinzufügen</button>
+            <a th:href="@{/home}" class="btn btn-custom-20  btn-lg m-2 btn-width">Zurück zur Startseite</a>
+        </div>
     </form>
 </div>
 
-<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
 </body>
 </html>
 

@@ -1,44 +1,62 @@
-
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Delete Markt</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        .custom-input-width {
-            width: 300px; /* Ustawia szerokość */
+        .btn-width {
+            width: 250px;
         }
-        .centered-content {
-            margin-top: 50px; /* Odległość od górnej krawędzi */
-            text-align: center; /* Wyśrodkowanie zawartości */
+
+        .btn-custom-70 {
+            background-color: #0066FF;
+            color: #fff;
+        }
+
+        body {
+            background-color: #e9ecef;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            text-align: center;
         }
         .email-highlight {
-            color: orange; /* Kolor tekstu */
-            font-family: 'Arial', sans-serif; /* Czcionka */
-            font-weight: bold; /* Pogrubienie */
+            color: #008080;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+        }
+        h1 {
+            color: #0066FF;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
         }
     </style>
 </head>
-
 <body>
-<div class="container centered-content">
+<div class="container">
+    <p>Benutzer: <span class="email-highlight" th:text="${fullName}"></span></p>
 
-    <!--<p>Logged user : <span class="email-highlight" sec:authentication="name"></span></p>-->
-    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
-    <h1 class="mb-4">The Markt has been deleted</h1>
+    <h1 class="mt-4">Markt wurde gelöscht</h1>
 
-    <h2 class="mb-4">Operacja usunięcia Markt</h2>
+    <h2 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Löschvorgang für den Markt</h2>
 
-
-
-    <div th:if="${message}">
+    <div th:if="${message}" class="mb-4">
         <p th:text="${message}"></p>
     </div>
 
-
-    <a href="/admin/markets" class="btn btn-success">Powrót do listy Sklepow</a>
+    <div class="text-center">
+        <a href="/admin/markets" class="btn btn-custom-70 btn-lg m-2 btn-width">Zum Marktliste</a>
+    </div>
 </div>
 </body>
 </html>

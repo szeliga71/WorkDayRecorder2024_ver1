@@ -23,13 +23,10 @@ public class TruckListController {
         if (employee == null) {
             return "redirect:/login";
         }
-        model.addAttribute("trucks",truckService.getAllTrucks());
+        model.addAttribute("trucks", truckService.getAllTrucks());
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "admin/trucks";
     }
-
-
-
 
     @PostMapping("/admin/confirmDeletionTruck")
     public String confirmDeletionTruck(@AuthenticationPrincipal Employee loggedEmployee, @RequestParam("number") String number, Model model) {
@@ -38,7 +35,7 @@ public class TruckListController {
         }
         model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
 
-        Truck truck=truckService.getTruckByTruckId(number);
+        Truck truck = truckService.getTruckByTruckId(number);
         if (truck != null) {
             model.addAttribute("truck", truck);
             return "admin/confirmDeletionTruck";
@@ -50,12 +47,12 @@ public class TruckListController {
     }
 
     @PostMapping("/admin/deleteTruck")
-    public String deleteTruck(@AuthenticationPrincipal Employee loggedEmployee,@RequestParam("number") String number, Model model) {
+    public String deleteTruck(@AuthenticationPrincipal Employee loggedEmployee, @RequestParam("number") String number, Model model) {
         if (loggedEmployee == null) {
             return "redirect:/login";
         }
         model.addAttribute("fullName", loggedEmployee.getFirstName() + " " + loggedEmployee.getLastName());
-        Truck truck=truckService.getTruckByTruckId(number);
+        Truck truck = truckService.getTruckByTruckId(number);
         if (truck != null) {
             truckService.deleteTruck(number);
             model.addAttribute("truck", truck);
@@ -67,7 +64,7 @@ public class TruckListController {
     }
 
     @GetMapping("/admin/confirmDeletionTruck")
-    public String confirmDeletionTruck(@AuthenticationPrincipal Employee employee,Model model){
+    public String confirmDeletionTruck(@AuthenticationPrincipal Employee employee, Model model) {
         if (employee == null) {
             return "redirect:/login";
         }
@@ -77,7 +74,7 @@ public class TruckListController {
     }
 
     @GetMapping("/admin/deleteTruck")
-    public String deleteTruck(@AuthenticationPrincipal Employee employee,Model model){
+    public String deleteTruck(@AuthenticationPrincipal Employee employee, Model model) {
         if (employee == null) {
             return "redirect:/login";
         }
@@ -86,17 +83,19 @@ public class TruckListController {
     }
 
     @GetMapping("/admin/addTruck")
-    public String showTruckAddForm( @AuthenticationPrincipal Employee employee,Model model) {
+    public String showTruckAddForm(@AuthenticationPrincipal Employee employee, Model model) {
         if (employee == null) {
-            return "errorPage"; }
+            return "errorPage";
+        }
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        model.addAttribute("truck",new Truck());
+        model.addAttribute("truck", new Truck());
         return "admin/addTruck";
     }
+
     @PostMapping("/admin/saveTruck")
     public String saveTruck(@RequestParam("number") String number,
-                              @RequestParam("notes") String notes,
-                              Model model) {
+                            @RequestParam("notes") String notes,
+                            Model model) {
         Truck truckExist = truckService.getTruckByTruckId(number);
         if (truckExist != null) {
             model.addAttribute("error", "Truck with number: " + number + " exist.");
@@ -115,7 +114,7 @@ public class TruckListController {
     @GetMapping("/admin/updateTruck")
     public String updateTruck(@RequestParam("number") String number, Model model) {
 
-        Truck truck=truckService.getTruckByTruckId(number);
+        Truck truck = truckService.getTruckByTruckId(number);
         if (truck != null) {
             model.addAttribute("truck", truck);
             return "admin/updateTruck";
@@ -124,11 +123,12 @@ public class TruckListController {
             return "redirect:/admin/trucks";
         }
     }
+
     @PostMapping("/admin/updateTruck")
     public String updateTruck(@RequestParam("number") String number,
-                                @RequestParam("notes") String notes,
-                                Model model) {
-        Truck truck=truckService.getTruckByTruckId(number);
+                              @RequestParam("notes") String notes,
+                              Model model) {
+        Truck truck = truckService.getTruckByTruckId(number);
         if (truck != null) {
             truck.setNotes(notes);
             truckService.saveTruck(truck);

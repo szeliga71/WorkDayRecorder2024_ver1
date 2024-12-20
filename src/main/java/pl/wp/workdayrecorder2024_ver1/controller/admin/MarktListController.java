@@ -4,13 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
 import pl.wp.workdayrecorder2024_ver1.model.Markt;
 import pl.wp.workdayrecorder2024_ver1.service.MarktService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -92,6 +91,7 @@ public class MarktListController {
         model.addAttribute("markt", new Markt());
         return "admin/addMarket";
     }
+
     @PostMapping("/saveMarkt")
     public String saveMarkt(@RequestParam("marktId") String marktId,
                             @RequestParam("name") String name,
@@ -151,8 +151,7 @@ public class MarktListController {
             model.addAttribute("error", "Employee with id: " + marktId + " not found.");
         }
         return "redirect:/admin/markets";
-        }
-
+    }
 
 
     @GetMapping("/updateMarkt")
@@ -166,5 +165,14 @@ public class MarktListController {
             return "redirect:/admin/markets";
         }
     }
+
+    @GetMapping("/getMarkets")
+    @ResponseBody
+    public List<Markt> getAllMarkets() {
+        List<Markt> markets = marktService.getAllMarkts();
+        markets.forEach(markt -> System.out.println(markt.getMarktId() + ": " + markt.getName()));
+        return markets;
+    }
 }
+
 

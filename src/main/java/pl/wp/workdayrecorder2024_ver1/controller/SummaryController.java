@@ -29,9 +29,9 @@ public class SummaryController {
     StopService stopService;
 
     @GetMapping("/summary")
-    public String summary(@AuthenticationPrincipal Employee employee,Model model,@RequestParam("workDayId")Long workDayId) {
-
-
+    public String summary(@AuthenticationPrincipal Employee employee,
+                          Model model,
+                          @RequestParam("workDayId") Long workDayId) {
         if (employee == null) {
             return "redirect:/login";
         }
@@ -39,12 +39,10 @@ public class SummaryController {
             throw new IllegalArgumentException("ID must not be null");
         }
         WorkDay workDay = workDayService.getWorkDayById(workDayId);
-        List<Route> routes=routeService.getAllRoutesByWorkDayId(workDayId);
-
-
-        for(Route route:routes){
-            Long idRoute=route.getId();
-            List<Stop>stops=stopService.getAllStopsByRouteId(idRoute);
+        List<Route> routes = routeService.getAllRoutesByWorkDayId(workDayId);
+        for (Route route : routes) {
+            Long idRoute = route.getId();
+            List<Stop> stops = stopService.getAllStopsByRouteId(idRoute);
             route.setStops(stops);
         }
         workDay.setRoutes(routes);

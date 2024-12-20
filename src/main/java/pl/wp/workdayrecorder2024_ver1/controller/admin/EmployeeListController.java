@@ -31,6 +31,7 @@ public class EmployeeListController {
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "admin/employees";
     }
+
     @PostMapping("/confirmDeletionEmployee")
     public String confirmDeletionEmployee(@AuthenticationPrincipal Employee loggedEmployee, @RequestParam("personalId") String personalId, Model model) {
         if (loggedEmployee == null) {
@@ -46,9 +47,8 @@ public class EmployeeListController {
             return "redirect:/admin/employees";
         }
     }
-
     @PostMapping("/deleteEmployee")
-    public String deleteEmployee(@AuthenticationPrincipal Employee loggedEmployee,@RequestParam("personalId") String personalId, Model model) {
+    public String deleteEmployee(@AuthenticationPrincipal Employee loggedEmployee, @RequestParam("personalId") String personalId, Model model) {
         if (loggedEmployee == null) {
             return "redirect:/login";
         }
@@ -62,24 +62,23 @@ public class EmployeeListController {
         }
         return "admin/deleteEmployee";
     }
-
     @GetMapping("/confirmDeletionEmployee")
-    public String confirmDeletionEmployee(@AuthenticationPrincipal Employee employee,Model model){
+    public String confirmDeletionEmployee(@AuthenticationPrincipal Employee employee, Model model) {
         if (employee == null) {
             return "redirect:/login";
         }
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "admin/confirmDeletionEmployee";
-
     }
     @GetMapping("/deleteEmployee")
-    public String deleteEmployee(@AuthenticationPrincipal Employee employee,Model model){
+    public String deleteEmployee(@AuthenticationPrincipal Employee employee, Model model) {
         if (employee == null) {
             return "redirect:/login";
         }
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "admin/deleteEmployee";
     }
+
     @GetMapping("/updateEmployee")
     public String showUpdateEmployeeForm(@RequestParam("personalId") String personalId, Model model) {
         Employee employee = (Employee) employeeService.loadUserByUsername(personalId);
@@ -91,8 +90,6 @@ public class EmployeeListController {
             return "redirect:/admin/employees";
         }
     }
-
-
     @PostMapping("/saveEmployee")
     public String updateEmployee(@RequestParam("personalId") String personalId,
                                  @RequestParam("firstName") String firstName,

@@ -4,7 +4,6 @@ package pl.wp.workdayrecorder2024_ver1.securityConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,12 +38,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         security
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/uploadWorkDayPlan"))  // Wyłącz CSRF dla tego endpointu
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/uploadWorkDayPlan","/saveSignature"))  // Wyłącz CSRF dla tego endpointu
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers("/","/changePassword").permitAll()
-                        //.requestMatchers("/storage/**").permitAll()
-                        //.requestMatchers("/admin/**").hasRole("ADMIN")//permitAll()
+                        .requestMatchers("/admin/getMarkets").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/signature", "/saveSignature").hasAuthority("ROLE_USER")
                         .anyRequest()
                         .authenticated())
                 .formLogin((form) -> form
@@ -54,7 +53,7 @@ public class SecurityConfig {
                         .failureUrl("/login?error=true")
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")   //("/security/logoutPage")"/login?logout"
+                        .logoutSuccessUrl("/login?logout")
                         .permitAll());
         return security.build();
     }
@@ -73,7 +72,7 @@ public class SecurityConfig {
         authenticationManagerBuilder.authenticationProvider(authProvider());
         return authenticationManagerBuilder.build();
     }
-    @Bean
+  @Bean
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
         return new SimpleUrlAuthenticationSuccessHandler() {
             @Override

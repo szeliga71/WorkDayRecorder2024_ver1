@@ -1,8 +1,6 @@
 package pl.wp.workdayrecorder2024_ver1.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Employee  implements UserDetails {
+public class Employee implements UserDetails {
 
     @Id
     private String personalId;
@@ -22,6 +20,16 @@ public class Employee  implements UserDetails {
     private String mobilNumber;
     @Transient
     private String confirmedPassword;
+    private Long signatureId;
+
+
+    public Long getSignatureId() {
+        return signatureId;
+    }
+
+    public void setSignatureId(Long signatureId) {
+        this.signatureId = signatureId;
+    }
 
     public String getPersonalId() {
         return personalId;
@@ -46,7 +54,6 @@ public class Employee  implements UserDetails {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
 
 
     public void setPassword(String password) {
@@ -99,7 +106,7 @@ public class Employee  implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(()->role);
+        return List.of(() -> role);
     }
 
     @Override

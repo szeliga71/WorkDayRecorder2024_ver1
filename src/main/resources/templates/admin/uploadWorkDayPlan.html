@@ -3,31 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <title>Upload File</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #e9ecef;
+            height: 100vh;             /* Pełna wysokość widoku */
+            display: flex;             /* Ustawienie Flexbox na body */
+            justify-content: center;   /* Wyśrodkowanie poziome */
+            align-items: center;       /* Wyśrodkowanie pionowe */
+            margin: 0;
+        }
+
+        .container {
+            max-width: 600px; /* Zmniejszona szerokość kontenera */
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .email-highlight {
+            color: #008080; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
+        }
+
+        h3 {
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        #dropZone {
+            border: 2px dashed #ccc;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #dropZone p {
+            margin: 0;
+            font-size: 1rem;
+            color: #777;
+        }
+
+        #fileName {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .btn {
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn-space {
+            margin: 5px;
+        }
+    </style>
 </head>
 <body>
 
-<h3>Upload WorkDayPlan File</h3>
-<p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
-<form id="uploadForm">
-    <div id="dropZone" style="border: 2px dashed #ccc; padding: 20px;">
-        <p>Drag and drop file here, or click to select file</p>
-        <p id="fileName" style="font-weight: bold;"></p> <!-- Nowy element do wyświetlania nazwy pliku -->
-        <input type="file" id="fileInput" style="display: none;" />
+<div class="container">
+
+    <h3 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Arbeitsplan hochladen</h3>
+    <p>Benuzer : <span class="email-highlight" th:text="${fullName}"></span></p>
+
+    <form id="uploadForm">
+        <div id="dropZone">
+            <p>Datei hierher ziehen und ablegen oder klicken, um eine Datei auszuwählen</p>
+            <p id="fileName"></p>
+            <input type="file" id="fileInput" style="display: none;" />
+        </div>
+        <button type="submit" class="btn btn-success btn-space">Hochladen</button>
+    </form>
+
+    <div class="button-container">
+        <a href="/viewWeekWorkPlan" class="btn btn-primary btn-space">Hochgeladene Datei überprüfen</a>
+        <a href="/admin/adminPanel" class="btn btn-secondary btn-space">Zurück zum Admin-Panel</a>
     </div>
-    <br>
-    <button type="submit">Upload</button>
-</form>
-<br>
-<a href="/viewWeekWorkPlan" class="btn btn-primary mb-4">Check Uplouded File</a>
-<br>
-<a href="/admin/adminPanel" class="btn btn-primary mb-4">Back to Admin Panel</a>
+</div>
 
 <script>
     const dropZone = document.getElementById("dropZone");
     const fileInput = document.getElementById("fileInput");
-    const fileNameDisplay = document.getElementById("fileName"); // Element wyświetlający nazwę pliku
+    const fileNameDisplay = document.getElementById("fileName");
 
     dropZone.addEventListener("click", () => fileInput.click());
 
@@ -44,12 +114,15 @@
         e.preventDefault();
         dropZone.classList.remove("dragover");
         const files = e.dataTransfer.files;
-        if (files.length) {fileInput.files = files;
-        fileNameDisplay.textContent = files[0].name; }// Wyświetlanie nazwy pliku
+        if (files.length) {
+            fileInput.files = files;
+            fileNameDisplay.textContent = files[0].name;
+        }
     });
+
     fileInput.addEventListener("change", () => {
         if (fileInput.files.length) {
-            fileNameDisplay.textContent = fileInput.files[0].name; // Wyświetlanie nazwy pliku po wybraniu z systemu plików
+            fileNameDisplay.textContent = fileInput.files[0].name;
         }
     });
 
@@ -66,11 +139,15 @@
             credentials: "include"
         });
 
-        if (response.ok) alert("File uploaded successfully");
-        else{
+        if (response.ok) {
+            alert("File uploaded successfully");
+        } else {
             console.log(await response.text());
-        alert("File upload failed");}
+            alert("File upload failed");
+        }
     });
 </script>
+
 </body>
 </html>
+

@@ -1,43 +1,49 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Delete Route</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        .custom-input-width {
-            width: 300px; /* Ustawia szerokość */
+        body {
+            background-color: #e9ecef;
         }
-        .centered-content {
-            margin-top: 50px; /* Odległość od górnej krawędzi */
-            text-align: center; /* Wyśrodkowanie zawartości */
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
         }
+
+        h1 {
+            color: #0066FF;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
         .email-highlight {
-            color: orange; /* Kolor tekstu */
-            font-family: 'Arial', sans-serif; /* Czcionka */
-            font-weight: bold; /* Pogrubienie */
+            color: #008080;
+            font-weight: bold;
+        }
+
+        .btn-width {
+            width: 250px;
         }
     </style>
 </head>
-
 <body>
-<div class="container centered-content">
-
-    <!--<p>Logged user : <span class="email-highlight" sec:authentication="name"></span></p>-->
-    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
-    <h1 class="mb-4">The Route has been deleted</h1>
-
-    <h2 class="mb-4">Operacja usunięcia Route</h2>
-
-
-
+<div class="container">
+    <p>Benuzer: <span class="email-highlight" th:text="${fullName}"></span></p>
+    <h1>Die Tour wurde gelöscht</h1>
     <div th:if="${message}">
         <p th:text="${message}"></p>
     </div>
-
-
-    <a href="/summary" class="btn btn-success">Powrót</a>
+    <a href="/summary" class="btn btn-custom-70 btn-lg m-2 btn-width">Abbrechen</a>
 </div>
 </body>
 </html>

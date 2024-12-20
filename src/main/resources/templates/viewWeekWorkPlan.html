@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -5,14 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plan Tygodnia</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #e9ecef; /* Tło strony */
+        }
+        .container {
+            max-width: 600px; /* Ustawia szerokość kontenera */
+            margin: 50px auto; /* Wyśrodkowanie kontenera z marginesem u góry */
+            background-color: #f8f9fa; /* Tło kontenera */
+            padding: 20px;
+            border-radius: 8px; /* Zaokrąglenie rogów */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Cień dla efektu głębi */
+            text-align: center;
+        }
+        .btn-custom {
+            width: 100%; /* Szerokość przycisków */
+            margin-bottom: 15px; /* Odstęp między przyciskami */
+        }
+        h2 {
+            color: #343a40; /* Kolor nagłówka */
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 100%; /* Dostosowanie obrazka do szerokości kontenera */
+            height: auto;
+            margin-bottom: 20px; /* Odstęp pod obrazkiem */
+        }
+    </style>
 </head>
 <body>
+
 <div class="container">
-    <h2 class="my-4">Plan Tygodnia</h2>
-    <a th:href="${role == 'ROLE_ADMIN' ? '/admin/adminPanel' : '/home'}" class="btn btn-primary mb-4">Back to Home</a>
+    <h2 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Wöchentlicher Arbeitsplan</h2>
+
+    <a th:href="${role == 'ROLE_ADMIN' ? '/admin/adminPanel' : '/home'}" class="btn btn-primary btn-custom">Schließen</a>
+
     <img src="/weekWorkPlan.jpg" alt="Plan Tygodnia" class="img-fluid" />
-    <br>
-    <a th:href="${role == 'ROLE_ADMIN' ? '/admin/adminPanel' : '/home'}" class="btn btn-primary mb-4">Back to Home</a>
+
+    <a th:href="${role == 'ROLE_ADMIN' ? '/admin/adminPanel' : '/home'}" class="btn btn-primary btn-custom">Schließen</a>
 </div>
+
 </body>
 </html>

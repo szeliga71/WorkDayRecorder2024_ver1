@@ -6,7 +6,7 @@ public class WorkDaySearchObject {
 
     private String personalId;;
     private String dayOfWeek;
-    private int KW;
+    private Integer KW;
 
     public String getPersonalId() {
         return personalId;
@@ -24,11 +24,11 @@ public class WorkDaySearchObject {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public int getKW() {
+    public Integer getKW() {
         return KW;
     }
 
-    public void setKW(int KW) {
+    public void setKW(Integer KW) {
         this.KW = KW;
     }
 }

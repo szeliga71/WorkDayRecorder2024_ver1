@@ -86,7 +86,7 @@ public class WorkDayService {
             existingWorkDay.setTotalDistance(updatedWorkDay.getTotalDistance());
             existingWorkDay.setAccident(updatedWorkDay.isAccident());
             existingWorkDay.setFaults(updatedWorkDay.isFaults());
-            existingWorkDay.setNotes(updatedWorkDay.getNotes());
+
             // Zapis zaktualizowanej trasy w bazie danych
             return workDayRepository.save(existingWorkDay);
         }

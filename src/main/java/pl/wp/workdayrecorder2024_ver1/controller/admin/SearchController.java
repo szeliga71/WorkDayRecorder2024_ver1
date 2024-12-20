@@ -20,8 +20,6 @@ import java.util.List;
 public class SearchController {
 
 
-
-
     @Autowired
     WorkDayService workDayService;
     @Autowired
@@ -37,7 +35,7 @@ public class SearchController {
                                          @RequestParam(value = "personalId", required = false) String personalId,
                                          @RequestParam(value = "dayOfWeek", required = false) String dayOfWeek,
                                          @RequestParam(value = "KW", required = false) Integer KW,
-                                         Model model){
+                                         Model model) {
 
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         List<WorkDay> workDays = workDayService.getWorkDaysByCustomParameter(personalId, dayOfWeek, KW);
@@ -51,7 +49,7 @@ public class SearchController {
 
     @GetMapping("/admin/searchByCustomArguments")
     public String searchByAllArguments(@AuthenticationPrincipal Employee employee,
-                                       Model model){
+                                       Model model) {
         if (employee == null) {
             return "redirect:/login";
         }
@@ -64,7 +62,7 @@ public class SearchController {
                                        @RequestParam(value = "personalId", required = false) String personalId,
                                        @RequestParam(value = "dayOfWeek", required = false) String dayOfWeek,
                                        @RequestParam(value = "KW", required = false) Integer KW,
-                                       Model model){
+                                       Model model) {
         if (employee == null) {
             return "redirect:/login";
         }

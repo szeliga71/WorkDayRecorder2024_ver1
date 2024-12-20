@@ -5,23 +5,61 @@
     <title>add Truck</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .btn-width{
+            width: 250px;
+        }
+
+        .btn-custom-20 {
+            background-color: #a9a9a9;
+            color: #fff;
+        }
+
+        .btn-custom-70 {
+            background-color: #0066FF;
+            color: #fff;
+        }
+
+    body {
+    background-color: #e9ecef;
+    }
+    .container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+    }
+    .custom-input-width {
+    width: 100%;
+    }
+    h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    }
+    button {
+    width: 100%;
+    }
+    </style>
 </head>
 <body>
 <div class="container">
-    <h1>add Truck</h1>
-
+    <h1 class="text-center mt-4 " style="color: #0066FF; font-weight: bold;">LKW hinzufügen</h1>
     <form th:action="@{/admin/saveTruck}" method="post">
 
         <div class="form-group">
-            <label for="number">Truck No.</label>
-            <input type="text" id="number" name="number" class="form-control" th:value="${truck.number}" required>
+            <label for="number">LKW Nummer</label>
+            <input type="text" id="number" name="number" class="form-control custom-input-width" th:value="${truck.number}" required>
         </div>
         <div class="form-group">
-            <label for="notes">Notes</label>
-            <input type="text" id="notes" name="notes" class="form-control" th:value="${truck.notes}">
+            <label for="notes">Notizen</label>
+            <input type="text" id="notes" name="notes" class="form-control custom-input-width" th:value="${truck.notes}">
         </div>
-
-        <button type="submit" class="btn btn-primary">Save</button>
+            <div class="text-center">
+        <button type="submit" class="btn btn-custom-20  btn-lg m-2 btn-width">Speichern</button>
+        <a th:href="@{/admin/trucks}" class="btn btn-custom-70  btn-lg m-2 btn-width">Zuruck LKW Liste</a>
+        </div>
     </form>
 </div>
 </body>

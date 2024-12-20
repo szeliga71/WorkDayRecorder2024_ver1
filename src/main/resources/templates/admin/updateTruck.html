@@ -2,6 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Update Truck</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #e9ecef;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .custom-input-width {
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        button {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">LKW aktualisieren</h1>
+    <form th:action="@{/admin/updateTruck}" method="post">
+        <input type="hidden" name="number" th:value="${truck.number}">
+
+        <div class="form-group">
+            <label for="notes">Notizen</label>
+            <input type="text" id="notes" name="notes" class="form-control custom-input-width" th:value="${truck.notes}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Änderungen speichern</button>
+    </form>
+</div>
+</body>
+</html>
+
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
@@ -32,4 +80,4 @@
     </form>
 </div>
 </body>
-</html>
+</html>-->

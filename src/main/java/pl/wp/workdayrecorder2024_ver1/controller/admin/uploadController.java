@@ -20,57 +20,57 @@ import java.nio.file.Paths;
 @Controller
 public class uploadController {
 
-    private final String STORAGE =Paths.get("storage").toAbsolutePath().toString();
+    private final String STORAGE = Paths.get("storage").toAbsolutePath().toString();
 
-    public uploadController(){
-    File directory = new File(STORAGE);
+    public uploadController() {
+        File directory = new File(STORAGE);
         if (!directory.exists()) directory.mkdirs();
-}
+    }
 
-@GetMapping("/admin/uploadWorkDayPlan")
-public String showUploadSite(@AuthenticationPrincipal Employee employee, Model model){
-    if (employee == null) {
-        return "redirect:/login";
+    @GetMapping("/admin/uploadWorkDayPlan")
+    public String showUploadSite(@AuthenticationPrincipal Employee employee, Model model) {
+        if (employee == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        return "admin/uploadWorkDayPlan";
     }
-    model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-    return "admin/uploadWorkDayPlan";
-}
 
-@PostMapping("/admin/uploadWorkDayPlan")
-public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
-    if (file.isEmpty()) {
-        System.out.println("Received empty file");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty");
-    }
-    String fileName = file.getOriginalFilename();
-    String fileExtension="";
-    if (fileName != null && fileName.contains(".")) {
-        fileExtension = fileName.substring(fileName.lastIndexOf(".")); // Pobierz rozszerzenie z oryginalnego pliku
-    }
+    @PostMapping("/admin/uploadWorkDayPlan")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            System.out.println("Received empty file");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty");
+        }
+        String fileName = file.getOriginalFilename();
+        String fileExtension = "";
+        if (fileName != null && fileName.contains(".")) {
+            fileExtension = fileName.substring(fileName.lastIndexOf(".")); // Pobierz rozszerzenie z oryginalnego pliku
+        }
 //ten kod nadaje rozszerzenie z orginalnego pliku, teraz jest ustawione na sztywno jpg.
-    try {
-        Path path = Paths.get(STORAGE, "weekWorkPlan.jpg"/*+fileExtensionfile.getOriginalFilename()*/);
-        System.out.println("Attempting to save file to path: " + path.toString());
-        Files.write(path, file.getBytes());
-        System.out.println("File saved successfully");
-        return ResponseEntity.ok("File uploaded successfully");
-    } catch (IOException e) {
-        e.printStackTrace();
-        System.err.println("Error uploading file: " + e.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file");
+        try {
+            Path path = Paths.get(STORAGE, "weekWorkPlan.jpg"/*+fileExtensionfile.getOriginalFilename()*/);
+            System.out.println("Attempting to save file to path: " + path.toString());
+            Files.write(path, file.getBytes());
+            System.out.println("File saved successfully");
+            return ResponseEntity.ok("File uploaded successfully");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error uploading file: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file");
+        }
     }
-}
 
-@PostMapping("/admin/deleteWorkDayPlan")
-public ResponseEntity<String> deleteFile(@RequestParam("filename") String filename) {
-    Path path = Paths.get(STORAGE, filename);
-    try {
-        Files.deleteIfExists(path);
-        return ResponseEntity.ok("File deleted successfully");
-    } catch (IOException e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting file");
+    @PostMapping("/admin/deleteWorkDayPlan")
+    public ResponseEntity<String> deleteFile(@RequestParam("filename") String filename) {
+        Path path = Paths.get(STORAGE, filename);
+        try {
+            Files.deleteIfExists(path);
+            return ResponseEntity.ok("File deleted successfully");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting file");
+        }
     }
-}
 
 }

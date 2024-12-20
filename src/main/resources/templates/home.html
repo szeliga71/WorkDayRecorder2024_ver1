@@ -21,63 +21,57 @@
 
         /* Styl dla nieprzezroczystego pola */
         .content-box {
-            background-color: #D3D3D3;
+            background-color: #ffffff;
             padding: 20px;
             border: 2px solid black;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
-        .email-highlight {
-            color: orange; /* Kolor tekstu */
-            font-family: 'Arial', sans-serif; /* Czcionka */
-            font-weight: bold; /* Pogrubienie */
-        }
-
-        /* Niestandardowe kolory przycisków */
-        .btn-custom-1 {
-            background-color: #ff5733; /* Niestandardowy kolor przycisku */
+        .btn-custom-2 {
+            background-color: #c0c0c0; /* Niestandardowy kolor przycisku */
             border: 2px solid black;
             color: black; /* Czarna obwódka */
             font-weight: bold;
         }
-
-        .btn-custom-2 {
-            background-color: #33c1ff; /* Inny niestandardowy kolor przycisku */
-            border: 2px solid black; /* Czarna obwódka */
-            color: black; /* Czarna obwódka */
-            font-weight: bold;
-        }
-
         .btn-custom-3 {
-            background-color: #990000; /* Inny niestandardowy kolor przycisku */
-            border: 2px solid black; /* Czarna obwódka */
+            background-color: #a9a9a9; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
             color: black; /* Czarna obwódka */
             font-weight: bold;
         }
         .btn-custom-4 {
-            background-color: #333333; /* Inny niestandardowy kolor przycisku */
-            border: 2px solid black; /* Czarna obwódka */
+            background-color: #808080; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
             color: black; /* Czarna obwódka */
             font-weight: bold;
         }
         .btn-custom-5 {
-            background-color: #333333; /* Inny niestandardowy kolor przycisku */
+            background-color: #696969; /* Inny niestandardowy kolor przycisku */
             border: 2px solid black; /* Czarna obwódka */
             color: black; /* Czarna obwódka */
             font-weight: bold;
         }
         .btn-custom-6 {
-            background-color: #CCFFFF; /* Inny niestandardowy kolor przycisku */
-            border: 2px solid black; /* Czarna obwódka */
+            background-color: #0066FF; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
             color: black; /* Czarna obwódka */
             font-weight: bold;
+        }
+
+        .email-highlight {
+            color: #008080; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
         }
         .button-container {
             display: flex;
             flex-wrap: wrap; /* Pozwoli na zawijanie w razie potrzeby */
             justify-content: center;
             gap: 10px; /* Odstępy między przyciskami */
+        }
+        .btn-fixed-width {
+            width: 220px; /* Ustaw szerokość według własnych potrzeb */
         }
     </style>
 
@@ -90,12 +84,12 @@
             window.location.href = "viewWeekWorkPlan";   <!--"/storage/weekWorkPlan.jpg";-->
         }
 
-        function checkWorkHistory() {
-            window.location.href = "workHistory";
+        function setSignature() {
+            window.location.href = "signature";
         }
 
         function createWashListe() {
-            window.location.href = "waschListe";
+            window.location.href = "home";
         }
         function changePassword() {
             window.location.href = "changePassword";
@@ -106,20 +100,21 @@
 </head>
 <body>
 <div class="content-box text-center">
-    <h1 class="text-center mt-4">Employee User Home Page</h1>
-    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+
+    <h1 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Startseite für Fahrer</h1>
+    <p>Benutzer : <span class="email-highlight" th:text="${fullName}"></span></p>
 
 
     <br>
     <div class="button-container">
-    <button onclick="enterWorkDay()" class="btn btn-custom-1 btn-lg m-2">Tagesbericht</button>
-    <button onclick="showWorkPlan()" class="btn btn-custom-2 btn-lg m-2">ArbeitsPlan</button>
-    <button onclick="checkWorkHistory()" class="btn btn-custom-4 btn-lg m-2">ArbeitsHistory</button>
-    <button onclick="createWashListe()" class="btn btn-custom-5 btn-lg m-2">Wasch Liste</button>
-    <button onclick="changePassword()" class="btn btn-custom-6 btn-lg m-2">Change Password</button>
+    <button onclick="enterWorkDay()" class="btn btn-custom-2 btn-lg m-2 btn-fixed-width">Tagesbericht</button>
+    <button onclick="showWorkPlan()" class="btn btn-custom-3 btn-lg m-2 btn-fixed-width">Arbeitsplan</button>
+    <button onclick="setSignature()" class="btn btn-custom-4 btn-lg m-2 btn-fixed-width">Unterschreibe</button>
+    <button onclick="createWashListe()" class="btn btn-custom-5 btn-lg m-2 btn-fixed-width">Waschliste</button>
+    <button onclick="changePassword()" class="btn btn-custom-6 btn-lg m-2 btn-fixed-width">Passwort ändern</button>
 
     <form th:action="@{/logout}" method="post" style="display:inline-block;">
-        <button type="submit" class="btn btn-custom-3 btn-lg m-2">Logout</button>
+        <button type="submit" class="btn btn-custom-5 btn-lg m-2 btn-fixed-width">Abmelden</button>
     </form>
 </div>
 

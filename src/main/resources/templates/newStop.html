@@ -6,51 +6,159 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        body {
+            background-color: #e9ecef;
+        }
+
+        .container {
+            max-width: 600px; /* Ustawia szerokość kontenera */
+            margin: 0 auto; /* Wyśrodkowanie kontenera */
+        }
+
         .custom-input-width {
             width: 300px; /* Ustawia szerokość pól */
         }
+
         .form-container {
             margin-top: 30px;
             padding: 20px;
             background-color: #f8f9fa;
             border-radius: 8px;
+            width: 100%;
         }
+
         .email-highlight {
-            color: orange; /* Kolor tekstu */
+            color: #008080; /* Kolor tekstu */
             font-family: 'Arial', sans-serif; /* Czcionka */
             font-weight: bold; /* Pogrubienie */
         }
+
+        h2 {
+            text-align: center; /* Wyśrodkowanie tytułu */
+        }
+
+        .btn-width {
+            width: 250px;
+        }
+
+        .btn-custom-10 {
+            background-color: #696969;
+            color: #fff;
+        }
+
+        .btn-custom-20 {
+            background-color: #a9a9a9;
+            color: #fff;
+        }
+
+        .btn-custom-30 {
+            background-color: #808080;
+            color: #fff;
+        }
+
+        .btn-custom-70 {
+            background-color: #0066FF;
+            color: #fff;
+        }
     </style>
     <script>
-        function updateAddress() {
-            const selectElement = document.getElementById('marktId');
-            const addressDisplay = document.getElementById('addressDisplay');
+
+        let markets = [];
+
+        // Funkcja pobierająca markety z backendu
+        async function fetchMarkets() {
+            try {
+                const response = await fetch('/admin/getMarkets');
+                if (!response.ok) {
+                    throw new Error('Błąd pobierania danych z serwera');
+                }
+                markets = await response.json();
+            } catch (error) {
+                console.error('Błąd:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchMarkets();
+            setupAutocomplete();
+            handleMarktSearchInput();
+        });
+
+        function setupAutocomplete() {
+            const marktSearch = document.getElementById('marktSearch');
+            const autocompleteList = document.getElementById('autocomplete-list');
+
+            marktSearch.addEventListener('input', function () {
+                const inputValue = this.value.toLowerCase();
+                autocompleteList.innerHTML = '';
+
+                if (!inputValue) {
+                    autocompleteList.style.display = 'none';
+                    return;
+                }
+
+                const filteredMarkets = markets.filter(markt => markt.marktId.toLowerCase().startsWith(inputValue));
+
+                if (filteredMarkets.length === 0) {
+                    autocompleteList.style.display = 'none';
+                    return;
+                }
+
+                filteredMarkets.forEach(markt => {
+                    const item = document.createElement('div');
+                    item.textContent = `${markt.marktId} - ${markt.citi}`;
+                    item.addEventListener('click', function () {
+                        marktSearch.value = markt.marktId; // Ustawienie wartości w inpucie
+                        displayAddress(markt);             // Wyświetlenie adresu
+                        autocompleteList.style.display = 'none';
+                    });
+                    autocompleteList.appendChild(item);
+                });
+
+                autocompleteList.style.display = 'block';
+            });
+
+            document.addEventListener('click', function (event) {
+                if (!event.target.closest('.form-group')) {
+                    autocompleteList.style.display = 'none';
+                }
+            });
+        }
+
+        function displayAddress(markt) {
             const addressText = document.getElementById('addressText');
+            const addressDisplay = document.getElementById('addressDisplay');
 
-            // Pobierz wybrany element
-            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const fullAddress = `
+        Nazwa: ${markt.name}<br>
+        Ulica: ${markt.street} ${markt.buildingNumber}<br>
+        Miasto: ${markt.postalCode} ${markt.citi}<br>
+        Notatki: ${markt.notes}
+    `.trim();
 
-            // Pobierz adres z atrybutu `data-address`
-            const name = selectedOption.getAttribute('data-name');
-            const street = selectedOption.getAttribute('data-street');
-            const buildingNumber = selectedOption.getAttribute('data-building-number');
-            const postalCode = selectedOption.getAttribute('data-postal-code');
-            const citi = selectedOption.getAttribute('data-citi');
-            const notes = selectedOption.getAttribute('data-notes');
+            addressText.innerHTML = fullAddress;
+            addressDisplay.style.display = 'block';
+        }
 
-            if (name || street || buildingNumber || postalCode || citi || notes) {
-                const fullAddress = `
-                ${name ? `Nazwa: ${name}` : ''}<br>
-                ${street ? `Ulica: ${street}` : ''} ${buildingNumber ?  ` ${buildingNumber}` : ''}<br>
-                ${postalCode ? `Miasto: ${postalCode}` : ''} ${citi ? ` ${citi}` : ''}<br>
-                ${notes ? `Notatki: ${notes}` : ''}
-            `.trim();
+        function handleMarktSearchInput() {
+            const marktSearch = document.getElementById('marktSearch');
 
-                addressText.innerHTML = fullAddress; // Ustaw treść z HTML-em
-                addressDisplay.style.display = 'block';
-            } else {
-                addressText.textContent = '';
-                addressDisplay.style.display = 'none';
+            marktSearch.addEventListener('blur', () => {
+                findAndDisplayAddress(marktSearch.value);
+            });
+
+            marktSearch.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // Zapobieganie domyślnej akcji formularza
+                    findAndDisplayAddress(marktSearch.value);
+                }
+            });
+        }
+
+        function findAndDisplayAddress(marktId) {
+            const selectedMarkt = markets.find(markt => markt.marktId === marktId);
+            if (selectedMarkt) {
+                displayAddress(selectedMarkt);
             }
         }
     </script>
@@ -58,58 +166,56 @@
 <body>
 <br>
 <div class="container">
-    <h1>ADD NEW STOP</h1>
-    <p>Logged user : <span class="email-highlight" th:text="${fullName}"></span></p>
+
+    <h1 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Neue Stopp hinzufungen</h1>
+    <p>Benutzer : <span class="email-highlight" th:text="${fullName}"></span></p>
 
     <form th:action="@{/newStop}" method="post" class="form-container">
         <!-- Hidden Route ID -->
         <input type="hidden" name="routeId" th:value="${route.id}"/>
         <input type="hidden" name="workDayId" th:value="${workDay.id}"/>
-        <!--<input type="hidden" name="workDayId" th:value="${workDay.id}" />-->
-
-        <!-- Markt ID (rozwijane) -->
-        <div class="form-group">
-            <label for="marktId">Markt ID:</label>
-            <select id="marktId" name="marktId" class="form-control custom-input-width" required onchange="updateAddress()">
-                <option value="">Wybierz market</option>
-                <option th:each="markt : ${markets}"
-                        th:value="${markt.marktId}"
-                        th:data-name="${markt.name}"
-                        th:data-street="${markt.street}"
-                        th:data-building-number="${markt.buildingNumber}"
-                        th:data-postal-code="${markt.postalCode}"
-                        th:data-citi="${markt.citi}"
-                        th:data-notes="${markt.notes}"
-                        th:text="${markt.marktId}"></option>
-            </select>
+        <!-- Markt ID  -->
+        <div class="form-group position-relative">
+            <label for="marktSearch">Marktnummer</label>
+            <input id="marktSearch" name="marktId" class="form-control custom-input-width" autocomplete="off"
+                   placeholder="Marktnummer eingeben" required>
+            <div id="autocomplete-list" class="autocomplete-list"></div>
         </div>
-        <div id="addressDisplay" class="form-group" style="display:none;">
-            <label>Adres:</label>
+        <!-- Adres wyświetlanie -->
+        <div id="addressDisplay" class="form-group" style="display: none;">
+            <label>Adresse:</label>
             <p id="addressText"></p>
         </div>
 
         <!-- Początek przystanku -->
         <div class="form-group">
-            <label for="begin">Początek Przystanku:</label>
+            <label for="begin">Stoppbeginn</label>
             <input type="datetime-local" id="begin" name="begin" class="form-control custom-input-width" required>
         </div>
 
         <!-- Koniec przystanku -->
         <div class="form-group">
-            <label for="endOfStop">Koniec Przystanku:</label>
-            <input type="datetime-local" id="endOfStop" name="endOfStop" class="form-control custom-input-width" required>
+            <label for="endOfStop">Stoppende</label>
+            <input type="datetime-local" id="endOfStop" name="endOfStop" class="form-control custom-input-width"
+                   required>
         </div>
-
-        <!-- Przyciski wyboru akcji -->
+        <br>
         <div class="form-group">
-
-            <button type="submit" name="action" value="addStop" class="btn btn-secondary">Add New Stop</button>
-            <button type="submit" name="action" value="summary" class="btn btn-info">Zakończ i Wyświetl Podsumowanie</button>
-            <a th:href="@{/summary(workDayId=${workDay.id})}" class="btn btn-primary">Wroc do Podsumowania</a>
+            <div class="d-flex justify-content-between w-100 mb-2">
+                <button type="submit" name="action" value="addStop" class="btn btn-custom-10 btn-width">Stopp hinzufügen
+                </button>
+                <button type="submit" name="action" value="addRoute" class="btn btn-custom-20 btn-width">Route hinzufügen
+                </button>
+            </div>
+            <div class="d-flex justify-content-between w-100">
+                <button type="submit" name="action" value="summary" class="btn btn-custom-70 btn-width">Speichern
+                </button>
+                <a th:href="@{/summary(workDayId=${workDay.id})}" class="btn btn-custom-30 btn-width">Abbrechen
+                    </a>
+            </div>
         </div>
     </form>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
