@@ -78,8 +78,7 @@ public class WorkDayController {
         } else if (daysDifference == 6) {
             workDayDate = today.minusDays(1);
         } else {
-            model.addAttribute("error", "Nie można wybrać dnia: " + dayOfWeek);
-            System.out.println(" wybrany dzien tygodnia jest zly, jest za pozno lub za wczesnie na wprowadzeanie daNYCH ");
+            model.addAttribute("error", "Der Wochentag  "+dayOfWeek+ " kann nicht ausgewählt werden. Der ausgewählte Wochentag ist ungeeignet, es ist entweder zu früh oder zu spät, um Daten für diesen Tag einzugeben.");
             return "error";
         }
         // Obliczanie numeru tygodnia KW alias weekNumber
@@ -93,7 +92,7 @@ public class WorkDayController {
             Long workDayId = existingWorkDay.getId();
             model.addAttribute("workDayId", workDayId);
             model.addAttribute("workDay", existingWorkDay);
-            model.addAttribute("info", "Rekord dla tego dnia już istnieje, możesz go edytować.");
+            model.addAttribute("info", "Ein Datensatz für diesen Tag existiert bereits, Sie können ihn bearbeiten.");
             return "redirect:/summary?workDayId=" + workDayId;
         } else {
             WorkDay workDay = new WorkDay();
@@ -119,11 +118,11 @@ public class WorkDayController {
             return "redirect:/login";
         }
         if (workDayId == null) {
-            throw new IllegalArgumentException("WorkDay ID nie może być puste");
+            throw new IllegalArgumentException("Die WorkDay ID darf nicht leer sein.");
         }
         WorkDay workDay = workDayService.getWorkDayById(workDayId);
         if (workDay == null) {
-            model.addAttribute("info", "Nie znaleziono WorkDay.");
+            model.addAttribute("info", "Kein WorkDay gefunden.");
             return "error";
         }
         model.addAttribute("workDay", workDay);
@@ -161,9 +160,9 @@ public class WorkDayController {
         if (workDay != null) {
             workDayService.deleteWorkDay(workDay);
             model.addAttribute("workDayId", workDayId);
-            model.addAttribute("message", "WorkDay : " + workDay.getDayOfWeek() + " has been removed.");
+            model.addAttribute("message", "WorkDay : " + workDay.getDayOfWeek() + " wurde entfernt.");
         } else {
-            model.addAttribute("error","Work Day with the given ID not found.");
+            model.addAttribute("error","WorkDay mit der angegebenen ID wurde nicht gefunden.");
         }
         if (loggedEmployee.getRole().contains("ROLE_ADMIN")) {
             return "redirect:/admin/adminPanel";

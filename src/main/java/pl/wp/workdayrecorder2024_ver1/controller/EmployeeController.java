@@ -17,6 +17,4 @@ public class EmployeeController {
      model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "home";
     }
-
-
 }

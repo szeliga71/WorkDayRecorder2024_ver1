@@ -1,6 +1,9 @@
 package pl.wp.workdayrecorder2024_ver1.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +22,27 @@ public class MarktListController {
     MarktService marktService;
 
     @GetMapping("/markets")
-    public String getMarkts(@AuthenticationPrincipal Employee employee, Model model) {
+    public String getMarkts(@AuthenticationPrincipal Employee employee,
+                            @RequestParam(defaultValue = "marktId") String sortField,
+                            @RequestParam(defaultValue = "asc") String sortDir,
+                            @RequestParam(defaultValue = "0") int page,
+                            Model model) {
         if (employee == null) {
             return "redirect:/login";
         }
-        model.addAttribute("markets", marktService.getAllMarkts());
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        Page<Markt> marktsPage = marktService.getAllMarkts(PageRequest.of(page, 10, sort));
+
+
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        model.addAttribute("markets", marktsPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", marktsPage.getTotalPages());
+        model.addAttribute("totalItems", marktsPage.getTotalElements());
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equalsIgnoreCase("asc") ? "desc" : "asc");
         return "admin/markets";
     }
 

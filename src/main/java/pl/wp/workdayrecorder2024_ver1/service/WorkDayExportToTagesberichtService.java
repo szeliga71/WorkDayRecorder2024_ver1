@@ -355,29 +355,23 @@ public class WorkDayExportToTagesberichtService {
                             } else {
                                 throw new Exception("Wartość rightStopCell przekroczyła 15.");
                             }
-
                         }
-
                     }
                     stopInNextTour=stopInNextTour+10;
-
                 }
             }
 
             String outFilePath = "src/main/excellFiles/filledFormular/tagebericht" + workDay.getDate() + "-" + workDay.getPersonalId() + ".xlsx";
-            // Zapisz zmiany do pliku
             try (FileOutputStream fos = new FileOutputStream(outFilePath)) {
                 workbook.write(fos);
                 System.out.println("Dane zapisane pomyślnie do pliku Excel.");
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
     public int dayOfWeekInFormular(String dayOfWeek) {
 
         if (dayOfWeek == null) {
