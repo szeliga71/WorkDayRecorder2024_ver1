@@ -35,6 +35,17 @@
             font-family: 'Arial', sans-serif; /* Czcionka */
             font-weight: bold; /* Pogrubienie */
         }
+        th {
+            color: #fff; /* Kolor czcionki biały */
+            background-color: #343a40; /* Opcjonalnie ciemne tło dla kontrastu */
+        }
+        .sortable {
+            cursor: pointer;
+            color :#fff
+        }
+        .sortable:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -72,6 +83,25 @@
     <table th:if="${workDays}" class="table table-striped">
         <thead>
         <tr>
+            <th>
+               Nr.
+            </th>
+            <th>
+                <a th:href="@{'/admin/resultsSearchedPage'(personalId=${personalId}, dayOfWeek=${dayOfWeek}, KW=${KW}, sortField='personalId', sortDir=${reverseSortDir})}"class="sortable">Personal Nr.</a>
+            </th>
+            <th>
+                <a th:href="@{'/admin/resultsSearchedPage'(personalId=${personalId}, dayOfWeek=${dayOfWeek}, KW=${KW}, sortField='date', sortDir=${reverseSortDir})}"class="sortable">Date</a>
+            </th>
+            <th>
+                <a th:href="@{'/admin/resultsSearchedPage'(personalId=${personalId}, dayOfWeek=${dayOfWeek}, KW=${KW}, sortField='dayOfWeek', sortDir=${reverseSortDir})}"class="sortable">Wochentag</a>
+            </th>
+            <th>
+                <a th:href="@{'/admin/resultsSearchedPage'(personalId=${personalId}, dayOfWeek=${dayOfWeek}, KW=${KW}, sortField='KW', sortDir=${reverseSortDir})}"class="sortable">Wochennummer</a>
+            </th>
+            <th>Details</th>
+            <th>Löschen</th>
+        </tr>
+        <!--<tr>
             <th>Nr.</th>
             <th>Personal Nr.</th>
             <th>Date</th>
@@ -79,7 +109,7 @@
             <th>Wochennummer</th>
             <th>Details</th>
             <th>Löschen</th>
-        </tr>
+        </tr>-->
         </thead>
         <tbody>
         <tr th:each="workDay,stat : ${workDays}">

@@ -1,10 +1,10 @@
 package pl.wp.workdayrecorder2024_ver1.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.wp.workdayrecorder2024_ver1.model.Route;
 import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
 import pl.wp.workdayrecorder2024_ver1.repository.WorkDayRepository;
 
@@ -35,10 +35,6 @@ public class WorkDayService {
         return workDayRepository.findAll();
     }
 
-    //public List<WorkDay> getWorkDaysByCustomParameter(String personalId, String dayOfWeek, Integer KW) {
-
-        //return workDayRepository.findByPersonalIdAndDayOfWeekAndKW(personalId,dayOfWeek,KW);
-    //}
 
     public List<WorkDay> getWorkDaysBydayOfWeek(String dayOfWeek) {
         return workDayRepository.findByDayOfWeek(dayOfWeek);
@@ -55,12 +51,14 @@ public class WorkDayService {
     public List<WorkDay> getWorkDayByPersonalIdAndKW(String personalId, Integer KW) {
         return workDayRepository.findByPersonalIdAndKW(personalId,KW);
     }
-    public List<WorkDay> getWorkDaysByCustomParameter(String personalId, String dayOfWeek, Integer KW) {
+
+    public List<WorkDay> getWorkDaysByCustomParameter(String personalId, String dayOfWeek, Integer KW, String sortField, String sortDir) {
         Specification<WorkDay> specification = Specification.where(WorkDaySpecifications.hasPersonalId(personalId))
                 .and(WorkDaySpecifications.hasDayOfWeek(dayOfWeek))
                 .and(WorkDaySpecifications.hasKW(KW));
-
-        return workDayRepository.findAll(specification);
+        Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        return workDayRepository.findAll(specification, sort);
+        //return workDayRepository.findAll(specification);
     }
     public Optional<WorkDay> findWorkDayByPersonalIdAndDayOfWeekAndKW(String personalId, String dayOfWeek, Integer KW) {
         return workDayRepository.findByPersonalIdAndDayOfWeekAndKW(personalId, dayOfWeek, KW);

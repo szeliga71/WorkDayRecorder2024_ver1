@@ -35,14 +35,29 @@ public class SearchController {
                                          @RequestParam(value = "personalId", required = false) String personalId,
                                          @RequestParam(value = "dayOfWeek", required = false) String dayOfWeek,
                                          @RequestParam(value = "KW", required = false) Integer KW,
+                                         @RequestParam(value = "sortField", defaultValue = "date") String sortField,
+                                         @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir,
                                          Model model) {
 
+        if (employee == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        List<WorkDay> workDays = workDayService.getWorkDaysByCustomParameter(personalId, dayOfWeek, KW);
+        List<WorkDay> workDays = workDayService.getWorkDaysByCustomParameter(personalId, dayOfWeek, KW, sortField, sortDir);
+
         model.addAttribute("workDays", workDays);
         model.addAttribute("personalId", personalId);
         model.addAttribute("dayOfWeek", dayOfWeek);
         model.addAttribute("KW", KW);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        /*model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
+        List<WorkDay> workDays = workDayService.getWorkDaysByCustomParameter(personalId, dayOfWeek, KW);
+        model.addAttribute("workDays", workDays);
+        model.addAttribute("personalId", personalId);
+        model.addAttribute("dayOfWeek", dayOfWeek);
+        model.addAttribute("KW", KW);*/
         return "admin/resultsSearchedPage";
     }
 
