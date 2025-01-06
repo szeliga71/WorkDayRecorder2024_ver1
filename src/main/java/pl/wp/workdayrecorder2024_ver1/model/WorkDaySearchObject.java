@@ -1,10 +1,10 @@
 package pl.wp.workdayrecorder2024_ver1.model;
 
-import java.time.LocalDateTime;
 
 public class WorkDaySearchObject {
 
-    private String personalId;;
+    private String personalId;
+    ;
     private String dayOfWeek;
     private Integer KW;
 

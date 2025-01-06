@@ -171,7 +171,7 @@ public class RouteController {
         Long workDayId = route.getWorkDay().getId();
 
         if (route != null) {
-            workDayId = route.getWorkDay().getId(); // Pobierz workDayId z relacji
+            workDayId = route.getWorkDay().getId();
             if (workDayId == null && route != null) {
                 workDayId = route.getWorkDay().getId();
             }
@@ -203,5 +203,3 @@ public class RouteController {
         return "deleteRoute";
     }
 }
-
-

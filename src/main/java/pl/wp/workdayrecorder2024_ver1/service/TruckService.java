@@ -19,7 +19,6 @@ public class TruckService {
 
     public Truck getTruckByTruckId(String truckId) {
         return truckRepository.findByNumber(truckId);
-        //findTrailerByNumber(trailerId);
     }
 
     public void deleteTruck(String truckId) {
@@ -29,6 +28,4 @@ public class TruckService {
     public void saveTruck(Truck truck) {
         truckRepository.save(truck);
     }
-
-
 }

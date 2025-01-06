@@ -16,5 +16,4 @@ public class SecurityController {
     public String getLoginPage() {
         return "security/login";
     }
-
 }

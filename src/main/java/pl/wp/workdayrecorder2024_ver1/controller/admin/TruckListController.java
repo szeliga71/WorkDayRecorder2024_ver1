@@ -14,7 +14,6 @@ import pl.wp.workdayrecorder2024_ver1.service.TruckService;
 @Controller
 public class TruckListController {
 
-
     @Autowired
     TruckService truckService;
 
@@ -140,5 +139,4 @@ public class TruckListController {
         }
         return "redirect:/admin/trucks";
     }
-
 }

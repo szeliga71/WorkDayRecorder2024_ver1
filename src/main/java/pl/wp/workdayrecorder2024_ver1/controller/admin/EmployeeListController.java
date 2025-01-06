@@ -34,17 +34,13 @@ public class EmployeeListController {
             return "redirect:/login";
         }
         Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-        Page<Employee> employeesPage = employeeService.getAllEmployees(PageRequest.of(page, 10, sort));
+        Page<Employee> employeesPage = employeeService.getAllEmployees(PageRequest.of(page, 1000, sort));
 
-
-        //model.addAttribute("employeeSearchObject" ,new EmployeeSearchObject());
-        //model.addAttribute("employees", employeeService.getAllEmployees());
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         model.addAttribute("employees", employeesPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", employeesPage.getTotalPages());
         model.addAttribute("totalItems", employeesPage.getTotalElements());
-
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equalsIgnoreCase("asc") ? "desc" : "asc");
@@ -68,6 +64,7 @@ public class EmployeeListController {
             return "redirect:/admin/employees";
         }
     }
+
     @PostMapping("/deleteEmployee")
     public String deleteEmployee(@AuthenticationPrincipal Employee loggedEmployee,
                                  @RequestParam("personalId") String personalId,
@@ -85,6 +82,7 @@ public class EmployeeListController {
         }
         return "admin/deleteEmployee";
     }
+
     @GetMapping("/confirmDeletionEmployee")
     public String confirmDeletionEmployee(@AuthenticationPrincipal Employee employee,
                                           Model model) {
@@ -94,6 +92,7 @@ public class EmployeeListController {
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "admin/confirmDeletionEmployee";
     }
+
     @GetMapping("/deleteEmployee")
     public String deleteEmployee(@AuthenticationPrincipal Employee employee,
                                  Model model) {
@@ -115,6 +114,7 @@ public class EmployeeListController {
             return "redirect:/admin/employees";
         }
     }
+
     @PostMapping("/saveEmployee")
     public String updateEmployee(@RequestParam("personalId") String personalId,
                                  @RequestParam("firstName") String firstName,

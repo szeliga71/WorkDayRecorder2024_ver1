@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dateien zum Herunterladen</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .btn-width {
+            width: 250px;
+        }
+
+        .btn-custom-20 {
+            background-color: #a9a9a9;
+            color: #fff;
+        }
+
+        .btn-custom-70 {
+            background-color: #0066FF;
+            color: #fff;
+        }
+
+        body {
+            background-color: #e9ecef;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Dateien zum Herunterladen</h1>
+
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
+    <!-- Przyciski -->
+    <div class="text-center">
+        <button id="downloadAll" class="btn btn-custom-20 btn-lg m-2 btn-width" onclick="handleDownloadAndRefresh()">Alle herunterladen</button>
+        <button onclick="refreshPage()" class="btn btn-custom-70 btn-lg m-2 btn-width">Aktualisieren</button>
+        <a th:href="@{/admin/searchByCustomArguments}" class="btn btn-custom-70 btn-lg m-2 btn-width">Zum Suchen</a>
+    </div>
+
+    <!-- Tabela plików -->
+    <table class="table table-striped mt-4">
+        <thead>
+        <tr>
+            <th>Nr.</th>
+            <th>Dateiname</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="file, stat : ${files}">
+            <td th:text="${stat.index + 1}"></td>
+            <td th:text="${file}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function handleDownloadAndRefresh() {
+        window.location.href = '/downloadAll';
+        setTimeout(function () {
+            window.location.reload();
+        }, 2000);
+    }
+
+    function refreshPage() {
+        window.location.href = '/admin/downloadTagesberichtExcellFiles';
+    }
+</script>
+</body>
+</html>
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pliki do pobrania</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Dateien zum Herunterladen</h1>
+
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
+    </div>
+
+
+    <div class="mb-3">
+        <button id="downloadAll" class="btn btn-success" onclick=handleDownloadAndRefresh()>Alle herunterladen</button>
+        <button onclick="refreshPage()" class="btn btn-primary">Aktualisieren</button>
+        <a th:href="@{/admin/searchByCustomArguments}" class="btn btn-primary btn-lg">Zum Suchen</a>
+
+    </div>
+
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Nr.</th>
+            <th>Dateiname</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="file, stat : ${files}">
+            <td th:text="${stat.index + 1}"></td>
+            <td th:text="${file}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+    function handleDownloadAndRefresh() {
+        // Przekierowanie do pobrania plików
+        window.location.href = '/downloadAll';
+
+        // Odswieżenie strony po krótkim opóźnieniu (aby umożliwić pobranie plików)
+        setTimeout(function () {
+            window.location.reload();
+        }, 4000); // Opóźnienie w milisekundach
+    }
+
+    function refreshPage() {
+        window.location.href = '/admin/downloadTagesberichtExcellFiles';
+    }
+
+</script>
+</body>
+</html>-->

@@ -70,9 +70,7 @@ public class TrailerListController {
         }
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "admin/confirmDeletionTrailer";
-
     }
-
     @GetMapping("/admin/deleteTrailer")
     public String deleteTrailer(@AuthenticationPrincipal Employee employee, Model model) {
         if (employee == null) {

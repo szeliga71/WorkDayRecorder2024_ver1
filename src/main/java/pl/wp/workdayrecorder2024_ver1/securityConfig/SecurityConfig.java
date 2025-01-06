@@ -27,7 +27,6 @@ import java.util.Set;
 public class SecurityConfig {
 
 
-
     private final EmployeeService employeeService;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -38,9 +37,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         security
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/uploadWorkDayPlan","/saveSignature"))  // Wyłącz CSRF dla tego endpointu
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/uploadWorkDayPlan", "/saveSignature"))  // Wyłącz CSRF dla tego endpointu
                 .authorizeHttpRequests((request) -> request
-                        .requestMatchers("/","/changePassword").permitAll()
+                        .requestMatchers("/", "/changePassword").permitAll()
                         .requestMatchers("/admin/getMarkets").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/signature", "/saveSignature").hasAuthority("ROLE_USER")
@@ -72,7 +71,8 @@ public class SecurityConfig {
         authenticationManagerBuilder.authenticationProvider(authProvider());
         return authenticationManagerBuilder.build();
     }
-  @Bean
+
+    @Bean
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
         return new SimpleUrlAuthenticationSuccessHandler() {
             @Override

@@ -19,7 +19,6 @@ import java.util.List;
 @Controller
 public class SearchController {
 
-
     @Autowired
     WorkDayService workDayService;
     @Autowired
@@ -28,7 +27,6 @@ public class SearchController {
     TrailerService trailerService;
     @Autowired
     MarktService marktService;
-
 
     @GetMapping("/admin/resultsSearchedPage")
     public String showSearchedDaysByWeek(@AuthenticationPrincipal Employee employee,
@@ -44,7 +42,6 @@ public class SearchController {
         }
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         List<WorkDay> workDays = workDayService.getWorkDaysByCustomParameter(personalId, dayOfWeek, KW, sortField, sortDir);
-
         model.addAttribute("workDays", workDays);
         model.addAttribute("personalId", personalId);
         model.addAttribute("dayOfWeek", dayOfWeek);
@@ -52,19 +49,11 @@ public class SearchController {
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-        /*model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        List<WorkDay> workDays = workDayService.getWorkDaysByCustomParameter(personalId, dayOfWeek, KW);
-        model.addAttribute("workDays", workDays);
-        model.addAttribute("personalId", personalId);
-        model.addAttribute("dayOfWeek", dayOfWeek);
-        model.addAttribute("KW", KW);*/
         return "admin/resultsSearchedPage";
     }
 
-
     @GetMapping("/admin/searchByCustomArguments")
-    public String searchByAllArguments(@AuthenticationPrincipal Employee employee,
-                                       Model model) {
+    public String searchByAllArguments(@AuthenticationPrincipal Employee employee, Model model) {
         if (employee == null) {
             return "redirect:/login";
         }

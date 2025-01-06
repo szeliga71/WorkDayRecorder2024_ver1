@@ -1,4 +1,5 @@
 package pl.wp.workdayrecorder2024_ver1.model;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,11 +15,13 @@ public class Signature {
     private byte[] imageData;
 
     // Gettery i Settery
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    //public byte[] getSignatureData() { return signatureData; }
-   // public void setSignatureData(String signatureData) { this.signatureData = signatureData; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public byte[] getImageData() {
         return imageData;

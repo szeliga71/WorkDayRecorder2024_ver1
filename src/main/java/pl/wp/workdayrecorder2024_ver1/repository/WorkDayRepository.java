@@ -14,16 +14,13 @@ public interface WorkDayRepository extends JpaRepository<WorkDay, Long>, JpaSpec
 
     List<WorkDay> findByKW(Integer KW);
 
-    //List<WorkDay> findByPersonalIdAndDayOfWeekAndKW(String personalId, String dayOfWeek, Integer KW);
-
     Optional<WorkDay> findByPersonalIdAndDayOfWeekAndKW(String personalId, String dayOfWeek, Integer KW);
 
     List<WorkDay> findByDayOfWeek(String dayOfWeek);
 
     List<WorkDay> findByKWAndDayOfWeek(Integer KW, String dayOfWeek);
 
-    List<WorkDay>findByPersonalId(String personalId);
-
+    List<WorkDay> findByPersonalId(String personalId);
 
     List<WorkDay> findByPersonalIdAndDayOfWeek(String personalId, String dayOfWeek);
 

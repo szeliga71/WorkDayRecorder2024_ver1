@@ -25,74 +25,34 @@ public class WorkDayService {
         return workDayRepository.findById(workDayId).get();
     }
 
-    public List<WorkDay> getWorkDaysByKW(Integer KW) {
-        List<WorkDay> workDays = workDayRepository.findByKW(KW);
-        return workDays;
-        //return workDayRepository.findByKW(KW);
-    }
-
-    public List<WorkDay> getAllWorkDays() {
-        return workDayRepository.findAll();
-    }
-
-
-    public List<WorkDay> getWorkDaysBydayOfWeek(String dayOfWeek) {
-        return workDayRepository.findByDayOfWeek(dayOfWeek);
-    }
-
-    public List<WorkDay> getWorkDaysByPersonalId(String personalId) {
-        return workDayRepository.findByPersonalId(personalId);
-    }
-
-    public List<WorkDay> getWorkDaysByPersonalIdAndDayOfWeek(String personalId, String dayOfWeek) {
-        return workDayRepository.findByPersonalIdAndDayOfWeek(personalId,dayOfWeek);
-    }
-
-    public List<WorkDay> getWorkDayByPersonalIdAndKW(String personalId, Integer KW) {
-        return workDayRepository.findByPersonalIdAndKW(personalId,KW);
-    }
-
     public List<WorkDay> getWorkDaysByCustomParameter(String personalId, String dayOfWeek, Integer KW, String sortField, String sortDir) {
         Specification<WorkDay> specification = Specification.where(WorkDaySpecifications.hasPersonalId(personalId))
                 .and(WorkDaySpecifications.hasDayOfWeek(dayOfWeek))
                 .and(WorkDaySpecifications.hasKW(KW));
         Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
         return workDayRepository.findAll(specification, sort);
-        //return workDayRepository.findAll(specification);
     }
+
     public Optional<WorkDay> findWorkDayByPersonalIdAndDayOfWeekAndKW(String personalId, String dayOfWeek, Integer KW) {
         return workDayRepository.findByPersonalIdAndDayOfWeekAndKW(personalId, dayOfWeek, KW);
     }
 
-    public WorkDay addOrUpdateWorkDay(WorkDay workDay) {
-        return workDayRepository.save(workDay);
-    }
-
-    public Optional<WorkDay> findWorkDayById(Long workDayId) {
-        return workDayRepository.findById(workDayId);
-    }
-
     @Transactional
     public WorkDay updateWorkDay(Long workDayId, WorkDay updatedWorkDay) {
-        // Pobranie istniejącego obiektu Route z bazy danych
         WorkDay existingWorkDay = workDayRepository.findById(workDayId).orElse(null);
         if (existingWorkDay != null) {
-            // Aktualizacja pól istniejącej trasy na podstawie zaktualizowanych wartości
             existingWorkDay.setStartOfWork(updatedWorkDay.getStartOfWork());
             existingWorkDay.setPause(updatedWorkDay.getPause());
             existingWorkDay.setEndOfWork(updatedWorkDay.getEndOfWork());
             existingWorkDay.setTotalDistance(updatedWorkDay.getTotalDistance());
             existingWorkDay.setAccident(updatedWorkDay.isAccident());
             existingWorkDay.setFaults(updatedWorkDay.isFaults());
-
-            // Zapis zaktualizowanej trasy w bazie danych
             return workDayRepository.save(existingWorkDay);
         }
         return null;
     }
 
-    public void deleteWorkDay(WorkDay workDay){
+    public void deleteWorkDay(WorkDay workDay) {
         workDayRepository.delete(workDay);
     }
 }
-

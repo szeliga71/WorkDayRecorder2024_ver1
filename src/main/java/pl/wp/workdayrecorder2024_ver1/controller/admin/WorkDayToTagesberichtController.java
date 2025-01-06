@@ -58,6 +58,6 @@ public class WorkDayToTagesberichtController {
             model.addAttribute("workDayId", workDayId);
             workDayExportToTagesberichtService.exportToTagesbericht(workDay);
         }
-        return "redirect:/admin/resultsSearchedPage";
+        return "redirect:/admin/downloadTagesberichtExcellFiles";
     }
 }

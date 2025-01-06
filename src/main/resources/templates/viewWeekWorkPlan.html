@@ -43,6 +43,35 @@
 
     <img src="/weekWorkPlan.jpg" alt="Plan Tygodnia" class="img-fluid" />
 
+    <!--<div>
+        <embed src="/weekWorkPlan.pdf" type="application/pdf" width="100%" height="600px" />
+    <iframe src="/weekWorkPlan.pdf" width="100%" height="600px"></iframe>
+    </div>-->
+    <!-- Wyświetlanie pliku PDF
+    <div th:if="${fileType == 'pdf'}">
+        <iframe th:src="'/' + ${filename}" width="100%" height="600px"></iframe>
+    </div>
+
+    Wyświetlanie obrazu JPG
+    <div th:if="${fileType == 'image'}">
+        <img th:src="'/' + ${filename}" alt="Plan Tygodnia">
+    </div>
+
+     Komunikat o nieobsługiwanym typie pliku
+    <div th:if="${fileType == 'unknown'}">
+        <p>Nieobsługiwany typ pliku: <span th:text="${filename}"></span></p>
+    </div>-->
+    <!--<div th:if="${fileType == 'image'}">
+    <img src="/weekWorkPlan.jpg" alt="Plan Tygodnia" class="img-fluid" />
+    </div>
+    <div th:if="${fileType == 'pdf'}">
+    <iframe src="/weekWorkPlan.pdf" width="100%" height="600px"></iframe>
+    </div>
+   <embed src="/weekWorkPlan.pdf" type="application/pdf" width="100%" height="600px" />
+    <div th:if="${fileType == 'unknown'}">
+        <p>Nieobsługiwany typ pliku: <span th:text="${filename}"></span></p>
+    </div>-->
+
     <a th:href="${role == 'ROLE_ADMIN' ? '/admin/adminPanel' : '/home'}" class="btn btn-primary btn-custom">Schließen</a>
 </div>
 

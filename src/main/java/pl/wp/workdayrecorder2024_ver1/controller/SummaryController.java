@@ -14,7 +14,6 @@ import pl.wp.workdayrecorder2024_ver1.service.RouteService;
 import pl.wp.workdayrecorder2024_ver1.service.StopService;
 import pl.wp.workdayrecorder2024_ver1.service.WorkDayService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -52,5 +51,4 @@ public class SummaryController {
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "summary";
     }
-
 }

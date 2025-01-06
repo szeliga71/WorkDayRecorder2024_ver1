@@ -28,7 +28,7 @@ public class AddNewEmployee {
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("employee") Employee employee, BindingResult result) {
 
-        if (employeeService.findEmployeeByPersonalId(employee.getPersonalId())!=null) {
+        if (employeeService.findEmployeeByPersonalId(employee.getPersonalId()) != null) {
             result.rejectValue("confirmedPassword", "error.employee", "Email is already in use");
             return "admin/register";
         }

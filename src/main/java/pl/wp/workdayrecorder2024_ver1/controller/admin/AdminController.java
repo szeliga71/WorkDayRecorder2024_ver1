@@ -19,16 +19,14 @@ public class AdminController {
     @Autowired
     WorkDayService workDayService;
 
-
-    private final BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @GetMapping("/adminPanel")
-    public String adminPanel(@AuthenticationPrincipal Employee employee,Model model) {
+    public String adminPanel(@AuthenticationPrincipal Employee employee, Model model) {
         if (employee == null) {
             return "redirect:/login";
         }
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "admin/adminPanel";
     }
-
 }

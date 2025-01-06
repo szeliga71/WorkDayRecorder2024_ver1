@@ -10,7 +10,6 @@ import pl.wp.workdayrecorder2024_ver1.model.Employee;
 @Controller
 public class CustomErrorController implements ErrorController {
 
-
     @RequestMapping("/error")
     public String handleError(@AuthenticationPrincipal Employee employee, Model model) {
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());

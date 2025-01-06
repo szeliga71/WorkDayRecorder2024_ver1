@@ -45,6 +45,7 @@ public class WorkDayController {
         model.addAttribute("personalId", employee.getPersonalId());
         return "workDay";
     }
+
     @PostMapping("/workDay")
     public String addOrUpdateWorkDay(@AuthenticationPrincipal Employee employee,
                                      @RequestParam("dayOfWeekName") String dayOfWeek,
@@ -63,8 +64,6 @@ public class WorkDayController {
         }
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
 
-        //mechanizm wybrania dayOfWeek i ustalenie daty dnia pracy - date
-
         DayOfWeek chosenDayOfWeek = DayOfWeek.valueOf(dayOfWeek.toUpperCase());
         LocalDate today = LocalDate.now();
         DayOfWeek todayDayOfWeek = today.getDayOfWeek();
@@ -78,10 +77,10 @@ public class WorkDayController {
         } else if (daysDifference == 6) {
             workDayDate = today.minusDays(1);
         } else {
-            model.addAttribute("error", "Der Wochentag  "+dayOfWeek+ " kann nicht ausgewählt werden. Der ausgewählte Wochentag ist ungeeignet, es ist entweder zu früh oder zu spät, um Daten für diesen Tag einzugeben.");
+            model.addAttribute("error", "Der Wochentag  " + dayOfWeek + " kann nicht ausgewählt werden. Der ausgewählte Wochentag ist ungeeignet, es ist entweder zu früh oder zu spät, um Daten für diesen Tag einzugeben.");
             return "error";
         }
-        // Obliczanie numeru tygodnia KW alias weekNumber
+
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int weekNumber = workDayDate.get(weekFields.weekOfWeekBasedYear());
         Optional<WorkDay> existingWorkDayOpt = workDayService.findWorkDayByPersonalIdAndDayOfWeekAndKW(
@@ -110,6 +109,7 @@ public class WorkDayController {
             return "redirect:/newRoute?workDayId=" + workDay.getId();
         }
     }
+
     @GetMapping("/editWorkDay")
     public String editWorkDay(@AuthenticationPrincipal Employee employee,
                               @RequestParam("id") Long workDayId,
@@ -129,6 +129,7 @@ public class WorkDayController {
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "editWorkDay";
     }
+
     @PostMapping("/editWorkDay")
     public String saveWorkDay(
             @RequestParam("workDayId") Long workDayId,
@@ -136,6 +137,7 @@ public class WorkDayController {
         workDayService.updateWorkDay(workDayId, workDay);
         return "redirect:/summary?workDayId=" + workDayId;
     }
+
     @GetMapping("/confirmDeletionWorkDay")
     public String confirmDeletionWorkDay(@AuthenticationPrincipal Employee loggedEmployee,
                                          @RequestParam("id") Long id,
@@ -150,6 +152,7 @@ public class WorkDayController {
         model.addAttribute("workDay", workDay);
         return "confirmDeletionWorkDay";
     }
+
     @PostMapping("/deleteWorkDay")
     public String deleteWorkDay(@AuthenticationPrincipal Employee loggedEmployee, @RequestParam("workDayId") Long workDayId, Model model) {
         if (loggedEmployee == null) {
@@ -162,7 +165,7 @@ public class WorkDayController {
             model.addAttribute("workDayId", workDayId);
             model.addAttribute("message", "WorkDay : " + workDay.getDayOfWeek() + " wurde entfernt.");
         } else {
-            model.addAttribute("error","WorkDay mit der angegebenen ID wurde nicht gefunden.");
+            model.addAttribute("error", "WorkDay mit der angegebenen ID wurde nicht gefunden.");
         }
         if (loggedEmployee.getRole().contains("ROLE_ADMIN")) {
             return "redirect:/admin/adminPanel";
@@ -170,6 +173,7 @@ public class WorkDayController {
             return "redirect:/home";
         }
     }
+
     @GetMapping("/deleteWorkDay")
     public String deleteRoute(@AuthenticationPrincipal Employee employee,
                               @RequestParam(value = "workDayId") Long workDayId,
@@ -188,10 +192,3 @@ public class WorkDayController {
         return "deleteWorkDay";
     }
 }
-
-
-
-
-
-
-

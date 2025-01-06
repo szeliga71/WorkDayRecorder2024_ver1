@@ -8,7 +8,7 @@ import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
         public static Specification<WorkDay> hasPersonalId(String personalId) {
             return (root, query, cb) -> {
                 if (personalId == null || personalId.isEmpty()) {
-                    return null;  // Ignoruj, jeśli personalId nie zostało podane
+                    return null;
                 }
                 return cb.equal(root.get("personalId"), personalId);
             };
@@ -17,7 +17,7 @@ import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
         public static Specification<WorkDay> hasDayOfWeek(String dayOfWeek) {
             return (root, query, cb) -> {
                 if (dayOfWeek == null || dayOfWeek.isEmpty()) {
-                    return null;  // Ignoruj, jeśli dayOfWeek nie zostało podane
+                    return null;
                 }
                 return cb.equal(root.get("dayOfWeek"), dayOfWeek);
             };
@@ -26,11 +26,9 @@ import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
         public static Specification<WorkDay> hasKW(Integer KW) {
             return (root, query, cb) -> {
                 if (KW == null) {
-                    return null;  // Ignoruj, jeśli KW nie zostało podane
+                    return null;
                 }
                 return cb.equal(root.get("KW"), KW);
             };
         }
     }
-
-

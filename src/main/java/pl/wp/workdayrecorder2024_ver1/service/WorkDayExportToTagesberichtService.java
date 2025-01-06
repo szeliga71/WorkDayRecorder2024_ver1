@@ -36,7 +36,7 @@ public class WorkDayExportToTagesberichtService {
 
         String personalId = workDay.getPersonalId();
         Employee employee = employeeService.findEmployeeByPersonalId(personalId);
-        Long signatureId=employee.getSignatureId();
+        Long signatureId = employee.getSignatureId();
         String name = employee.getFirstName();
         String lastName = employee.getLastName();
 
@@ -182,7 +182,7 @@ public class WorkDayExportToTagesberichtService {
 //============================================================================
 //lista route
 
-            int stopInNextTour=0;
+            int stopInNextTour = 0;
             int numberOfRoutes = workDay.getRoutes().size();
             int next = 0;
             if (numberOfRoutes < 4 && workDay.getRoutes() != null && !workDay.getRoutes().isEmpty()) {
@@ -256,9 +256,11 @@ public class WorkDayExportToTagesberichtService {
                     if (cellD16 == null) {
                         cellD16 = rowD16.createCell(3);
                     }
+
                     DateTimeFormatter formatterAbfahrtLager = DateTimeFormatter.ofPattern("HH:mm");
-                    String formattedAbfahrtLager = workDay.getStartOfWork().format(formatterAbfahrtLager);
+                    String formattedAbfahrtLager = route.getDepartureFromTheBase().format(formatterAbfahrtLager);
                     cellD16.setCellValue(formattedAbfahrtLager);
+
 
                     //Ankunft Lager
                     Row rowB18 = sheet.getRow(17 + next);
@@ -270,7 +272,7 @@ public class WorkDayExportToTagesberichtService {
                         cellB18 = rowB18.createCell(1);
                     }
                     DateTimeFormatter formatterAnkuftLager = DateTimeFormatter.ofPattern("HH:mm");
-                    String formatedAnkunftLager = route.getStartOfRoute().format(formatterAnkuftLager);
+                    String formatedAnkunftLager = route.getArrivalToTheBase().format(formatterAnkuftLager);
                     cellB18.setCellValue(formatedAnkunftLager);
 
                     //Tourende
@@ -283,13 +285,13 @@ public class WorkDayExportToTagesberichtService {
                         cellD18 = rowD18.createCell(3);
                     }
                     DateTimeFormatter formatterTourenende = DateTimeFormatter.ofPattern("HH:mm");
-                    String formattedTourenende = workDay.getStartOfWork().format(formatterTourenende);
+                    String formattedTourenende = route.getEndOfRoute().format(formatterTourenende);
                     cellD18.setCellValue(formattedTourenende);
 
                     //notes
-                    Row rowR11 = sheet.getRow(10+next);
+                    Row rowR11 = sheet.getRow(10 + next);
                     if (rowR11 == null) {
-                        rowR11 = sheet.createRow(10+next);
+                        rowR11 = sheet.createRow(10 + next);
                     }
                     Cell cellR11 = rowR11.getCell(17);
                     if (cellR11 == null) {
@@ -309,9 +311,9 @@ public class WorkDayExportToTagesberichtService {
 
                         for (Stop stop : route.getStops()) {
                             //markt nummer
-                            Row rowF12 = sheet.getRow(11 + nextStopCell+stopInNextTour);
+                            Row rowF12 = sheet.getRow(11 + nextStopCell + stopInNextTour);
                             if (rowF12 == null) {
-                                rowF12 = sheet.createRow(11 + nextStopCell+stopInNextTour);
+                                rowF12 = sheet.createRow(11 + nextStopCell + stopInNextTour);
                             }
                             Cell cellF12 = rowF12.getCell(5 + rightStopCell);
                             if (cellF12 == null) {
@@ -320,30 +322,30 @@ public class WorkDayExportToTagesberichtService {
                             cellF12.setCellValue(stop.getMarktId());
 
                             //stopbeginn
-                            Row rowH12 = sheet.getRow(11 + nextStopCell+stopInNextTour);
+                            Row rowH12 = sheet.getRow(11 + nextStopCell + stopInNextTour);
                             if (rowH12 == null) {
-                                rowH12 = sheet.createRow(11 + nextStopCell+stopInNextTour);
+                                rowH12 = sheet.createRow(11 + nextStopCell + stopInNextTour);
                             }
                             Cell cellH12 = rowH12.getCell(7 + rightStopCell);
                             if (cellH12 == null) {
                                 cellH12 = rowH12.createCell(7 + rightStopCell);
                             }
                             DateTimeFormatter formatterStopBegin = DateTimeFormatter.ofPattern("HH:mm");
-                            String formatedStopBegin = workDay.getStartOfWork().format(formatterStopBegin);
+                            String formatedStopBegin = stop.getBeginn().format(formatterStopBegin);
                             cellH12.setCellValue(formatedStopBegin);
 
                             //stopende
 
-                            Row rowJ12 = sheet.getRow(11 + nextStopCell+stopInNextTour);
+                            Row rowJ12 = sheet.getRow(11 + nextStopCell + stopInNextTour);
                             if (rowJ12 == null) {
-                                rowJ12 = sheet.createRow(11 + nextStopCell+stopInNextTour);
+                                rowJ12 = sheet.createRow(11 + nextStopCell + stopInNextTour);
                             }
                             Cell cellJ12 = rowJ12.getCell(9 + rightStopCell);
                             if (cellJ12 == null) {
                                 cellJ12 = rowJ12.createCell(9 + rightStopCell);
                             }
                             DateTimeFormatter formatterStopEnde = DateTimeFormatter.ofPattern("HH:mm");
-                            String formatedStopEnde = workDay.getStartOfWork().format(formatterStopEnde);
+                            String formatedStopEnde = stop.getEndOfStopp().format(formatterStopEnde);
                             cellJ12.setCellValue(formatedStopEnde);
 
 
@@ -357,7 +359,7 @@ public class WorkDayExportToTagesberichtService {
                             }
                         }
                     }
-                    stopInNextTour=stopInNextTour+10;
+                    stopInNextTour = stopInNextTour + 10;
                 }
             }
 
@@ -372,6 +374,7 @@ public class WorkDayExportToTagesberichtService {
             throw new RuntimeException(e);
         }
     }
+
     public int dayOfWeekInFormular(String dayOfWeek) {
 
         if (dayOfWeek == null) {
@@ -405,6 +408,3 @@ public class WorkDayExportToTagesberichtService {
         return (isUnfall) ? 9 : 10;
     }
 }
-
-
-

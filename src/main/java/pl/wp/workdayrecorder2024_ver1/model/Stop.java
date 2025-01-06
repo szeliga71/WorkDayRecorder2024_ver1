@@ -17,7 +17,7 @@ public class Stop {
     //private Long routeId;
 
     @ManyToOne
-    @JoinColumn(name = "route_id",nullable = false)
+    //@JoinColumn(name = "route_id", nullable = false)
     private Route route;
 
     public Route getRoute() {
@@ -28,13 +28,6 @@ public class Stop {
         this.route = route;
     }
 
-    /*public Long getRouteId() {
-        return routeId;
-    }
-
-    public void setRouteId(Long routeId) {
-        this.routeId = routeId;
-    }*/
 
     public Long getId() {
         return id;

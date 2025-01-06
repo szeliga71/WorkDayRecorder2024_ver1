@@ -9,9 +9,8 @@ import pl.wp.workdayrecorder2024_ver1.model.Employee;
 import pl.wp.workdayrecorder2024_ver1.model.Signature;
 import pl.wp.workdayrecorder2024_ver1.repository.EmployeeRepository;
 import pl.wp.workdayrecorder2024_ver1.repository.SignatureRepository;
-
 import java.util.Base64;
-import java.io.*;
+
 
 @Controller
 public class SignatureController {
@@ -25,6 +24,7 @@ public class SignatureController {
     public String getSignaturePage() {
         return "signature";
     }
+
     @PostMapping("/saveSignature")
     public ResponseEntity<String> saveSignature(@AuthenticationPrincipal Employee employee,
                                                 @RequestBody SignatureRequest request) {
@@ -59,5 +59,3 @@ class SignatureRequest {
         this.image = image;
     }
 }
-
-

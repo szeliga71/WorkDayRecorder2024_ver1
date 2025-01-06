@@ -18,13 +18,13 @@ public class Route {
     private Integer distance;
     private LocalDateTime startOfRoute;
     private LocalDateTime departureFromTheBase;
-    @OneToMany(cascade= CascadeType.ALL,orphanRemoval = true )
-    @JoinColumn(name = "route_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JoinColumn(name = "route_id")
     private List<Stop> stops;
     private LocalDateTime arrivalToTheBase;
     private LocalDateTime endOfRoute;
     @ManyToOne
-    @JoinColumn(name = "work_day_id",nullable = false)
+    //@JoinColumn(name = "work_day_id", nullable = false)
     private WorkDay workDay;
     //private Long workDayId;
     @Column(length = 1000)
@@ -116,7 +116,7 @@ public class Route {
         return stops;
     }
 
-    public void setStops(List<Stop>stops) {
+    public void setStops(List<Stop> stops) {
         this.stops = stops;
     }
 

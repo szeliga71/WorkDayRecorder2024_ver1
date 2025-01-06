@@ -54,6 +54,7 @@ public class StopController {
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         return "newStop";
     }
+
     @PostMapping("/newStop")
     public String addStop(@RequestParam("routeId") Long routeId,
                           @RequestParam("marktId") String marktId,
@@ -81,6 +82,7 @@ public class StopController {
         }
         return "redirect:/summary?workDayId=" + route.getWorkDay().getId();
     }
+
     @GetMapping("/editStop")
     public String editRoute(@AuthenticationPrincipal Employee employee,
                             @RequestParam("id") Long id, @RequestParam("workDayId") Long workDayId,

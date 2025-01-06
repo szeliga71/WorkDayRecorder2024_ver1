@@ -12,7 +12,6 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,6 +28,7 @@ public class WeekPlanController {
         model.addAttribute("role", employee.getRole());
         return "viewWeekWorkPlan";
     }
+
     @GetMapping("/{filename}")
     @ResponseBody
     public ResponseEntity<Resource> displayFile(@PathVariable String filename) {
@@ -36,7 +36,6 @@ public class WeekPlanController {
             Path filePath = storagePath.resolve(filename).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
-                // Ustawienie odpowiednich nagłówków
                 HttpHeaders headers = new HttpHeaders();
                 headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"");
                 headers.add(HttpHeaders.CONTENT_TYPE, Files.probeContentType(filePath));

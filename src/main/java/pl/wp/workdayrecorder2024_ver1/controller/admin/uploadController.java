@@ -45,32 +45,21 @@ public class uploadController {
         String fileName = file.getOriginalFilename();
         String fileExtension = "";
         if (fileName != null && fileName.contains(".")) {
-            fileExtension = fileName.substring(fileName.lastIndexOf(".")); // Pobierz rozszerzenie z oryginalnego pliku
+            fileExtension = fileName.substring(fileName.lastIndexOf("."));
         }
 //ten kod nadaje rozszerzenie z orginalnego pliku, teraz jest ustawione na sztywno jpg.
         try {
-            Path path = Paths.get(STORAGE, "weekWorkPlan.jpg"/*+fileExtensionfile.getOriginalFilename()*/);
+            Path path = Paths.get(STORAGE, "weekWorkPlan.jpg");/*+fileExtensionfile.getOriginalFilename());*/
             System.out.println("Attempting to save file to path: " + path.toString());
             Files.write(path, file.getBytes());
             System.out.println("File saved successfully");
+
             return ResponseEntity.ok("File uploaded successfully");
+
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error uploading file: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file");
         }
     }
-
-    @PostMapping("/admin/deleteWorkDayPlan")
-    public ResponseEntity<String> deleteFile(@RequestParam("filename") String filename) {
-        Path path = Paths.get(STORAGE, filename);
-        try {
-            Files.deleteIfExists(path);
-            return ResponseEntity.ok("File deleted successfully");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting file");
-        }
-    }
-
 }

@@ -20,8 +20,8 @@ public class PasswordController {
     @GetMapping("/changePassword")
     public String showChangePasswordForm(@AuthenticationPrincipal Employee employee, Model model) {
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
-        model.addAttribute("passwordForm", new PasswordForm()); // Przekazanie obiektu formularza
-        return "changePassword"; // Widok zmiany hasła
+        model.addAttribute("passwordForm", new PasswordForm());
+        return "changePassword";
     }
 
     @PostMapping("/changePassword")
@@ -30,9 +30,7 @@ public class PasswordController {
             model.addAttribute("error", "Passwords do not match!");
             return "changePassword";
         }
-        // Zmiana hasła w systemie
         employeeService.updatePassword(employee, form.getNewPassword());
-
         return "redirect:/login";
     }
 }

@@ -13,4 +13,3 @@ public interface StopRepository extends JpaRepository<Stop,Long> {
 
     Stop findStopById(Long stopId);
 }
-

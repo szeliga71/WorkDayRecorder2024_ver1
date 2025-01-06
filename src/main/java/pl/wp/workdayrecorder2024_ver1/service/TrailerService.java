@@ -18,7 +18,6 @@ public class TrailerService {
 
     public Trailer getTrailerByTrailerId(String trailerId) {
         return trailerRepository.findByNumber(trailerId);
-                //findTrailerByNumber(trailerId);
     }
 
     public void deleteTrailer(String trailerId) {
@@ -28,6 +27,4 @@ public class TrailerService {
     public void saveTrailer(Trailer trailer) {
         trailerRepository.save(trailer);
     }
-
-
 }

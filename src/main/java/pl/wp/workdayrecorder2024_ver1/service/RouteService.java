@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.wp.workdayrecorder2024_ver1.model.Route;
-import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
 import pl.wp.workdayrecorder2024_ver1.repository.RouteRepository;
 
 import java.util.List;
@@ -15,7 +14,7 @@ public class RouteService {
     private RouteRepository routeRepository;
 
     public void deleteRoute(Route route) {
-    routeRepository.delete(route);
+        routeRepository.delete(route);
     }
 
     public void addRoute(Route route) {
@@ -25,16 +24,16 @@ public class RouteService {
     public Route getRouteById(Long routeId) {
         return routeRepository.findById(routeId).get();
     }
+
     public List<Route> getAllRoutesByWorkDayId(Long workDayId) {
-       return  routeRepository.findAllByWorkDayId(workDayId);
+        return routeRepository.findAllByWorkDayId(workDayId);
     }
 
     @Transactional
     public Route updateRoute(Long routeId, Route updatedRoute) {
-        // Pobranie istniejącego obiektu Route z bazy danych
+
         Route existingRoute = routeRepository.findById(routeId).orElse(null);
         if (existingRoute != null) {
-            // Aktualizacja pól istniejącej trasy na podstawie zaktualizowanych wartości
             existingRoute.setTruckNumber(updatedRoute.getTruckNumber());
             existingRoute.setTrailerNumber(updatedRoute.getTrailerNumber());
             existingRoute.setRouteNumber(updatedRoute.getRouteNumber());
@@ -45,7 +44,6 @@ public class RouteService {
             existingRoute.setEndOfRoute(updatedRoute.getEndOfRoute());
             existingRoute.setNotes(updatedRoute.getNotes());
 
-            // Zapis zaktualizowanej trasy w bazie danych
             return routeRepository.save(existingRoute);
         }
         return null;
