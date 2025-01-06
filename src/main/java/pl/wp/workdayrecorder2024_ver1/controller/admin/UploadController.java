@@ -18,11 +18,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Controller
-public class uploadController {
+public class UploadController {
 
     private final String STORAGE = Paths.get("storage").toAbsolutePath().toString();
 
-    public uploadController() {
+    public UploadController() {
         File directory = new File(STORAGE);
         if (!directory.exists()) directory.mkdirs();
     }

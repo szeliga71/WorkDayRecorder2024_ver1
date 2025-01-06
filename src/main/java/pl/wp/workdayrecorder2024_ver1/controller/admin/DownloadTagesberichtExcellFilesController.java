@@ -18,7 +18,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 @Controller
-public class downloadTagesberichtExcellFilesController {
+public class DownloadTagesberichtExcellFilesController {
 
     private final String FILE_DIRECTORY = "src/main/excellFiles/filledFormular";
 
