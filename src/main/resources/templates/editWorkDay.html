@@ -97,18 +97,18 @@
             <label for="totalDistance">Gefahrene km</label>
             <input type="number" id="totalDistance" name="totalDistance" th:value="${workDay.totalDistance}" class="form-control custom-input-width">
         </div>
-
-        <!-- Accident Checkbox -->
-        <div class="form-group form-check">
-            <input type="checkbox" id="accident" name="accident" class="form-check-input" th:checked="${workDay != null && workDay.accident}">
-            <label class="form-check-label" for="accident">Fuchrenbruch</label>
-        </div>
-
         <!-- Faults Checkbox -->
         <div class="form-group form-check">
             <input type="checkbox" id="faults" name="faults" class="form-check-input" th:checked="${workDay != null && workDay.faults}">
-            <label class="form-check-label" for="faults">Unfall</label>
+            <label class="form-check-label" for="faults">Fuchrenbruch</label>
         </div>
+        <!-- Accident Checkbox -->
+        <div class="form-group form-check">
+            <input type="checkbox" id="accident" name="accident" class="form-check-input" th:checked="${workDay != null && workDay.accident}">
+            <label class="form-check-label" for="accident">Unfall</label>
+        </div>
+
+
         <!-- Buttons -->
         <button type="submit" class="btn btn-primary">Änderungen speichern</button>
         <a th:href="@{/summary(workDayId=${workDay.id})}" class="btn btn-secondary">Abbrechen</a>

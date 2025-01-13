@@ -20,7 +20,8 @@ import java.util.zip.ZipOutputStream;
 @Controller
 public class DownloadTagesberichtExcellFilesController {
 
-    private final String FILE_DIRECTORY = "src/main/excellFiles/filledFormular";
+    //private final String FILE_DIRECTORY = "src/main/resources/excellFiles/filledFormular";
+    private final String FILE_DIRECTORY = "C:/Tagesbericht";
 
     @GetMapping("/admin/downloadTagesberichtExcellFiles")
     public String listFiles(Model model) throws IOException {

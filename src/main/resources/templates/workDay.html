@@ -98,14 +98,14 @@
                    th:value="${workDay != null ? workDay.endOfWork : ''}" placeholder="Arbeitsende eingeben" required>
         </div>
         <div class="form-group form-check">
-            <input type="checkbox" id="accident" name="accident" class="form-check-input"
-                   th:checked="${workDay != null && workDay.accident}">
-            <label class="form-check-label" for="accident">Fuhrenbruch</label>
-        </div>
-        <div class="form-group form-check">
             <input type="checkbox" id="faults" name="faults" class="form-check-input"
                    th:checked="${workDay != null && workDay.faults}">
-            <label class="form-check-label" for="faults">Unfall</label>
+            <label class="form-check-label" for="faults">Fuhrenbruch</label>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" id="accident" name="accident" class="form-check-input"
+                   th:checked="${workDay != null && workDay.accident}">
+            <label class="form-check-label" for="accident">Unfall</label>
         </div>
         <br>
         <!-- Przyciski -->

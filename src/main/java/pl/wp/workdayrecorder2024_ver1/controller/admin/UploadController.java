@@ -20,7 +20,8 @@ import java.nio.file.Paths;
 @Controller
 public class UploadController {
 
-    private final String STORAGE = Paths.get("storage").toAbsolutePath().toString();
+    //private final String STORAGE = Paths.get("storage").toAbsolutePath().toString();
+    private final String STORAGE = "src/main/resources/storage";
 
     public UploadController() {
         File directory = new File(STORAGE);

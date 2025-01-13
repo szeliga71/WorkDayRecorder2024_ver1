@@ -21,7 +21,8 @@ import java.nio.file.Paths;
 @Controller
 public class WeekPlanController {
 
-    private final Path storagePath = Paths.get("storage").toAbsolutePath();
+   // private final Path storagePath = Paths.get("storage").toAbsolutePath();
+   private final Path storagePath = Path.of("src/main/resources/storage");
 
     @GetMapping("/viewWeekWorkPlan")
     public String showWeekPlan(@AuthenticationPrincipal Employee employee, Model model) {

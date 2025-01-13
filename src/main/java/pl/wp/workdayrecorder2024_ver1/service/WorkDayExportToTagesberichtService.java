@@ -11,9 +11,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import pl.wp.workdayrecorder2024_ver1.repository.SignatureRepository;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -22,7 +20,8 @@ public class WorkDayExportToTagesberichtService {
 
 
     private final EmployeeService employeeService;
-    String filePath = "src/main/excellFiles/excellFormular/tagebericht.xlsx";
+    //String filePath = "src/main/resources/excellFiles/excellFormular/tagebericht.xlsx";
+
 
     @Autowired
     SignatureRepository signatureRepository;
@@ -40,8 +39,13 @@ public class WorkDayExportToTagesberichtService {
         String name = employee.getFirstName();
         String lastName = employee.getLastName();
 
-        try (FileInputStream fis = new FileInputStream(filePath);
-             Workbook workbook = new XSSFWorkbook(fis)) {
+
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("excellFiles/excellFormular/tagebericht.xlsx")) {
+            if (inputStream == null) {
+                throw new FileNotFoundException("Resource not found: excellFiles/excellFormular/tagebericht.xlsx");
+            }
+       // try (FileInputStream fis = new FileInputStream(filePath);
+             Workbook workbook = new XSSFWorkbook(inputStream);
 
             // Pobierz istniejący arkusz (pierwszy arkusz)
             Sheet sheet = workbook.getSheetAt(0);
@@ -174,7 +178,7 @@ public class WorkDayExportToTagesberichtService {
                 XSSFDrawing drawing = (XSSFDrawing) sheet.createDrawingPatriarch();
                 ClientAnchor anchor = new XSSFClientAnchor();
                 anchor.setCol1(20);
-                anchor.setRow1(38);
+                anchor.setRow1(39);
                 XSSFPicture picture = drawing.createPicture(anchor, pictureIndex);
                 picture.resize(0.15);
             }
@@ -362,8 +366,8 @@ public class WorkDayExportToTagesberichtService {
                     stopInNextTour = stopInNextTour + 10;
                 }
             }
-
-            String outFilePath = "src/main/excellFiles/filledFormular/tagebericht" + workDay.getDate() + "-" + workDay.getPersonalId() + ".xlsx";
+            //String outFilePath = "src/main/resources/excellFiles/filledFormular/tagebericht" + workDay.getDate() + "-" + workDay.getPersonalId() + ".xlsx";
+            String outFilePath = "C:/Tagesbericht/tagebericht" + workDay.getDate() + "-" + workDay.getPersonalId() + ".xlsx";
             try (FileOutputStream fos = new FileOutputStream(outFilePath)) {
                 workbook.write(fos);
                 System.out.println("Dane zapisane pomyślnie do pliku Excel.");
