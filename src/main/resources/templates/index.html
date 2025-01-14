@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,5 +10,115 @@
 <br>
 </form>
 
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>inndex</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-image: url('/images/Nadine.jpg'); /* Wstaw tutaj URL obrazu */
+            background-size: contain; /* Dopasowanie obrazu do ekranu */
+            background-position: center; /* Wyśrodkowanie obrazu */
+            background-repeat: no-repeat; /* Zapobiega powtarzaniu obrazu */
+            height: 100vh; /* Ustawia wysokość na 100% okna przeglądarki */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: black; /* Zmiana koloru tekstu */
+        }
+
+        .btn-custom-1 {
+            background-color: #D3D3D3; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-2 {
+            background-color: #c0c0c0; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-3 {
+            background-color: #a9a9a9; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-4 {
+            background-color: #808080; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-5 {
+            background-color: #696969; /* Inny niestandardowy kolor przycisku */
+            border: 2px solid black; /* Czarna obwódka */
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .btn-custom-6 {
+            background-color: #0066FF; /* Niestandardowy kolor przycisku */
+            border: 2px solid black;
+            color: black; /* Czarna obwódka */
+            font-weight: bold;
+        }
+        .email-highlight {
+            color: #008080; /* Kolor tekstu */
+            font-family: 'Arial', sans-serif; /* Czcionka */
+            font-weight: bold; /* Pogrubienie */
+        }
+
+        .content-box {
+            position: absolute;
+            bottom: 20px; /* Odległość od dołu strony */
+            left: 50%; /* Wyśrodkowanie poziome */
+            transform: translateX(-50%); /* Wyśrodkowanie względem środka */
+            background-color: white;
+            padding: 20px;
+            border: 2px solid black;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        /* Nowy styl dla kontenera przycisków i formularza */
+        .button-container {
+            display: flex;
+            flex-wrap: wrap; /* Pozwoli na zawijanie w razie potrzeby */
+            justify-content: center;
+            gap: 10px; /* Odstępy między przyciskami */
+        }
+        .btn-fixed-width {
+            width: 190px; /* Ustaw szerokość według własnych potrzeb */
+        }
+
+    </style>
+    <script>
+
+        function login() {
+            window.location.href = "security/login";
+        }
+
+    </script>
+</head>
+<body>
+
+
+<div class="content-box text-center">
+    <h1 class="text-center mt-4"  style="color: #0066FF; font-weight: bold;">Welcome page</h1>
+
+
+    <div class="button-container">
+
+        <button onclick="login()" class="btn btn-custom-6 btn-lg m-2 btn-fixed-width">Login</button>
+
+    </div>
+</div>
 </body>
 </html>

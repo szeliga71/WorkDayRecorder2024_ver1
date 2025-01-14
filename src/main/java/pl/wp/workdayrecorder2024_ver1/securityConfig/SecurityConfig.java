@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/admin/uploadWorkDayPlan", "/saveSignature"))  // Wyłącz CSRF dla tego endpointu
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers("/", "/changePassword").permitAll()
+                        .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/admin/getMarkets").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/signature", "/saveSignature").hasAuthority("ROLE_USER")

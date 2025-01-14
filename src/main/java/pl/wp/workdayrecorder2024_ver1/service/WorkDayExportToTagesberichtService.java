@@ -12,6 +12,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import pl.wp.workdayrecorder2024_ver1.repository.SignatureRepository;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -366,12 +369,38 @@ public class WorkDayExportToTagesberichtService {
                     stopInNextTour = stopInNextTour + 10;
                 }
             }
-            //String outFilePath = "src/main/resources/excellFiles/filledFormular/tagebericht" + workDay.getDate() + "-" + workDay.getPersonalId() + ".xlsx";
-            String outFilePath = "C:/Tagesbericht/tagebericht" + workDay.getDate() + "-" + workDay.getPersonalId() + ".xlsx";
+
+            /*String outFilePath = "C:/Tagesbericht/tagebericht" + workDay.getDate() + "-" + workDay.getPersonalId() + ".xlsx";
             try (FileOutputStream fos = new FileOutputStream(outFilePath)) {
                 workbook.write(fos);
                 System.out.println("Dane zapisane pomyślnie do pliku Excel.");
+            }*/
+            String serverDirectory = "/var/app/reports/tagesberichte";
+            String fileName = "tagebericht-" + workDay.getDate() + "-" + workDay.getPersonalId() + ".xlsx";
+
+            try {
+                Path path = Paths.get(serverDirectory);
+                if (!Files.exists(path)) {
+                    Files.createDirectories(path);
+                    System.out.println("Katalog został utworzony: " + serverDirectory);
+                } else {
+                    System.out.println("Katalog już istnieje: " + serverDirectory);
+                }
+            } catch (IOException e) {
+                System.err.println("Błąd podczas tworzenia katalogu: " + serverDirectory);
+                e.printStackTrace();
             }
+            // Upewnij się, że katalog istnieje
+            //Files.createDirectories(Paths.get(serverDirectory));
+
+            // Ścieżka do pliku na serwerze
+            String outFilePath = serverDirectory + "/" + fileName;
+
+            try (FileOutputStream fos = new FileOutputStream(outFilePath)) {
+                workbook.write(fos);
+                System.out.println("Dane zapisane pomyślnie do pliku: " + outFilePath);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
