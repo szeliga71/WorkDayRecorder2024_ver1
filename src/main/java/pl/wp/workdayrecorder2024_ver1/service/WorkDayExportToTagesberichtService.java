@@ -375,7 +375,9 @@ public class WorkDayExportToTagesberichtService {
                 workbook.write(fos);
                 System.out.println("Dane zapisane pomyślnie do pliku Excel.");
             }*/
-            String serverDirectory = "/var/app/reports/tagesberichte";
+            //String serverDirectory = "/var/app/reports/tagesberichte";
+            String serverDirectory = "/tmp/tagesberichte";
+
             String fileName = "tagebericht-" + workDay.getDate() + "-" + workDay.getPersonalId() + ".xlsx";
 
             try {
