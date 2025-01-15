@@ -1,7 +1,6 @@
 package pl.wp.workdayrecorder2024_ver1.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -19,14 +18,11 @@ public class Route {
     private LocalDateTime startOfRoute;
     private LocalDateTime departureFromTheBase;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    //@JoinColumn(name = "route_id")
     private List<Stop> stops;
     private LocalDateTime arrivalToTheBase;
     private LocalDateTime endOfRoute;
     @ManyToOne
-    //@JoinColumn(name = "work_day_id", nullable = false)
     private WorkDay workDay;
-    //private Long workDayId;
     @Column(length = 1000)
     private String notes;
 
@@ -54,15 +50,6 @@ public class Route {
     public void setWorkDay(WorkDay workDay) {
         this.workDay = workDay;
     }
-
-
-   /* public Long getWorkDayId() {
-        return workDayId;
-    }
-
-    public void setWorkDayId(Long workDayId) {
-        this.workDayId = workDayId;
-    }*/
 
     public Long getId() {
         return id;

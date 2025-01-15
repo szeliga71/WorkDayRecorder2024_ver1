@@ -10,7 +10,6 @@
             background-color: #e9ecef;
             padding: 10px;
         }
-
         .container {
             max-width: 600px;
             margin: 0 auto;
@@ -19,37 +18,29 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
         .email-highlight {
-            color: #008080; /* Kolor tekstu */
-            font-family: 'Arial', sans-serif; /* Czcionka */
-            font-weight: bold; /* Pogrubienie */
+            color: #008080;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
         }
-
         h2 {
             text-align: center;
             font-size: 1.8rem;
             margin-bottom: 20px;
         }
-
         .form-group {
             margin-bottom: 15px;
         }
-
         .custom-input-width {
-            width: 100%; /* Pełna szerokość dla responsywności */
+            width: 100%;
         }
-
         .btn {
             width: 100%;
-            margin-bottom: 10px; /* Odstęp między przyciskami */
+            margin-bottom: 10px;
         }
-
         .form-check {
             margin-bottom: 15px;
         }
-
-        /* Media query dla małych ekranów */
         @media (max-width: 576px) {
             h2 {
                 font-size: 1.5rem;
@@ -74,42 +65,36 @@
     <form th:action="@{/editWorkDay}" method="post" class="form-container">
         <input type="hidden" name="workDayId" th:value="${workDay.id}"/>
 
-        <!-- Start of Work -->
         <div class="form-group">
             <label for="startOfWork">Arbeitstagbeginn</label>
             <input type="datetime-local" id="startOfWork" name="startOfWork" th:value="${workDay.startOfWork}" class="form-control custom-input-width" required>
         </div>
 
-        <!-- Pause -->
         <div class="form-group">
             <label for="pause">Pause</label>
             <input type="text" id="pause" name="pause" th:value="${workDay.pause}" class="form-control custom-input-width" required>
         </div>
 
-        <!-- End of Work -->
         <div class="form-group">
             <label for="endOfWork">Arbeitstagende</label>
             <input type="datetime-local" id="endOfWork" name="endOfWork" th:value="${workDay.endOfWork}" class="form-control custom-input-width" required>
         </div>
 
-        <!-- Total Distance -->
         <div class="form-group">
             <label for="totalDistance">Gefahrene km</label>
             <input type="number" id="totalDistance" name="totalDistance" th:value="${workDay.totalDistance}" class="form-control custom-input-width">
         </div>
-        <!-- Faults Checkbox -->
+
         <div class="form-group form-check">
             <input type="checkbox" id="faults" name="faults" class="form-check-input" th:checked="${workDay != null && workDay.faults}">
             <label class="form-check-label" for="faults">Fuchrenbruch</label>
         </div>
-        <!-- Accident Checkbox -->
+
         <div class="form-group form-check">
             <input type="checkbox" id="accident" name="accident" class="form-check-input" th:checked="${workDay != null && workDay.accident}">
             <label class="form-check-label" for="accident">Unfall</label>
         </div>
 
-
-        <!-- Buttons -->
         <button type="submit" class="btn btn-primary">Änderungen speichern</button>
         <a th:href="@{/summary(workDayId=${workDay.id})}" class="btn btn-secondary">Abbrechen</a>
     </form>

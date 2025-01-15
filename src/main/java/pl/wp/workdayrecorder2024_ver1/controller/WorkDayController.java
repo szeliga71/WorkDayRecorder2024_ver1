@@ -15,7 +15,6 @@ import pl.wp.workdayrecorder2024_ver1.service.MarktService;
 import pl.wp.workdayrecorder2024_ver1.service.TrailerService;
 import pl.wp.workdayrecorder2024_ver1.service.TruckService;
 import pl.wp.workdayrecorder2024_ver1.service.WorkDayService;
-
 import java.time.temporal.WeekFields;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -140,7 +139,7 @@ public class WorkDayController {
 
     @GetMapping("/confirmDeletionWorkDay")
     public String confirmDeletionWorkDay(@AuthenticationPrincipal Employee loggedEmployee,
-                                         @RequestParam("id") Long id,
+                                        /* @RequestParam("id") Long id,*/
                                          @RequestParam(value = "workDayId") Long workDayId,
                                          Model model) {
         if (loggedEmployee == null) {

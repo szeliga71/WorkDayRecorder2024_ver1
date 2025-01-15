@@ -9,18 +9,16 @@
         body {
             background-color: #e9ecef;
         }
-
         .container {
-            max-width: 600px; /* Szerokość kontenera */
-            margin: 0 auto;   /* Wyśrodkowanie kontenera */
+            max-width: 600px;
+            margin: 0 auto;
             background-color: #f8f9fa;
             padding: 20px;
             border-radius: 8px;
             margin-top: 30px;
         }
-
         .custom-input-width {
-            width: 100%; /* Szerokość pól na 100% dla responsywności */
+            width: 100%;
         }
 
         .form-container {
@@ -35,7 +33,7 @@
         }
 
         button {
-            width: 100%; /* Przycisk na pełną szerokość dla lepszego wyświetlania na mobilnych */
+            width: 100%;
         }
     </style>
 </head>
@@ -81,51 +79,3 @@
 </div>
 </body>
 </html>
-
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Update Markt</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-<div class="container">
-    <h1>Update Markt</h1>
-
-    <form th:action="@{/admin/updateMarkt}" method="post">
-        <input type="hidden" name="marktId" th:value="${markt.marktId}">
-
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" class="form-control" th:value="${markt.name}" required>
-        </div>
-
-        <div class="form-group">
-            <label for="postalCode">Postal Code</label>
-            <input type="text" id="postalCode" name="postalCode" class="form-control" th:value="${markt.postalCode}" required>
-        </div>
-        <div class="form-group">
-            <label for="citi">Citi</label>
-            <input type="text" id="citi" name="citi" class="form-control" th:value="${markt.citi}" required>
-        </div>
-
-        <div class="form-group">
-            <label for="street">Street</label>
-            <input type="text" id="street" name="street" class="form-control" th:value="${markt.street}" required>
-        </div>
-        <div class="form-group">
-            <label for="buildingNumber">Buil No</label>
-            <input type="text" id="buildingNumber" name="buildingNumber" class="form-control" th:value="${markt.buildingNumber}">
-        </div>
-        <div class="form-group">
-            <label for="notes">Notes</label>
-            <input type="text" id="notes" name="notes" class="form-control" th:value="${markt.notes}">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-    </form>
-</div>
-</body>
-</html>-->

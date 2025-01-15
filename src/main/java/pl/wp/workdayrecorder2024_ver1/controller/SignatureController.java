@@ -9,6 +9,7 @@ import pl.wp.workdayrecorder2024_ver1.model.Employee;
 import pl.wp.workdayrecorder2024_ver1.model.Signature;
 import pl.wp.workdayrecorder2024_ver1.repository.EmployeeRepository;
 import pl.wp.workdayrecorder2024_ver1.repository.SignatureRepository;
+
 import java.util.Base64;
 
 
@@ -30,7 +31,6 @@ public class SignatureController {
                                                 @RequestBody SignatureRequest request) {
 
         try {
-            // Dekodowanie Base64
             byte[] decodedBytes = Base64.getDecoder().decode(request.getImage().split(",")[1]);
 
             Signature signature = new Signature();

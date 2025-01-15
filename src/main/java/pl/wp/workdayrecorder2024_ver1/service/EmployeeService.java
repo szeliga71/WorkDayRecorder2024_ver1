@@ -10,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.wp.workdayrecorder2024_ver1.model.Employee;
 import pl.wp.workdayrecorder2024_ver1.repository.EmployeeRepository;
-
 import java.util.List;
 
 @Service
@@ -33,7 +32,6 @@ public class EmployeeService implements UserDetailsService {
         return null;
     }
 
-
     public void saveEmployee(Employee employee) {
         try {
             if (!employee.getPassword().startsWith("$2a$")) {
@@ -49,10 +47,6 @@ public class EmployeeService implements UserDetailsService {
 
     public void deleteEmployee(Employee employee) {
         employeeRepository.delete(employee);
-    }
-
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
     }
 
     public Page<Employee> getAllEmployees(Pageable pageable) {

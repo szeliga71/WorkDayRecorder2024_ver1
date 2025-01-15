@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.wp.workdayrecorder2024_ver1.model.Markt;
 import pl.wp.workdayrecorder2024_ver1.repository.MarktRepository;
-
 import java.util.List;
 
 @Service

@@ -7,19 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
-            background-image: url('/images/pfenning2.jpg'); /* Wstaw tutaj URL obrazu */
-            background-size: cover; /* Dopasowanie obrazu do ekranu */
+            background-image: url('/images/pfenning2.jpg');
+            background-size: cover;
             background-position: center;
-            background-repeat: no-repeat; /* Zapobiega powtarzaniu obrazu */
-            height: 100vh; /* Ustawia wysokość na 100% okna przeglądarki */
+            background-repeat: no-repeat;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: black; /* Zmiana koloru tekstu */
+            color: black;
         }
 
-        /* Styl dla nieprzezroczystego pola */
         .content-box {
             background-color: #ffffff;
             padding: 20px;
@@ -29,49 +28,49 @@
         }
 
         .btn-custom-2 {
-            background-color: #c0c0c0; /* Niestandardowy kolor przycisku */
+            background-color: #c0c0c0;
             border: 2px solid black;
-            color: black; /* Czarna obwódka */
+            color: black;
             font-weight: bold;
         }
         .btn-custom-3 {
-            background-color: #a9a9a9; /* Niestandardowy kolor przycisku */
+            background-color: #a9a9a9;
             border: 2px solid black;
-            color: black; /* Czarna obwódka */
+            color: black;
             font-weight: bold;
         }
         .btn-custom-4 {
-            background-color: #808080; /* Niestandardowy kolor przycisku */
+            background-color: #808080;
             border: 2px solid black;
-            color: black; /* Czarna obwódka */
+            color: black;
             font-weight: bold;
         }
         .btn-custom-5 {
-            background-color: #696969; /* Inny niestandardowy kolor przycisku */
-            border: 2px solid black; /* Czarna obwódka */
-            color: black; /* Czarna obwódka */
+            background-color: #696969;
+            border: 2px solid black;
+            color: black;
             font-weight: bold;
         }
         .btn-custom-6 {
-            background-color: #0066FF; /* Niestandardowy kolor przycisku */
+            background-color: #0066FF;
             border: 2px solid black;
-            color: black; /* Czarna obwódka */
+            color: black;
             font-weight: bold;
         }
 
         .email-highlight {
-            color: #008080; /* Kolor tekstu */
-            font-family: 'Arial', sans-serif; /* Czcionka */
-            font-weight: bold; /* Pogrubienie */
+            color: #008080;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
         }
         .button-container {
             display: flex;
-            flex-wrap: wrap; /* Pozwoli na zawijanie w razie potrzeby */
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 10px; /* Odstępy między przyciskami */
+            gap: 10px;
         }
         .btn-fixed-width {
-            width: 220px; /* Ustaw szerokość według własnych potrzeb */
+            width: 220px;
         }
     </style>
 
@@ -79,9 +78,8 @@
         function enterWorkDay() {
             window.location.href = "workDay";
         }
-
         function showWorkPlan() {
-            window.location.href = "viewWeekWorkPlan";   <!--"/storage/weekWorkPlan.jpg";-->
+            window.location.href = "viewWeekWorkPlan";
         }
 
         function setSignature() {
@@ -95,7 +93,6 @@
             window.location.href = "changePassword";
         }
 
-
     </script>
 </head>
 <body>
@@ -103,8 +100,6 @@
 
     <h1 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Startseite für Fahrer</h1>
     <p>Benutzer : <span class="email-highlight" th:text="${fullName}"></span></p>
-
-
     <br>
     <div class="button-container">
     <button onclick="enterWorkDay()" class="btn btn-custom-2 btn-lg m-2 btn-fixed-width">Tagesbericht</button>
@@ -112,7 +107,6 @@
     <button onclick="setSignature()" class="btn btn-custom-4 btn-lg m-2 btn-fixed-width">Unterschreibe</button>
     <button onclick="createWashListe()" class="btn btn-custom-5 btn-lg m-2 btn-fixed-width">Waschliste</button>
     <button onclick="changePassword()" class="btn btn-custom-6 btn-lg m-2 btn-fixed-width">Passwort ändern</button>
-
     <form th:action="@{/logout}" method="post" style="display:inline-block;">
         <button type="submit" class="btn btn-custom-5 btn-lg m-2 btn-fixed-width">Abmelden</button>
     </form>

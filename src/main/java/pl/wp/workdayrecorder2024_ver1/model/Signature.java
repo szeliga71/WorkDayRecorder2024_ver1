@@ -8,13 +8,9 @@ public class Signature {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@Lob
-    //private String signatureData; // przechowuje podpis w formacie base64
-
     @Lob
     private byte[] imageData;
 
-    // Gettery i Settery
     public Long getId() {
         return id;
     }

@@ -16,12 +16,12 @@
         }
 
         .container {
-            max-width: 600px; /* Ustawia szerokość kontenera */
-            margin: 0 auto;   /* Wyśrodkowanie kontenera */
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .custom-input-width {
-            width: 300px; /* Ustawia szerokość pól */
+            width: 300px;
         }
 
         .form-container {
@@ -33,13 +33,13 @@
         }
 
         .email-highlight {
-            color: #008080; /* Kolor tekstu */
-            font-family: 'Arial', sans-serif; /* Czcionka */
-            font-weight: bold; /* Pogrubienie */
+            color: #008080;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
         }
 
         h2 {
-            text-align: center; /* Wyśrodkowanie tytułu */
+            text-align: center;
         }
 
         .autocomplete-list div:hover {
@@ -60,23 +60,20 @@
             background-color: #0066FF;
             color: #fff;
         }
-
     </style>
-
     <script>
 
        let markets = [];
 
-       // Funkcja pobierająca markety z backendu
        async function fetchMarkets() {
            try {
                const response = await fetch('/admin/getMarkets');
                if (!response.ok) {
-                   throw new Error('Błąd pobierania danych z serwera');
+                   throw new Error('Error fetching data from the server');
                }
                markets = await response.json();
            } catch (error) {
-               console.error('Błąd:', error);
+               console.error('Error:', error);
            }
        }
 
@@ -109,8 +106,8 @@
                    const item = document.createElement('div');
                    item.textContent = `${markt.marktId} - ${markt.citi}`;
                    item.addEventListener('click', function () {
-                       marktSearch.value = markt.marktId; // Ustawienie wartości w inpucie
-                       displayAddress(markt);             // Wyświetlenie adresu
+                       marktSearch.value = markt.marktId;
+                       displayAddress(markt);
                        autocompleteList.style.display = 'none';
                    });
                    autocompleteList.appendChild(item);
@@ -131,17 +128,15 @@
            const addressDisplay = document.getElementById('addressDisplay');
 
            const fullAddress = `
-                Nazwa: ${markt.name}<br>
-                Ulica: ${markt.street} ${markt.buildingNumber}<br>
-                Miasto: ${markt.postalCode} ${markt.citi}<br>
-                Notatki: ${markt.notes}
+                Name:  ${markt.name}<br>
+                Straße:  ${markt.street} ${markt.buildingNumber}<br>
+                Stadt:  ${markt.postalCode} ${markt.citi}<br>
+                Notizen:  ${markt.notes}
             `.trim();
 
            addressText.innerHTML = fullAddress;
            addressDisplay.style.display = 'block';
        }
-
-
 
        function handleMarktSearchInput() {
            const marktSearch = document.getElementById('marktSearch');
@@ -152,7 +147,7 @@
 
            marktSearch.addEventListener('keydown', (event) => {
                if (event.key === 'Enter') {
-                   event.preventDefault(); // Zapobieganie domyślnej akcji formularza
+                   event.preventDefault();
                    findAndDisplayAddress(marktSearch.value);
                }
            });
@@ -165,17 +160,16 @@
            }
        }
 
-       // Wywołanie funkcji po załadowaniu strony
        document.addEventListener('DOMContentLoaded', async () => {
            await fetchMarkets();
            setupAutocomplete();
-           handleMarktSearchInput(); // Dodajemy nasłuchiwanie dla pola marktSearch
+           handleMarktSearchInput();
        });
-       // Wywołanie funkcji po załadowaniu strony
+
        document.addEventListener('DOMContentLoaded', async () => {
            await fetchMarkets();
            setupAutocomplete();
-           displayAddressOnLoad(); // Wywołanie funkcji wyświetlającej adres na podstawie wartości w polu
+           displayAddressOnLoad();
        });
 
        function displayAddressOnLoad() {
@@ -204,28 +198,23 @@
             <div id="autocomplete-list" class="autocomplete-list"></div>
         </div>
 
-            <!-- Adres Wyświetlany -->
             <div id="addressDisplay" class="form-group" style="display:none;">
                 <label>Adresse:</label>
                 <p id="addressText"></p>
             </div>
 
-            <!-- Beginn -->
             <div class="form-group">
                 <label for="beginn">Stoppbeginn:</label>
                 <input type="datetime-local" id="beginn" name="beginn" th:value="${stop.beginn}"
                        class="form-control custom-input-width" required>
             </div>
 
-            <!-- End of Stopp -->
             <div class="form-group">
                 <label for="endOfStopp">Stoppende:</label>
                 <input type="datetime-local" id="endOfStopp" name="endOfStopp" th:value="${stop.endOfStopp}"
                        class="form-control custom-input-width" required>
             </div>
-
         <br>
-
             <button type="submit" class="btn btn-custom-20">Speichern</button>
             <a th:href="@{/summary(workDayId=${workDay.id})}" class="btn btn-custom-70">Abbrechen</a>
     </form>

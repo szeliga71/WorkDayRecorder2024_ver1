@@ -66,7 +66,7 @@ public class RouteController {
         if (trailerNumber != null && !trailerNumber.isEmpty()) {
             route.setTrailerNumber(trailerNumber);
         } else {
-            route.setTrailerNumber(null); // Brak przyczepy
+            route.setTrailerNumber(null);
         }
         route.setTrailerNumber(trailerNumber);
         route.setRouteNumber(routeNumber);
@@ -84,7 +84,7 @@ public class RouteController {
         }
         workDay.setTotalDistance(dist);
         workDayService.addWorkDay(workDay);
-        // Wybierz następną akcję w zależności od wartości parametru 'action'
+
         if ("addStop".equals(action)) {
             return "redirect:/newStop?routeId=" + route.getId() + "&workDayId=" + route.getWorkDay().getId();
         } else if ("addRoute".equals(action)) {

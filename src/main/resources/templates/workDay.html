@@ -9,14 +9,13 @@
         body {
             background-color: #e9ecef;
         }
-
         .container {
-            max-width: 600px; /* Ustawia szerokość kontenera */
-            margin: 0 auto; /* Wyśrodkowanie kontenera */
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .custom-input-width {
-            width: 300px; /* Ustawia szerokość pól */
+            width: 300px;
         }
 
         .form-container {
@@ -28,13 +27,13 @@
         }
 
         .email-highlight {
-            color: #008080; /* Kolor tekstu */
-            font-family: 'Arial', sans-serif; /* Czcionka */
-            font-weight: bold; /* Pogrubienie */
+            color: #008080;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
         }
 
         h2 {
-            text-align: center; /* Wyśrodkowanie tytułu */
+            text-align: center;
         }
         .btn-width{
             width: 200px;
@@ -57,7 +56,6 @@
     <h1 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Arbeitsbericht erstellen</h1>
     <p>Benutzer : <span class="email-highlight" th:text="${fullName}"></span></p>
 
-    <!-- Jeśli istnieje komunikat o błędzie -->
     <div th:if="${error}" class="alert alert-danger">
         <p th:text="${error}"></p>
     </div>
@@ -108,14 +106,11 @@
             <label class="form-check-label" for="accident">Unfall</label>
         </div>
         <br>
-        <!-- Przyciski -->
         <div class="text-center">
         <button type="submit" class="btn btn-custom-70  btn-lg m-2 btn-width">Arbeitstag hinzufügen</button>
             <a th:href="@{/home}" class="btn btn-custom-20  btn-lg m-2 btn-width">Zurück zur Startseite</a>
         </div>
     </form>
 </div>
-
 </body>
 </html>
-

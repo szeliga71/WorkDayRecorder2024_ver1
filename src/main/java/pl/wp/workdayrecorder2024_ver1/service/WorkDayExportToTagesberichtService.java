@@ -10,7 +10,6 @@ import pl.wp.workdayrecorder2024_ver1.model.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import pl.wp.workdayrecorder2024_ver1.repository.SignatureRepository;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,19 +20,16 @@ import java.util.Optional;
 @Service
 public class WorkDayExportToTagesberichtService {
 
-
-    private final EmployeeService employeeService;
-    //String filePath = "src/main/resources/excellFiles/excellFormular/tagebericht.xlsx";
-
-
+    @Autowired
+    EmployeeService employeeService;
     @Autowired
     SignatureRepository signatureRepository;
 
+    String filePath = "excellFiles/excellFormular/tagebericht.xlsx";
 
     public WorkDayExportToTagesberichtService(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-
     public void exportToTagesbericht(WorkDay workDay) {
 
         String personalId = workDay.getPersonalId();
@@ -43,18 +39,14 @@ public class WorkDayExportToTagesberichtService {
         String lastName = employee.getLastName();
 
 
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("excellFiles/excellFormular/tagebericht.xlsx")) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath)) {
             if (inputStream == null) {
                 throw new FileNotFoundException("Resource not found: excellFiles/excellFormular/tagebericht.xlsx");
             }
-       // try (FileInputStream fis = new FileInputStream(filePath);
-             Workbook workbook = new XSSFWorkbook(inputStream);
 
-            // Pobierz istniejący arkusz (pierwszy arkusz)
+            Workbook workbook = new XSSFWorkbook(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
 
-
-            //Name Vorname
             Row rowB7 = sheet.getRow(6);
             if (rowB7 == null) {
                 rowB7 = sheet.createRow(6);
@@ -65,7 +57,6 @@ public class WorkDayExportToTagesberichtService {
             }
             cellB7.setCellValue(name + " " + lastName);
 
-            // Zapisz personalId do komórki F7 (wiersz 6, kolumna 5, indeksy od 0)
             Row rowF7 = sheet.getRow(6);
             if (rowF7 == null) {
                 rowF7 = sheet.createRow(6);
@@ -76,7 +67,6 @@ public class WorkDayExportToTagesberichtService {
             }
             cellF7.setCellValue(workDay.getPersonalId());
 
-            //date
             Row rowL6 = sheet.getRow(5);
             if (rowL6 == null) {
                 rowL6 = sheet.createRow(5);
@@ -89,7 +79,6 @@ public class WorkDayExportToTagesberichtService {
             String formatedDate = workDay.getDate().format(formatter);
             cellL6.setCellValue(formatedDate);
 
-            //dzien tygodnia
             int cellDayOfWeekNumber = dayOfWeekInFormular(workDay.getDayOfWeek());
             Row rowC6 = sheet.getRow(7);
             if (rowC6 == null) {
@@ -101,7 +90,6 @@ public class WorkDayExportToTagesberichtService {
             }
             cellC6.setCellValue("XXXXXXX");
 
-            //arbeitsbeginn
             Row rowR7 = sheet.getRow(6);
             if (rowR7 == null) {
                 rowR7 = sheet.createRow(6);
@@ -114,7 +102,6 @@ public class WorkDayExportToTagesberichtService {
             String formatedTimeBegin = workDay.getStartOfWork().format(formatterTimeBegin);
             cellR7.setCellValue(formatedTimeBegin);
 
-            //Pause
             Row rowT7 = sheet.getRow(6);
             if (rowT7 == null) {
                 rowT7 = sheet.createRow(6);
@@ -125,7 +112,6 @@ public class WorkDayExportToTagesberichtService {
             }
             cellT7.setCellValue(workDay.getPause());
 
-            //Arbeitsende
             Row rowV7 = sheet.getRow(6);
             if (rowV7 == null) {
                 rowV7 = sheet.createRow(6);
@@ -135,7 +121,7 @@ public class WorkDayExportToTagesberichtService {
                 cellV7 = rowV7.createCell(21);
             }
             DateTimeFormatter formatterTimeEnd = DateTimeFormatter.ofPattern("HH:mm");
-            String formatedTimeEnd = workDay.getStartOfWork().format(formatterTimeEnd);
+            String formatedTimeEnd = workDay.getEndOfWork().format(formatterTimeEnd);
             cellV7.setCellValue(formatedTimeEnd);
 
             Row rowH40 = sheet.getRow(39);
@@ -148,7 +134,6 @@ public class WorkDayExportToTagesberichtService {
             }
             cellH40.setCellValue(workDay.getTotalDistance());
 
-            //Fuhrerbruch
             int fahrerbruchCell = fahrerbruchInExcell(workDay.isFaults());
             Row rowF42 = sheet.getRow(41);
             if (rowF42 == null) {
@@ -160,7 +145,6 @@ public class WorkDayExportToTagesberichtService {
             }
             cellF42.setCellValue("X");
 
-            //unfall
             int unfallCell = unfallInExcell(workDay.isAccident());
             Row rowJ42 = sheet.getRow(41);
             if (rowJ42 == null) {
@@ -172,22 +156,17 @@ public class WorkDayExportToTagesberichtService {
             }
             cellJ42.setCellValue("X");
 
-            //untrschrift Fahrer
             Optional<Signature> optionalSignature = signatureRepository.findById(signatureId);
             if (optionalSignature.isPresent()) {
                 byte[] imageData = optionalSignature.get().getImageData();
-
                 int pictureIndex = workbook.addPicture(imageData, Workbook.PICTURE_TYPE_PNG);
                 XSSFDrawing drawing = (XSSFDrawing) sheet.createDrawingPatriarch();
                 ClientAnchor anchor = new XSSFClientAnchor();
                 anchor.setCol1(20);
-                anchor.setRow1(39);
+                anchor.setRow1(37);
                 XSSFPicture picture = drawing.createPicture(anchor, pictureIndex);
                 picture.resize(0.15);
             }
-
-//============================================================================
-//lista route
 
             int stopInNextTour = 0;
             int numberOfRoutes = workDay.getRoutes().size();
@@ -215,7 +194,7 @@ public class WorkDayExportToTagesberichtService {
                         cellB12 = rowB12.createCell(1);
                     }
                     cellB12.setCellValue(route.getTruckNumber());
-                    //Trailer
+
                     Row rowC12 = sheet.getRow(11 + next);
                     if (rowC12 == null) {
                         rowC12 = sheet.createRow(11 + next);
@@ -229,7 +208,7 @@ public class WorkDayExportToTagesberichtService {
                     } else {
                         cellC12.setCellValue(route.getTrailerNumber());
                     }
-                    // distance
+
                     Row rowD12 = sheet.getRow(11 + next);
                     if (rowD12 == null) {
                         rowD12 = sheet.createRow(11 + next);
@@ -240,8 +219,6 @@ public class WorkDayExportToTagesberichtService {
                     }
                     cellD12.setCellValue(route.getDistance());
 
-
-                    //Tourbeginn
                     Row rowB16 = sheet.getRow(15 + next);
                     if (rowB16 == null) {
                         rowB16 = sheet.createRow(15 + next);
@@ -254,7 +231,6 @@ public class WorkDayExportToTagesberichtService {
                     String formatedTourBegin = route.getStartOfRoute().format(formatterTourBegin);
                     cellB16.setCellValue(formatedTourBegin);
 
-                    //Abfahrt Lager
                     Row rowD16 = sheet.getRow(15 + next);
                     if (rowD16 == null) {
                         rowD16 = sheet.createRow(15 + next);
@@ -268,8 +244,6 @@ public class WorkDayExportToTagesberichtService {
                     String formattedAbfahrtLager = route.getDepartureFromTheBase().format(formatterAbfahrtLager);
                     cellD16.setCellValue(formattedAbfahrtLager);
 
-
-                    //Ankunft Lager
                     Row rowB18 = sheet.getRow(17 + next);
                     if (rowB18 == null) {
                         rowB18 = sheet.createRow(17 + next);
@@ -282,7 +256,6 @@ public class WorkDayExportToTagesberichtService {
                     String formatedAnkunftLager = route.getArrivalToTheBase().format(formatterAnkuftLager);
                     cellB18.setCellValue(formatedAnkunftLager);
 
-                    //Tourende
                     Row rowD18 = sheet.getRow(17 + next);
                     if (rowD18 == null) {
                         rowD18 = sheet.createRow(17 + next);
@@ -295,7 +268,6 @@ public class WorkDayExportToTagesberichtService {
                     String formattedTourenende = route.getEndOfRoute().format(formatterTourenende);
                     cellD18.setCellValue(formattedTourenende);
 
-                    //notes
                     Row rowR11 = sheet.getRow(10 + next);
                     if (rowR11 == null) {
                         rowR11 = sheet.createRow(10 + next);
@@ -308,16 +280,13 @@ public class WorkDayExportToTagesberichtService {
 
                     next = next + 10;
 
-
-                    //=====================================================
-                    //STOP
                     int numberOfStops = route.getStops().size();
                     int nextStopCell = 0;
                     int rightStopCell = 0;
                     if (numberOfStops < 15 && route.getStops() != null && !route.getStops().isEmpty()) {
 
                         for (Stop stop : route.getStops()) {
-                            //markt nummer
+
                             Row rowF12 = sheet.getRow(11 + nextStopCell + stopInNextTour);
                             if (rowF12 == null) {
                                 rowF12 = sheet.createRow(11 + nextStopCell + stopInNextTour);
@@ -328,7 +297,6 @@ public class WorkDayExportToTagesberichtService {
                             }
                             cellF12.setCellValue(stop.getMarktId());
 
-                            //stopbeginn
                             Row rowH12 = sheet.getRow(11 + nextStopCell + stopInNextTour);
                             if (rowH12 == null) {
                                 rowH12 = sheet.createRow(11 + nextStopCell + stopInNextTour);
@@ -341,8 +309,6 @@ public class WorkDayExportToTagesberichtService {
                             String formatedStopBegin = stop.getBeginn().format(formatterStopBegin);
                             cellH12.setCellValue(formatedStopBegin);
 
-                            //stopende
-
                             Row rowJ12 = sheet.getRow(11 + nextStopCell + stopInNextTour);
                             if (rowJ12 == null) {
                                 rowJ12 = sheet.createRow(11 + nextStopCell + stopInNextTour);
@@ -354,7 +320,6 @@ public class WorkDayExportToTagesberichtService {
                             DateTimeFormatter formatterStopEnde = DateTimeFormatter.ofPattern("HH:mm");
                             String formatedStopEnde = stop.getEndOfStopp().format(formatterStopEnde);
                             cellJ12.setCellValue(formatedStopEnde);
-
 
                             if (rightStopCell < 15) {
                                 nextStopCell = (nextStopCell < 8) ? nextStopCell + 1 : 0;
@@ -369,49 +334,33 @@ public class WorkDayExportToTagesberichtService {
                     stopInNextTour = stopInNextTour + 10;
                 }
             }
-
-            /*String outFilePath = "C:/Tagesbericht/tagebericht" + workDay.getDate() + "-" + workDay.getPersonalId() + ".xlsx";
-            try (FileOutputStream fos = new FileOutputStream(outFilePath)) {
-                workbook.write(fos);
-                System.out.println("Dane zapisane pomyślnie do pliku Excel.");
-            }*/
-            //String serverDirectory = "/var/app/reports/tagesberichte";
             String serverDirectory = "/tmp/tagesberichte";
-
             String fileName = "tagebericht-" + workDay.getDate() + "-" + workDay.getPersonalId() + ".xlsx";
-
             try {
                 Path path = Paths.get(serverDirectory);
                 if (!Files.exists(path)) {
                     Files.createDirectories(path);
-                    System.out.println("Katalog został utworzony: " + serverDirectory);
+                    System.out.println("The directory has been created: " + serverDirectory);
                 } else {
-                    System.out.println("Katalog już istnieje: " + serverDirectory);
+                    System.out.println("Directory already exist: " + serverDirectory);
                 }
             } catch (IOException e) {
-                System.err.println("Błąd podczas tworzenia katalogu: " + serverDirectory);
+                System.err.println("Error while creating directory: " + serverDirectory);
                 e.printStackTrace();
             }
-            // Upewnij się, że katalog istnieje
-            //Files.createDirectories(Paths.get(serverDirectory));
 
-            // Ścieżka do pliku na serwerze
             String outFilePath = serverDirectory + "/" + fileName;
-
             try (FileOutputStream fos = new FileOutputStream(outFilePath)) {
                 workbook.write(fos);
-                System.out.println("Dane zapisane pomyślnie do pliku: " + outFilePath);
+                System.out.println("Data successfully saved on the file: " + outFilePath);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
     public int dayOfWeekInFormular(String dayOfWeek) {
-
         if (dayOfWeek == null) {
             throw new IllegalArgumentException("dayOfWeek cannot be null");
         }
@@ -434,11 +383,9 @@ public class WorkDayExportToTagesberichtService {
                 throw new IllegalArgumentException("Invalid day of the week: " + dayOfWeek);
         }
     }
-
     public int fahrerbruchInExcell(boolean isBruch) {
         return (isBruch) ? 5 : 6;
     }
-
     public int unfallInExcell(boolean isUnfall) {
         return (isUnfall) ? 9 : 10;
     }

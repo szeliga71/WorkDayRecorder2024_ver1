@@ -20,7 +20,6 @@ import java.nio.file.Paths;
 @Controller
 public class UploadController {
 
-    //private final String STORAGE = Paths.get("storage").toAbsolutePath().toString();
     private final String STORAGE = "src/main/resources/storage";
 
     public UploadController() {
@@ -43,20 +42,12 @@ public class UploadController {
             System.out.println("Received empty file");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty");
         }
-        String fileName = file.getOriginalFilename();
-        String fileExtension = "";
-        if (fileName != null && fileName.contains(".")) {
-            fileExtension = fileName.substring(fileName.lastIndexOf("."));
-        }
-//ten kod nadaje rozszerzenie z orginalnego pliku, teraz jest ustawione na sztywno jpg.
         try {
-            Path path = Paths.get(STORAGE, "weekWorkPlan.jpg");/*+fileExtensionfile.getOriginalFilename());*/
+            Path path = Paths.get(STORAGE, "weekWorkPlan.jpg");
             System.out.println("Attempting to save file to path: " + path.toString());
             Files.write(path, file.getBytes());
             System.out.println("File saved successfully");
-
             return ResponseEntity.ok("File uploaded successfully");
-
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Error uploading file: " + e.getMessage());

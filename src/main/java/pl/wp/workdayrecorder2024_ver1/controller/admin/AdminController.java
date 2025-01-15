@@ -2,7 +2,6 @@ package pl.wp.workdayrecorder2024_ver1.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +17,6 @@ public class AdminController {
     EmployeeService employeeService;
     @Autowired
     WorkDayService workDayService;
-
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @GetMapping("/adminPanel")
     public String adminPanel(@AuthenticationPrincipal Employee employee, Model model) {

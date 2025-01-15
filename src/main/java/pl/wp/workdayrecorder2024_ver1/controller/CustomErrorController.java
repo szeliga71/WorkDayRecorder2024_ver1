@@ -14,7 +14,6 @@ public class CustomErrorController implements ErrorController {
     public String handleError(@AuthenticationPrincipal Employee employee, Model model) {
         model.addAttribute("fullName", employee.getFirstName() + " " + employee.getLastName());
         model.addAttribute("role", employee.getRole());
-        // Zwróć widok dla strony błędu
         return "error";
     }
 }

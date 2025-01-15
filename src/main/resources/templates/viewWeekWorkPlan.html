@@ -8,72 +8,38 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #e9ecef; /* Tło strony */
+            background-color: #e9ecef;
         }
         .container {
-            max-width: 600px; /* Ustawia szerokość kontenera */
-            margin: 50px auto; /* Wyśrodkowanie kontenera z marginesem u góry */
-            background-color: #f8f9fa; /* Tło kontenera */
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #f8f9fa;
             padding: 20px;
-            border-radius: 8px; /* Zaokrąglenie rogów */
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Cień dla efektu głębi */
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
         .btn-custom {
-            width: 100%; /* Szerokość przycisków */
-            margin-bottom: 15px; /* Odstęp między przyciskami */
+            width: 100%;
+            margin-bottom: 15px;
         }
         h2 {
-            color: #343a40; /* Kolor nagłówka */
+            color: #343a40;
             margin-bottom: 20px;
         }
         img {
-            max-width: 100%; /* Dostosowanie obrazka do szerokości kontenera */
+            max-width: 100%;
             height: auto;
-            margin-bottom: 20px; /* Odstęp pod obrazkiem */
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-
 <div class="container">
     <h2 class="text-center mt-4" style="color: #0066FF; font-weight: bold;">Wöchentlicher Arbeitsplan</h2>
-
     <br>
-
     <img src="/weekWorkPlan.jpg" alt="Plan Tygodnia" class="img-fluid" />
-
-    <!--<div>
-        <embed src="/weekWorkPlan.pdf" type="application/pdf" width="100%" height="600px" />
-    <iframe src="/weekWorkPlan.pdf" width="100%" height="600px"></iframe>
-    </div>-->
-    <!-- Wyświetlanie pliku PDF
-    <div th:if="${fileType == 'pdf'}">
-        <iframe th:src="'/' + ${filename}" width="100%" height="600px"></iframe>
-    </div>
-
-    Wyświetlanie obrazu JPG
-    <div th:if="${fileType == 'image'}">
-        <img th:src="'/' + ${filename}" alt="Plan Tygodnia">
-    </div>
-
-     Komunikat o nieobsługiwanym typie pliku
-    <div th:if="${fileType == 'unknown'}">
-        <p>Nieobsługiwany typ pliku: <span th:text="${filename}"></span></p>
-    </div>-->
-    <!--<div th:if="${fileType == 'image'}">
-    <img src="/weekWorkPlan.jpg" alt="Plan Tygodnia" class="img-fluid" />
-    </div>
-    <div th:if="${fileType == 'pdf'}">
-    <iframe src="/weekWorkPlan.pdf" width="100%" height="600px"></iframe>
-    </div>
-   <embed src="/weekWorkPlan.pdf" type="application/pdf" width="100%" height="600px" />
-    <div th:if="${fileType == 'unknown'}">
-        <p>Nieobsługiwany typ pliku: <span th:text="${filename}"></span></p>
-    </div>-->
-
     <a th:href="${role == 'ROLE_ADMIN' ? '/admin/adminPanel' : '/home'}" class="btn btn-primary btn-custom">Schließen</a>
 </div>
-
 </body>
 </html>

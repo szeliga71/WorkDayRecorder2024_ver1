@@ -13,7 +13,6 @@ import pl.wp.workdayrecorder2024_ver1.service.MarktService;
 import pl.wp.workdayrecorder2024_ver1.service.TrailerService;
 import pl.wp.workdayrecorder2024_ver1.service.TruckService;
 import pl.wp.workdayrecorder2024_ver1.service.WorkDayService;
-
 import java.util.List;
 
 @Controller

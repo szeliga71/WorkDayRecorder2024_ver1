@@ -18,7 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import pl.wp.workdayrecorder2024_ver1.service.EmployeeService;
-
 import java.io.IOException;
 import java.util.Set;
 
@@ -26,10 +25,8 @@ import java.util.Set;
 @EnableWebSecurity
 public class SecurityConfig {
 
-
     private final EmployeeService employeeService;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
     public SecurityConfig(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }

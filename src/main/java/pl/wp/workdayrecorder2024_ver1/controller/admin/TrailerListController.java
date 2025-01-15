@@ -45,7 +45,6 @@ public class TrailerListController {
             return "redirect:/admin/trailers";
         }
     }
-
     @PostMapping("/admin/deleteTrailer")
     public String deleteTrailer(@AuthenticationPrincipal Employee loggedEmployee, @RequestParam("number") String number, Model model) {
         if (loggedEmployee == null) {

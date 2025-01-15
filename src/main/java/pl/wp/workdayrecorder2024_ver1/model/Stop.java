@@ -14,10 +14,7 @@ public class Stop {
     private LocalDateTime beginn;
     private LocalDateTime endOfStopp;
     private String marktId;
-    //private Long routeId;
-
     @ManyToOne
-    //@JoinColumn(name = "route_id", nullable = false)
     private Route route;
 
     public Route getRoute() {
@@ -27,7 +24,6 @@ public class Stop {
     public void setRoute(Route route) {
         this.route = route;
     }
-
 
     public Long getId() {
         return id;

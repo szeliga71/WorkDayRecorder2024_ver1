@@ -10,7 +10,6 @@ import java.util.Objects;
 @Entity
 public class WorkDay {
 
-
     @Id
     @GeneratedValue
     private Long id;

@@ -15,7 +15,6 @@ import pl.wp.workdayrecorder2024_ver1.service.EmployeeService;
 @RequestMapping("/admin")
 public class AddNewEmployee {
 
-
     @Autowired
     EmployeeService employeeService;
 

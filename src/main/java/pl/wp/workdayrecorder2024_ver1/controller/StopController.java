@@ -91,13 +91,13 @@ public class StopController {
             return "redirect:/login";
         }
         if (id == null) {
-            throw new IllegalArgumentException("Stop ID nie może być puste");
+            throw new IllegalArgumentException("Stop ID cannot be empty.");
         }
         WorkDay workDay = workDayService.getWorkDayById(workDayId);
         Stop stop = stopService.getStopById(id);
 
         if (stop == null) {
-            model.addAttribute("info", "Nie znaleziono stop.");
+            model.addAttribute("info", "No stops found.");
             return "error";
         }
         model.addAttribute("stop", stop);

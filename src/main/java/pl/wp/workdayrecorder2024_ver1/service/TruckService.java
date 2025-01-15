@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.wp.workdayrecorder2024_ver1.model.Truck;
 import pl.wp.workdayrecorder2024_ver1.repository.TruckRepository;
-
 import java.util.List;
 
 @Service

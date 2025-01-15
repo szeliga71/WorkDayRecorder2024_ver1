@@ -1,6 +1,6 @@
 package pl.wp.workdayrecorder2024_ver1.service;
 
-    import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specification;
 import pl.wp.workdayrecorder2024_ver1.model.WorkDay;
 
     public class WorkDaySpecifications {

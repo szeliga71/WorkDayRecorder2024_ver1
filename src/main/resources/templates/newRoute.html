@@ -10,11 +10,11 @@
             background-color: #e9ecef;
         }
         .container {
-            max-width: 600px; /* Ustawia szerokość kontenera */
-            margin: 0 auto;   /* Wyśrodkowanie kontenera */
+            max-width: 600px;
+            margin: 0 auto;
         }
         .custom-input-width {
-            width: 300px; /* Ustawia szerokość pól */
+            width: 300px;
         }
 
         .form-container {
@@ -26,12 +26,12 @@
         }
 
         .email-highlight {
-            color: #008080; /* Kolor tekstu */
-            font-family: 'Arial', sans-serif; /* Czcionka */
-            font-weight: bold; /* Pogrubienie */
+            color: #008080;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
         }
         h2 {
-            text-align: center; /* Wyśrodkowanie tytułu */
+            text-align: center;
         }
     </style>
 </head>
@@ -42,10 +42,9 @@
     <p>Benuzer : <span class="email-highlight" th:text="${fullName}"></span></p>
 
     <form th:action="@{/newRoute}" method="post" class="form-container">
-        <!-- Hidden WorkDay ID -->
+
         <input type="hidden" name="workDayId" th:value="${workDay.id}"/>
 
-        <!-- Numer Ciężarówki (rozwijane) -->
         <div class="form-group">
             <label for="truckNumber">LKW nummer</label>
             <select id="truckNumber" name="truckNumber" class="form-control custom-input-width" required>
@@ -54,7 +53,6 @@
             </select>
         </div>
 
-        <!-- Numer Przyczepy (rozwijane) -->
         <div class="form-group">
             <label for="trailerNumber">Aufliegernummer</label>
             <select id="trailerNumber" name="trailerNumber" class="form-control custom-input-width">
@@ -63,7 +61,6 @@
             </select>
         </div>
 
-        <!-- ID Trasy -->
         <div class="form-group">
             <label for="routeNumber">Tournummer</label>
             <input type="text" id="routeNumber" name="routeNumber" class="form-control custom-input-width" placeholder="Tournummer">
@@ -75,25 +72,21 @@
                    th:value="${route != null ? route.distance : ''}" placeholder="Tour-Kilometer">
         </div>
 
-        <!-- Start Trasy -->
         <div class="form-group">
             <label for="startOfRoute">Tourbeginn</label>
             <input type="datetime-local" id="startOfRoute" name="startOfRoute" class="form-control custom-input-width">
         </div>
 
-        <!-- Wyjazd z Bazy -->
         <div class="form-group">
             <label for="departureFromTheBase">Abfahrt Lager</label>
             <input type="datetime-local" id="departureFromTheBase" name="departureFromTheBase" class="form-control custom-input-width">
         </div>
 
-        <!-- Przyjazd do Bazy -->
         <div class="form-group">
             <label for="arrivalToTheBase">Ankunft Lager</label>
             <input type="datetime-local" id="arrivalToTheBase" name="arrivalToTheBase" class="form-control custom-input-width">
         </div>
 
-        <!-- Koniec Trasy -->
         <div class="form-group">
             <label for="endOfRoute">Tourende</label>
             <input type="datetime-local" id="endOfRoute" name="endOfRoute" class="form-control custom-input-width">
@@ -104,7 +97,6 @@
                       th:text="${route != null ? route.notes : ''}" placeholder="Notizen"></textarea>
         </div>
 
-        <!-- Przyciski -->
         <div class="form-group">
             <button type="submit" name="action" value="addStop" class="btn btn-secondary">Stopp hinzufungen</button>
             <button type="submit" name="action" value="summary" class="btn btn-info">Speichern</button>
@@ -113,7 +105,6 @@
 
     </form>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

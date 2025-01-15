@@ -6,10 +6,9 @@
     <title>Summary</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
-        /* Kontener z przewijaniem dla tabeli */
         .table-responsive {
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch; /* Lepsze przewijanie na urządzeniach mobilnych */
+            -webkit-overflow-scrolling: touch;
         }
 
         body {
@@ -25,9 +24,9 @@
         }
 
         .email-highlight {
-            color: #008080; /* Kolor tekstu */
-            font-family: 'Arial', sans-serif; /* Czcionka */
-            font-weight: bold; /* Pogrubienie */
+            color: #008080;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
         }
 
         h2, h3, h4 {
@@ -49,20 +48,20 @@
         }
 
         table {
-            width: 100%;/* Tabela zajmuje pełną szerokość */
+            width: 100%;
             margin: 0 auto;
             border-collapse: collapse;
             margin-bottom: 20px;
-            font-size: 10px; /* Jeszcze mniejsza czcionka dla tabeli */
+            font-size: 10px;
         }
 
         table, th, td {
             border: 1px solid black;
-            font-size: 12px; /* Zmniejszenie rozmiaru czcionki */
+            font-size: 12px;
         }
 
         th, td {
-            padding: 4px;/* Mniejsze paddingi komórek */
+            padding: 4px;
             text-align: center;
         }
 
@@ -83,24 +82,24 @@
             margin: 5px;
         }
 
-        /* Stylowanie dla małych ekranów */
+
         @media (max-width: 576px) {
             .btn-custom {
-                font-size: 10px; /* Mniejszy rozmiar czcionki dla przycisków */
-                padding: 5px 10px; /* Mniejsze paddingi w przyciskach */
-                width: auto; /* Automatyczna szerokość przycisków */
+                font-size: 10px;
+                padding: 5px 10px;
+                width: auto;
             }
             .button-container {
                 display: flex;
                 flex-direction: column;
-                gap: 5px; /* Mniejszy odstęp między przyciskami */
+                gap: 5px;
             }
             h1, h2, h3 {
-                font-size: 1.2rem; /* Zmniejszenie rozmiaru nagłówków */
+                font-size: 1.2rem;
             }
 
             .container {
-                padding: 10px; /* Mniejsze paddingi kontenera */
+                padding: 10px;
             }
             .stop-table, .stop-table thead {
                 display: block;
@@ -116,7 +115,7 @@
             }
 
             .stop-table th {
-                display: none; /* Ukryj nagłówki w standardowej formie */
+                display: none;
             }
 
             .stop-table td {
@@ -126,7 +125,7 @@
             }
 
             .stop-table td::before {
-                content: attr(data-label); /* Ustawienie etykiety z atrybutu data-label */
+                content: attr(data-label);
                 font-weight: bold;
                 flex-basis: 50%;
             }
@@ -138,8 +137,8 @@
         }
 
         .btn-custom {
-            width: 30%; /* Szerokość przycisków */
-            margin-bottom: 15px; /* Odstęp między przyciskami */
+            width: 30%;
+            margin-bottom: 15px;
         }
         .btn-custom-edit {
             background-color: #a9a9a9;
@@ -177,27 +176,27 @@
             border-color: #1976D2;
         }
         .stop-table {
-            width: 100%;      /* Tabela zajmuje całą szerokość kontenera */
-            table-layout: fixed; /* Równomierne rozłożenie szerokości kolumn */
+            width: 100%;
+            table-layout: fixed;
         }
 
-        /* Stylowanie dla nagłówków i komórek */
+
         .stop-table th,
         .stop-table td {
-            word-wrap: break-word; /* Zawijanie tekstu, aby nie wychodził poza komórkę */
-            padding: 6px;          /* Mniejszy padding dla lepszego dopasowania */
-            font-size: 0.9rem;     /* Zmniejszony rozmiar czcionki */
+            word-wrap: break-word;
+            padding: 6px;
+            font-size: 0.9rem;
         }
-        /* Poszerzenie przycisków i wyśrodkowanie w sekcji "Funktionen" */
+
         .stop-table .button-container {
             display: flex;
-            justify-content: center; /* Wyśrodkowanie przycisków */
-            gap: 10px;               /* Odstęp między przyciskami */
+            justify-content: center;
+            gap: 10px;
         }
 
         .stop-table .button-container .btn {
-            width: 120px;            /* Ustaw szerokość przycisków według potrzeb */
-            text-align: center;      /* Wyśrodkowanie tekstu na przycisku */
+            width: 120px;
+            text-align: center;
         }
     </style>
 </head>
@@ -251,32 +250,7 @@
                 </tbody>
             </table>
         </div>
-
-        <!--<table class="stop-table">
-            <thead>
-            <tr>
-                <th>Markt</th>
-                <th>Stopp-Begin</th>
-                <th>Stopp-Ende</th>
-                <th>Funktionen</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="stop : ${route.stops}">
-                <td data-label="Markt" th:text="${stop.marktId}"></td>
-                <td data-label="Stopp-Begin" th:text="${stop.beginn}"></td>
-                <td data-label="Stopp-Ende" th:text="${stop.endOfStopp}"></td>
-                <td data-label="Funktionen">
-                    <div class="button-container">
-                        <a th:href="@{/editStop(id=${stop.id},workDayId=${workDay.id})}" class="btn btn-custom btn-custom-edit">Details</a>
-                        <a th:href="@{/confirmDeletionStop(id=${stop.id},workDayId=${workDay.id})}" class="btn btn-custom btn-custom-delete">Löschen</a>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>-->
     </div>
-
     <div class="mt-3 button-container">
         <a th:href="${role == 'ROLE_ADMIN' ? '/admin/adminPanel' : '/home'}" class="btn btn-primary btn-space">Zurück zur Startseite</a>
     </div>
