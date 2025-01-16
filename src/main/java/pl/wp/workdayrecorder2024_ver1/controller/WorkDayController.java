@@ -101,7 +101,6 @@ public class WorkDayController {
             workDay.setStartOfWork(startOfWork);
             workDay.setPause(pause);
             workDay.setEndOfWork(endOfWork);
-            workDay.setTotalDistance(totalDistance);
             workDay.setAccident(accident);
             workDay.setFaults(faults);
             workDayService.addWorkDay(workDay);
@@ -139,7 +138,6 @@ public class WorkDayController {
 
     @GetMapping("/confirmDeletionWorkDay")
     public String confirmDeletionWorkDay(@AuthenticationPrincipal Employee loggedEmployee,
-                                        /* @RequestParam("id") Long id,*/
                                          @RequestParam(value = "workDayId") Long workDayId,
                                          Model model) {
         if (loggedEmployee == null) {

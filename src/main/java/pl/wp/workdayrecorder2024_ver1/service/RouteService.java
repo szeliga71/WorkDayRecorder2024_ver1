@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.wp.workdayrecorder2024_ver1.model.Route;
 import pl.wp.workdayrecorder2024_ver1.repository.RouteRepository;
-
 import java.util.List;
 
 @Service
